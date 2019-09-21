@@ -1,0 +1,56 @@
+type User {
+	id : ID!  
+	email : String!
+	name : String
+	score : Int!
+	chatList : [ChatRoom]
+}
+
+type Category {
+	id : ID!  
+	name : String!
+}
+
+type Store {
+	id : ID!  
+	pwd : String!
+	category : Category!
+	menuList : [Menu]!
+	minimumPrice : Int!
+	deliveryFee : Int!
+	orderList : [Order]
+}
+
+type Menu {
+	id : ID!  
+	name : String!
+	store : Store!
+	price : Int!
+}
+
+type ChatRoom {
+	id : ID!  
+	boss : User!
+	memberList : [User]
+	store : Store!
+	location : String!
+	orderExpectedTime : String!
+	orderList : [Order]
+	chatContentList : [ChatContent]!
+	state : Boolean!
+}
+
+type Order {
+	id : ID!  
+	user : User!
+	menuList : [Menu]!
+	chatRoom : ChatRoom!
+	state : Int!
+}		
+
+type ChatContent {
+	id : ID!  
+	user : User!
+	chatRoom : ChatRoom!
+	content : String!
+}
