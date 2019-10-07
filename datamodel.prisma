@@ -1,56 +1,74 @@
 type User {
-	id : ID!  @id
-	email : String!
-	name : String
-	score : Int!
-	chatList : [ChatRoom] @relation(name : "BossChatRelation")
+  id : ID! @id
+  number : Int!
+  pwd : String!
+  score : Int! @default(value: 0)
+  chatList : [ChatRoom] @relation(name : "BossChatRelation")
 }
 
-type Category {
-	id : ID!  @id
-	name : String!
+type MenuCategory {
+  id : ID! @id
+  name : String!
+  store : Store!  @relation(name : "StoreMenuCategoryRelation")
+}
+
+type StoreCategory {
+  id : ID! @id
+  name : String!
 }
 
 type Store {
-	id : ID!  @id
-	pwd : String!
-	category : Category!
-	menuList : [Menu]!
-	minimumPrice : Int!
-	deliveryFee : Int!
-	orderList : [Order]
+  id : ID! @id
+  storeId : String!
+  pwd : String!
+  name : String!
+  storeCategory : StoreCategory!
+  menuCategoryList : [MenuCategory] @relation(name : "StoreMenuCategoryRelation")
+  menuList : [Menu] @relation(name : "StoreMenuRelation")
+  minimumPrice : Int!
+  deliveryFee : Int!
+  image : String
+  roomOrderList : [RoomOrder]
 }
 
 type Menu {
-	id : ID!  @id
-	name : String!
-	store : Store!
-	price : Int!
+  id : ID! @id
+  name : String!
+  store : Store! @relation(name : "StoreMenuRelation")
+  price : Int!
+  menuCategory : MenuCategory!
 }
 
 type ChatRoom {
-	id : ID!  @id
-	boss : User!  @relation(name : "BossChatRelation")
-	memberList : [User] @relation(name : "MemberChatRelation")
-	store : Store!
-	location : String!
-	orderExpectedTime : DateTime!
-	orderList : [Order]
-	chatContentList : [ChatContent]!
-	state : Boolean!
+  id : ID! @id
+  boss : User!  @relation(name : "BossChatRelation")
+  memberList : [User]! @relation(name : "MemberChatRelation")
+  store : Store!
+  location : String!
+  orderExpectedTime : DateTime!
+  individualOrderList : [IndividualOrder]
+  chatContentList : [ChatContent] @relation(name : "ChatRoomChatContentRelation")
+  state : Boolean! 
 }
 
-type Order {
-	id : ID!  @id
-	user : User!
-	menuList : [Menu]!
-	chatRoom : ChatRoom!
-	state : Int!
-}		
+type RoomOrder {
+  id : ID! @id
+  chatRoom : ChatRoom!
+  individualOrderList : [IndividualOrder!]
+  phoneNumber : String!
+  state: Boolean!
+}
+
+type IndividualOrder {
+  id : ID! @id
+  user : User!
+  menuList : [Menu!]
+  chatRoom : ChatRoom!
+}
 
 type ChatContent {
-	id : ID!  @id
-	user : User!
-	chatRoom : ChatRoom!
-	content : String!
+  id : ID! @id
+  user : User!
+  chatRoom : ChatRoom! @relation(name : "ChatRoomChatContentRelation")
+  content : String!
 }
