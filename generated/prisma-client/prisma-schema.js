@@ -3,11 +3,7 @@ module.exports = {
   // Please don't change this file manually but run `prisma generate` to update it.
   // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-/* GraphQL */ `type AggregateCategory {
-  count: Int!
-}
-
-type AggregateChatContent {
+/* GraphQL */ `type AggregateChatContent {
   count: Int!
 }
 
@@ -15,15 +11,27 @@ type AggregateChatRoom {
   count: Int!
 }
 
+type AggregateIndividualOrder {
+  count: Int!
+}
+
 type AggregateMenu {
   count: Int!
 }
 
-type AggregateOrder {
+type AggregateMenuCategory {
+  count: Int!
+}
+
+type AggregateRoomOrder {
   count: Int!
 }
 
 type AggregateStore {
+  count: Int!
+}
+
+type AggregateStoreCategory {
   count: Int!
 }
 
@@ -33,124 +41,6 @@ type AggregateUser {
 
 type BatchPayload {
   count: Long!
-}
-
-type Category {
-  id: ID!
-  name: String!
-}
-
-type CategoryConnection {
-  pageInfo: PageInfo!
-  edges: [CategoryEdge]!
-  aggregate: AggregateCategory!
-}
-
-input CategoryCreateInput {
-  id: ID
-  name: String!
-}
-
-input CategoryCreateOneInput {
-  create: CategoryCreateInput
-  connect: CategoryWhereUniqueInput
-}
-
-type CategoryEdge {
-  node: Category!
-  cursor: String!
-}
-
-enum CategoryOrderByInput {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-}
-
-type CategoryPreviousValues {
-  id: ID!
-  name: String!
-}
-
-type CategorySubscriptionPayload {
-  mutation: MutationType!
-  node: Category
-  updatedFields: [String!]
-  previousValues: CategoryPreviousValues
-}
-
-input CategorySubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: CategoryWhereInput
-  AND: [CategorySubscriptionWhereInput!]
-  OR: [CategorySubscriptionWhereInput!]
-  NOT: [CategorySubscriptionWhereInput!]
-}
-
-input CategoryUpdateDataInput {
-  name: String
-}
-
-input CategoryUpdateInput {
-  name: String
-}
-
-input CategoryUpdateManyMutationInput {
-  name: String
-}
-
-input CategoryUpdateOneRequiredInput {
-  create: CategoryCreateInput
-  update: CategoryUpdateDataInput
-  upsert: CategoryUpsertNestedInput
-  connect: CategoryWhereUniqueInput
-}
-
-input CategoryUpsertNestedInput {
-  update: CategoryUpdateDataInput!
-  create: CategoryCreateInput!
-}
-
-input CategoryWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  AND: [CategoryWhereInput!]
-  OR: [CategoryWhereInput!]
-  NOT: [CategoryWhereInput!]
-}
-
-input CategoryWhereUniqueInput {
-  id: ID
 }
 
 type ChatContent {
@@ -347,7 +237,7 @@ type ChatRoom {
   store: Store!
   location: String!
   orderExpectedTime: DateTime!
-  orderList(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order!]
+  individualOrderList(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IndividualOrder!]
   chatContentList(where: ChatContentWhereInput, orderBy: ChatContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatContent!]
   state: Boolean!
 }
@@ -365,7 +255,7 @@ input ChatRoomCreateInput {
   store: StoreCreateOneInput!
   location: String!
   orderExpectedTime: DateTime!
-  orderList: OrderCreateManyWithoutChatRoomInput
+  individualOrderList: IndividualOrderCreateManyWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
   state: Boolean!
 }
@@ -375,13 +265,18 @@ input ChatRoomCreateManyWithoutBossInput {
   connect: [ChatRoomWhereUniqueInput!]
 }
 
+input ChatRoomCreateOneInput {
+  create: ChatRoomCreateInput
+  connect: ChatRoomWhereUniqueInput
+}
+
 input ChatRoomCreateOneWithoutChatContentListInput {
   create: ChatRoomCreateWithoutChatContentListInput
   connect: ChatRoomWhereUniqueInput
 }
 
-input ChatRoomCreateOneWithoutOrderListInput {
-  create: ChatRoomCreateWithoutOrderListInput
+input ChatRoomCreateOneWithoutIndividualOrderListInput {
+  create: ChatRoomCreateWithoutIndividualOrderListInput
   connect: ChatRoomWhereUniqueInput
 }
 
@@ -391,7 +286,7 @@ input ChatRoomCreateWithoutBossInput {
   store: StoreCreateOneInput!
   location: String!
   orderExpectedTime: DateTime!
-  orderList: OrderCreateManyWithoutChatRoomInput
+  individualOrderList: IndividualOrderCreateManyWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
   state: Boolean!
 }
@@ -403,11 +298,11 @@ input ChatRoomCreateWithoutChatContentListInput {
   store: StoreCreateOneInput!
   location: String!
   orderExpectedTime: DateTime!
-  orderList: OrderCreateManyWithoutChatRoomInput
+  individualOrderList: IndividualOrderCreateManyWithoutChatRoomInput
   state: Boolean!
 }
 
-input ChatRoomCreateWithoutOrderListInput {
+input ChatRoomCreateWithoutIndividualOrderListInput {
   id: ID
   boss: UserCreateOneWithoutChatListInput!
   memberList: UserCreateManyInput
@@ -503,13 +398,24 @@ input ChatRoomSubscriptionWhereInput {
   NOT: [ChatRoomSubscriptionWhereInput!]
 }
 
+input ChatRoomUpdateDataInput {
+  boss: UserUpdateOneRequiredWithoutChatListInput
+  memberList: UserUpdateManyInput
+  store: StoreUpdateOneRequiredInput
+  location: String
+  orderExpectedTime: DateTime
+  individualOrderList: IndividualOrderUpdateManyWithoutChatRoomInput
+  chatContentList: ChatContentUpdateManyWithoutChatRoomInput
+  state: Boolean
+}
+
 input ChatRoomUpdateInput {
   boss: UserUpdateOneRequiredWithoutChatListInput
   memberList: UserUpdateManyInput
   store: StoreUpdateOneRequiredInput
   location: String
   orderExpectedTime: DateTime
-  orderList: OrderUpdateManyWithoutChatRoomInput
+  individualOrderList: IndividualOrderUpdateManyWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
   state: Boolean
 }
@@ -543,6 +449,13 @@ input ChatRoomUpdateManyWithWhereNestedInput {
   data: ChatRoomUpdateManyDataInput!
 }
 
+input ChatRoomUpdateOneRequiredInput {
+  create: ChatRoomCreateInput
+  update: ChatRoomUpdateDataInput
+  upsert: ChatRoomUpsertNestedInput
+  connect: ChatRoomWhereUniqueInput
+}
+
 input ChatRoomUpdateOneRequiredWithoutChatContentListInput {
   create: ChatRoomCreateWithoutChatContentListInput
   update: ChatRoomUpdateWithoutChatContentListDataInput
@@ -550,10 +463,10 @@ input ChatRoomUpdateOneRequiredWithoutChatContentListInput {
   connect: ChatRoomWhereUniqueInput
 }
 
-input ChatRoomUpdateOneRequiredWithoutOrderListInput {
-  create: ChatRoomCreateWithoutOrderListInput
-  update: ChatRoomUpdateWithoutOrderListDataInput
-  upsert: ChatRoomUpsertWithoutOrderListInput
+input ChatRoomUpdateOneRequiredWithoutIndividualOrderListInput {
+  create: ChatRoomCreateWithoutIndividualOrderListInput
+  update: ChatRoomUpdateWithoutIndividualOrderListDataInput
+  upsert: ChatRoomUpsertWithoutIndividualOrderListInput
   connect: ChatRoomWhereUniqueInput
 }
 
@@ -562,7 +475,7 @@ input ChatRoomUpdateWithoutBossDataInput {
   store: StoreUpdateOneRequiredInput
   location: String
   orderExpectedTime: DateTime
-  orderList: OrderUpdateManyWithoutChatRoomInput
+  individualOrderList: IndividualOrderUpdateManyWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
   state: Boolean
 }
@@ -573,11 +486,11 @@ input ChatRoomUpdateWithoutChatContentListDataInput {
   store: StoreUpdateOneRequiredInput
   location: String
   orderExpectedTime: DateTime
-  orderList: OrderUpdateManyWithoutChatRoomInput
+  individualOrderList: IndividualOrderUpdateManyWithoutChatRoomInput
   state: Boolean
 }
 
-input ChatRoomUpdateWithoutOrderListDataInput {
+input ChatRoomUpdateWithoutIndividualOrderListDataInput {
   boss: UserUpdateOneRequiredWithoutChatListInput
   memberList: UserUpdateManyInput
   store: StoreUpdateOneRequiredInput
@@ -592,14 +505,19 @@ input ChatRoomUpdateWithWhereUniqueWithoutBossInput {
   data: ChatRoomUpdateWithoutBossDataInput!
 }
 
+input ChatRoomUpsertNestedInput {
+  update: ChatRoomUpdateDataInput!
+  create: ChatRoomCreateInput!
+}
+
 input ChatRoomUpsertWithoutChatContentListInput {
   update: ChatRoomUpdateWithoutChatContentListDataInput!
   create: ChatRoomCreateWithoutChatContentListInput!
 }
 
-input ChatRoomUpsertWithoutOrderListInput {
-  update: ChatRoomUpdateWithoutOrderListDataInput!
-  create: ChatRoomCreateWithoutOrderListInput!
+input ChatRoomUpsertWithoutIndividualOrderListInput {
+  update: ChatRoomUpdateWithoutIndividualOrderListDataInput!
+  create: ChatRoomCreateWithoutIndividualOrderListInput!
 }
 
 input ChatRoomUpsertWithWhereUniqueWithoutBossInput {
@@ -650,9 +568,9 @@ input ChatRoomWhereInput {
   orderExpectedTime_lte: DateTime
   orderExpectedTime_gt: DateTime
   orderExpectedTime_gte: DateTime
-  orderList_every: OrderWhereInput
-  orderList_some: OrderWhereInput
-  orderList_none: OrderWhereInput
+  individualOrderList_every: IndividualOrderWhereInput
+  individualOrderList_some: IndividualOrderWhereInput
+  individualOrderList_none: IndividualOrderWhereInput
   chatContentList_every: ChatContentWhereInput
   chatContentList_some: ChatContentWhereInput
   chatContentList_none: ChatContentWhereInput
@@ -669,6 +587,184 @@ input ChatRoomWhereUniqueInput {
 
 scalar DateTime
 
+type IndividualOrder {
+  id: ID!
+  user: User!
+  menuList(where: MenuWhereInput, orderBy: MenuOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Menu!]
+  chatRoom: ChatRoom!
+}
+
+type IndividualOrderConnection {
+  pageInfo: PageInfo!
+  edges: [IndividualOrderEdge]!
+  aggregate: AggregateIndividualOrder!
+}
+
+input IndividualOrderCreateInput {
+  id: ID
+  user: UserCreateOneInput!
+  menuList: MenuCreateManyInput
+  chatRoom: ChatRoomCreateOneWithoutIndividualOrderListInput!
+}
+
+input IndividualOrderCreateManyInput {
+  create: [IndividualOrderCreateInput!]
+  connect: [IndividualOrderWhereUniqueInput!]
+}
+
+input IndividualOrderCreateManyWithoutChatRoomInput {
+  create: [IndividualOrderCreateWithoutChatRoomInput!]
+  connect: [IndividualOrderWhereUniqueInput!]
+}
+
+input IndividualOrderCreateWithoutChatRoomInput {
+  id: ID
+  user: UserCreateOneInput!
+  menuList: MenuCreateManyInput
+}
+
+type IndividualOrderEdge {
+  node: IndividualOrder!
+  cursor: String!
+}
+
+enum IndividualOrderOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type IndividualOrderPreviousValues {
+  id: ID!
+}
+
+input IndividualOrderScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  AND: [IndividualOrderScalarWhereInput!]
+  OR: [IndividualOrderScalarWhereInput!]
+  NOT: [IndividualOrderScalarWhereInput!]
+}
+
+type IndividualOrderSubscriptionPayload {
+  mutation: MutationType!
+  node: IndividualOrder
+  updatedFields: [String!]
+  previousValues: IndividualOrderPreviousValues
+}
+
+input IndividualOrderSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: IndividualOrderWhereInput
+  AND: [IndividualOrderSubscriptionWhereInput!]
+  OR: [IndividualOrderSubscriptionWhereInput!]
+  NOT: [IndividualOrderSubscriptionWhereInput!]
+}
+
+input IndividualOrderUpdateDataInput {
+  user: UserUpdateOneRequiredInput
+  menuList: MenuUpdateManyInput
+  chatRoom: ChatRoomUpdateOneRequiredWithoutIndividualOrderListInput
+}
+
+input IndividualOrderUpdateInput {
+  user: UserUpdateOneRequiredInput
+  menuList: MenuUpdateManyInput
+  chatRoom: ChatRoomUpdateOneRequiredWithoutIndividualOrderListInput
+}
+
+input IndividualOrderUpdateManyInput {
+  create: [IndividualOrderCreateInput!]
+  update: [IndividualOrderUpdateWithWhereUniqueNestedInput!]
+  upsert: [IndividualOrderUpsertWithWhereUniqueNestedInput!]
+  delete: [IndividualOrderWhereUniqueInput!]
+  connect: [IndividualOrderWhereUniqueInput!]
+  set: [IndividualOrderWhereUniqueInput!]
+  disconnect: [IndividualOrderWhereUniqueInput!]
+  deleteMany: [IndividualOrderScalarWhereInput!]
+}
+
+input IndividualOrderUpdateManyWithoutChatRoomInput {
+  create: [IndividualOrderCreateWithoutChatRoomInput!]
+  delete: [IndividualOrderWhereUniqueInput!]
+  connect: [IndividualOrderWhereUniqueInput!]
+  set: [IndividualOrderWhereUniqueInput!]
+  disconnect: [IndividualOrderWhereUniqueInput!]
+  update: [IndividualOrderUpdateWithWhereUniqueWithoutChatRoomInput!]
+  upsert: [IndividualOrderUpsertWithWhereUniqueWithoutChatRoomInput!]
+  deleteMany: [IndividualOrderScalarWhereInput!]
+}
+
+input IndividualOrderUpdateWithoutChatRoomDataInput {
+  user: UserUpdateOneRequiredInput
+  menuList: MenuUpdateManyInput
+}
+
+input IndividualOrderUpdateWithWhereUniqueNestedInput {
+  where: IndividualOrderWhereUniqueInput!
+  data: IndividualOrderUpdateDataInput!
+}
+
+input IndividualOrderUpdateWithWhereUniqueWithoutChatRoomInput {
+  where: IndividualOrderWhereUniqueInput!
+  data: IndividualOrderUpdateWithoutChatRoomDataInput!
+}
+
+input IndividualOrderUpsertWithWhereUniqueNestedInput {
+  where: IndividualOrderWhereUniqueInput!
+  update: IndividualOrderUpdateDataInput!
+  create: IndividualOrderCreateInput!
+}
+
+input IndividualOrderUpsertWithWhereUniqueWithoutChatRoomInput {
+  where: IndividualOrderWhereUniqueInput!
+  update: IndividualOrderUpdateWithoutChatRoomDataInput!
+  create: IndividualOrderCreateWithoutChatRoomInput!
+}
+
+input IndividualOrderWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  user: UserWhereInput
+  menuList_every: MenuWhereInput
+  menuList_some: MenuWhereInput
+  menuList_none: MenuWhereInput
+  chatRoom: ChatRoomWhereInput
+  AND: [IndividualOrderWhereInput!]
+  OR: [IndividualOrderWhereInput!]
+  NOT: [IndividualOrderWhereInput!]
+}
+
+input IndividualOrderWhereUniqueInput {
+  id: ID
+}
+
 scalar Long
 
 type Menu {
@@ -676,6 +772,210 @@ type Menu {
   name: String!
   store: Store!
   price: Int!
+  menuCategory: MenuCategory!
+}
+
+type MenuCategory {
+  id: ID!
+  name: String!
+  store: Store!
+}
+
+type MenuCategoryConnection {
+  pageInfo: PageInfo!
+  edges: [MenuCategoryEdge]!
+  aggregate: AggregateMenuCategory!
+}
+
+input MenuCategoryCreateInput {
+  id: ID
+  name: String!
+  store: StoreCreateOneWithoutMenuCategoryListInput!
+}
+
+input MenuCategoryCreateManyWithoutStoreInput {
+  create: [MenuCategoryCreateWithoutStoreInput!]
+  connect: [MenuCategoryWhereUniqueInput!]
+}
+
+input MenuCategoryCreateOneInput {
+  create: MenuCategoryCreateInput
+  connect: MenuCategoryWhereUniqueInput
+}
+
+input MenuCategoryCreateWithoutStoreInput {
+  id: ID
+  name: String!
+}
+
+type MenuCategoryEdge {
+  node: MenuCategory!
+  cursor: String!
+}
+
+enum MenuCategoryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type MenuCategoryPreviousValues {
+  id: ID!
+  name: String!
+}
+
+input MenuCategoryScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [MenuCategoryScalarWhereInput!]
+  OR: [MenuCategoryScalarWhereInput!]
+  NOT: [MenuCategoryScalarWhereInput!]
+}
+
+type MenuCategorySubscriptionPayload {
+  mutation: MutationType!
+  node: MenuCategory
+  updatedFields: [String!]
+  previousValues: MenuCategoryPreviousValues
+}
+
+input MenuCategorySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: MenuCategoryWhereInput
+  AND: [MenuCategorySubscriptionWhereInput!]
+  OR: [MenuCategorySubscriptionWhereInput!]
+  NOT: [MenuCategorySubscriptionWhereInput!]
+}
+
+input MenuCategoryUpdateDataInput {
+  name: String
+  store: StoreUpdateOneRequiredWithoutMenuCategoryListInput
+}
+
+input MenuCategoryUpdateInput {
+  name: String
+  store: StoreUpdateOneRequiredWithoutMenuCategoryListInput
+}
+
+input MenuCategoryUpdateManyDataInput {
+  name: String
+}
+
+input MenuCategoryUpdateManyMutationInput {
+  name: String
+}
+
+input MenuCategoryUpdateManyWithoutStoreInput {
+  create: [MenuCategoryCreateWithoutStoreInput!]
+  delete: [MenuCategoryWhereUniqueInput!]
+  connect: [MenuCategoryWhereUniqueInput!]
+  set: [MenuCategoryWhereUniqueInput!]
+  disconnect: [MenuCategoryWhereUniqueInput!]
+  update: [MenuCategoryUpdateWithWhereUniqueWithoutStoreInput!]
+  upsert: [MenuCategoryUpsertWithWhereUniqueWithoutStoreInput!]
+  deleteMany: [MenuCategoryScalarWhereInput!]
+  updateMany: [MenuCategoryUpdateManyWithWhereNestedInput!]
+}
+
+input MenuCategoryUpdateManyWithWhereNestedInput {
+  where: MenuCategoryScalarWhereInput!
+  data: MenuCategoryUpdateManyDataInput!
+}
+
+input MenuCategoryUpdateOneRequiredInput {
+  create: MenuCategoryCreateInput
+  update: MenuCategoryUpdateDataInput
+  upsert: MenuCategoryUpsertNestedInput
+  connect: MenuCategoryWhereUniqueInput
+}
+
+input MenuCategoryUpdateWithoutStoreDataInput {
+  name: String
+}
+
+input MenuCategoryUpdateWithWhereUniqueWithoutStoreInput {
+  where: MenuCategoryWhereUniqueInput!
+  data: MenuCategoryUpdateWithoutStoreDataInput!
+}
+
+input MenuCategoryUpsertNestedInput {
+  update: MenuCategoryUpdateDataInput!
+  create: MenuCategoryCreateInput!
+}
+
+input MenuCategoryUpsertWithWhereUniqueWithoutStoreInput {
+  where: MenuCategoryWhereUniqueInput!
+  update: MenuCategoryUpdateWithoutStoreDataInput!
+  create: MenuCategoryCreateWithoutStoreInput!
+}
+
+input MenuCategoryWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  store: StoreWhereInput
+  AND: [MenuCategoryWhereInput!]
+  OR: [MenuCategoryWhereInput!]
+  NOT: [MenuCategoryWhereInput!]
+}
+
+input MenuCategoryWhereUniqueInput {
+  id: ID
 }
 
 type MenuConnection {
@@ -689,6 +989,7 @@ input MenuCreateInput {
   name: String!
   store: StoreCreateOneWithoutMenuListInput!
   price: Int!
+  menuCategory: MenuCategoryCreateOneInput!
 }
 
 input MenuCreateManyInput {
@@ -705,6 +1006,7 @@ input MenuCreateWithoutStoreInput {
   id: ID
   name: String!
   price: Int!
+  menuCategory: MenuCategoryCreateOneInput!
 }
 
 type MenuEdge {
@@ -791,12 +1093,14 @@ input MenuUpdateDataInput {
   name: String
   store: StoreUpdateOneRequiredWithoutMenuListInput
   price: Int
+  menuCategory: MenuCategoryUpdateOneRequiredInput
 }
 
 input MenuUpdateInput {
   name: String
   store: StoreUpdateOneRequiredWithoutMenuListInput
   price: Int
+  menuCategory: MenuCategoryUpdateOneRequiredInput
 }
 
 input MenuUpdateManyDataInput {
@@ -841,6 +1145,7 @@ input MenuUpdateManyWithWhereNestedInput {
 input MenuUpdateWithoutStoreDataInput {
   name: String
   price: Int
+  menuCategory: MenuCategoryUpdateOneRequiredInput
 }
 
 input MenuUpdateWithWhereUniqueNestedInput {
@@ -903,6 +1208,7 @@ input MenuWhereInput {
   price_lte: Int
   price_gt: Int
   price_gte: Int
+  menuCategory: MenuCategoryWhereInput
   AND: [MenuWhereInput!]
   OR: [MenuWhereInput!]
   NOT: [MenuWhereInput!]
@@ -913,12 +1219,6 @@ input MenuWhereUniqueInput {
 }
 
 type Mutation {
-  createCategory(data: CategoryCreateInput!): Category!
-  updateCategory(data: CategoryUpdateInput!, where: CategoryWhereUniqueInput!): Category
-  updateManyCategories(data: CategoryUpdateManyMutationInput!, where: CategoryWhereInput): BatchPayload!
-  upsertCategory(where: CategoryWhereUniqueInput!, create: CategoryCreateInput!, update: CategoryUpdateInput!): Category!
-  deleteCategory(where: CategoryWhereUniqueInput!): Category
-  deleteManyCategories(where: CategoryWhereInput): BatchPayload!
   createChatContent(data: ChatContentCreateInput!): ChatContent!
   updateChatContent(data: ChatContentUpdateInput!, where: ChatContentWhereUniqueInput!): ChatContent
   updateManyChatContents(data: ChatContentUpdateManyMutationInput!, where: ChatContentWhereInput): BatchPayload!
@@ -931,24 +1231,41 @@ type Mutation {
   upsertChatRoom(where: ChatRoomWhereUniqueInput!, create: ChatRoomCreateInput!, update: ChatRoomUpdateInput!): ChatRoom!
   deleteChatRoom(where: ChatRoomWhereUniqueInput!): ChatRoom
   deleteManyChatRooms(where: ChatRoomWhereInput): BatchPayload!
+  createIndividualOrder(data: IndividualOrderCreateInput!): IndividualOrder!
+  updateIndividualOrder(data: IndividualOrderUpdateInput!, where: IndividualOrderWhereUniqueInput!): IndividualOrder
+  upsertIndividualOrder(where: IndividualOrderWhereUniqueInput!, create: IndividualOrderCreateInput!, update: IndividualOrderUpdateInput!): IndividualOrder!
+  deleteIndividualOrder(where: IndividualOrderWhereUniqueInput!): IndividualOrder
+  deleteManyIndividualOrders(where: IndividualOrderWhereInput): BatchPayload!
   createMenu(data: MenuCreateInput!): Menu!
   updateMenu(data: MenuUpdateInput!, where: MenuWhereUniqueInput!): Menu
   updateManyMenus(data: MenuUpdateManyMutationInput!, where: MenuWhereInput): BatchPayload!
   upsertMenu(where: MenuWhereUniqueInput!, create: MenuCreateInput!, update: MenuUpdateInput!): Menu!
   deleteMenu(where: MenuWhereUniqueInput!): Menu
   deleteManyMenus(where: MenuWhereInput): BatchPayload!
-  createOrder(data: OrderCreateInput!): Order!
-  updateOrder(data: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order
-  updateManyOrders(data: OrderUpdateManyMutationInput!, where: OrderWhereInput): BatchPayload!
-  upsertOrder(where: OrderWhereUniqueInput!, create: OrderCreateInput!, update: OrderUpdateInput!): Order!
-  deleteOrder(where: OrderWhereUniqueInput!): Order
-  deleteManyOrders(where: OrderWhereInput): BatchPayload!
+  createMenuCategory(data: MenuCategoryCreateInput!): MenuCategory!
+  updateMenuCategory(data: MenuCategoryUpdateInput!, where: MenuCategoryWhereUniqueInput!): MenuCategory
+  updateManyMenuCategories(data: MenuCategoryUpdateManyMutationInput!, where: MenuCategoryWhereInput): BatchPayload!
+  upsertMenuCategory(where: MenuCategoryWhereUniqueInput!, create: MenuCategoryCreateInput!, update: MenuCategoryUpdateInput!): MenuCategory!
+  deleteMenuCategory(where: MenuCategoryWhereUniqueInput!): MenuCategory
+  deleteManyMenuCategories(where: MenuCategoryWhereInput): BatchPayload!
+  createRoomOrder(data: RoomOrderCreateInput!): RoomOrder!
+  updateRoomOrder(data: RoomOrderUpdateInput!, where: RoomOrderWhereUniqueInput!): RoomOrder
+  updateManyRoomOrders(data: RoomOrderUpdateManyMutationInput!, where: RoomOrderWhereInput): BatchPayload!
+  upsertRoomOrder(where: RoomOrderWhereUniqueInput!, create: RoomOrderCreateInput!, update: RoomOrderUpdateInput!): RoomOrder!
+  deleteRoomOrder(where: RoomOrderWhereUniqueInput!): RoomOrder
+  deleteManyRoomOrders(where: RoomOrderWhereInput): BatchPayload!
   createStore(data: StoreCreateInput!): Store!
   updateStore(data: StoreUpdateInput!, where: StoreWhereUniqueInput!): Store
   updateManyStores(data: StoreUpdateManyMutationInput!, where: StoreWhereInput): BatchPayload!
   upsertStore(where: StoreWhereUniqueInput!, create: StoreCreateInput!, update: StoreUpdateInput!): Store!
   deleteStore(where: StoreWhereUniqueInput!): Store
   deleteManyStores(where: StoreWhereInput): BatchPayload!
+  createStoreCategory(data: StoreCategoryCreateInput!): StoreCategory!
+  updateStoreCategory(data: StoreCategoryUpdateInput!, where: StoreCategoryWhereUniqueInput!): StoreCategory
+  updateManyStoreCategories(data: StoreCategoryUpdateManyMutationInput!, where: StoreCategoryWhereInput): BatchPayload!
+  upsertStoreCategory(where: StoreCategoryWhereUniqueInput!, create: StoreCategoryCreateInput!, update: StoreCategoryUpdateInput!): StoreCategory!
+  deleteStoreCategory(where: StoreCategoryWhereUniqueInput!): StoreCategory
+  deleteManyStoreCategories(where: StoreCategoryWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -967,224 +1284,6 @@ interface Node {
   id: ID!
 }
 
-type Order {
-  id: ID!
-  user: User!
-  menuList(where: MenuWhereInput, orderBy: MenuOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Menu!]
-  chatRoom: ChatRoom!
-  state: Int!
-}
-
-type OrderConnection {
-  pageInfo: PageInfo!
-  edges: [OrderEdge]!
-  aggregate: AggregateOrder!
-}
-
-input OrderCreateInput {
-  id: ID
-  user: UserCreateOneInput!
-  menuList: MenuCreateManyInput
-  chatRoom: ChatRoomCreateOneWithoutOrderListInput!
-  state: Int!
-}
-
-input OrderCreateManyInput {
-  create: [OrderCreateInput!]
-  connect: [OrderWhereUniqueInput!]
-}
-
-input OrderCreateManyWithoutChatRoomInput {
-  create: [OrderCreateWithoutChatRoomInput!]
-  connect: [OrderWhereUniqueInput!]
-}
-
-input OrderCreateWithoutChatRoomInput {
-  id: ID
-  user: UserCreateOneInput!
-  menuList: MenuCreateManyInput
-  state: Int!
-}
-
-type OrderEdge {
-  node: Order!
-  cursor: String!
-}
-
-enum OrderOrderByInput {
-  id_ASC
-  id_DESC
-  state_ASC
-  state_DESC
-}
-
-type OrderPreviousValues {
-  id: ID!
-  state: Int!
-}
-
-input OrderScalarWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  state: Int
-  state_not: Int
-  state_in: [Int!]
-  state_not_in: [Int!]
-  state_lt: Int
-  state_lte: Int
-  state_gt: Int
-  state_gte: Int
-  AND: [OrderScalarWhereInput!]
-  OR: [OrderScalarWhereInput!]
-  NOT: [OrderScalarWhereInput!]
-}
-
-type OrderSubscriptionPayload {
-  mutation: MutationType!
-  node: Order
-  updatedFields: [String!]
-  previousValues: OrderPreviousValues
-}
-
-input OrderSubscriptionWhereInput {
-  mutation_in: [MutationType!]
-  updatedFields_contains: String
-  updatedFields_contains_every: [String!]
-  updatedFields_contains_some: [String!]
-  node: OrderWhereInput
-  AND: [OrderSubscriptionWhereInput!]
-  OR: [OrderSubscriptionWhereInput!]
-  NOT: [OrderSubscriptionWhereInput!]
-}
-
-input OrderUpdateDataInput {
-  user: UserUpdateOneRequiredInput
-  menuList: MenuUpdateManyInput
-  chatRoom: ChatRoomUpdateOneRequiredWithoutOrderListInput
-  state: Int
-}
-
-input OrderUpdateInput {
-  user: UserUpdateOneRequiredInput
-  menuList: MenuUpdateManyInput
-  chatRoom: ChatRoomUpdateOneRequiredWithoutOrderListInput
-  state: Int
-}
-
-input OrderUpdateManyDataInput {
-  state: Int
-}
-
-input OrderUpdateManyInput {
-  create: [OrderCreateInput!]
-  update: [OrderUpdateWithWhereUniqueNestedInput!]
-  upsert: [OrderUpsertWithWhereUniqueNestedInput!]
-  delete: [OrderWhereUniqueInput!]
-  connect: [OrderWhereUniqueInput!]
-  set: [OrderWhereUniqueInput!]
-  disconnect: [OrderWhereUniqueInput!]
-  deleteMany: [OrderScalarWhereInput!]
-  updateMany: [OrderUpdateManyWithWhereNestedInput!]
-}
-
-input OrderUpdateManyMutationInput {
-  state: Int
-}
-
-input OrderUpdateManyWithoutChatRoomInput {
-  create: [OrderCreateWithoutChatRoomInput!]
-  delete: [OrderWhereUniqueInput!]
-  connect: [OrderWhereUniqueInput!]
-  set: [OrderWhereUniqueInput!]
-  disconnect: [OrderWhereUniqueInput!]
-  update: [OrderUpdateWithWhereUniqueWithoutChatRoomInput!]
-  upsert: [OrderUpsertWithWhereUniqueWithoutChatRoomInput!]
-  deleteMany: [OrderScalarWhereInput!]
-  updateMany: [OrderUpdateManyWithWhereNestedInput!]
-}
-
-input OrderUpdateManyWithWhereNestedInput {
-  where: OrderScalarWhereInput!
-  data: OrderUpdateManyDataInput!
-}
-
-input OrderUpdateWithoutChatRoomDataInput {
-  user: UserUpdateOneRequiredInput
-  menuList: MenuUpdateManyInput
-  state: Int
-}
-
-input OrderUpdateWithWhereUniqueNestedInput {
-  where: OrderWhereUniqueInput!
-  data: OrderUpdateDataInput!
-}
-
-input OrderUpdateWithWhereUniqueWithoutChatRoomInput {
-  where: OrderWhereUniqueInput!
-  data: OrderUpdateWithoutChatRoomDataInput!
-}
-
-input OrderUpsertWithWhereUniqueNestedInput {
-  where: OrderWhereUniqueInput!
-  update: OrderUpdateDataInput!
-  create: OrderCreateInput!
-}
-
-input OrderUpsertWithWhereUniqueWithoutChatRoomInput {
-  where: OrderWhereUniqueInput!
-  update: OrderUpdateWithoutChatRoomDataInput!
-  create: OrderCreateWithoutChatRoomInput!
-}
-
-input OrderWhereInput {
-  id: ID
-  id_not: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_contains: ID
-  id_not_contains: ID
-  id_starts_with: ID
-  id_not_starts_with: ID
-  id_ends_with: ID
-  id_not_ends_with: ID
-  user: UserWhereInput
-  menuList_every: MenuWhereInput
-  menuList_some: MenuWhereInput
-  menuList_none: MenuWhereInput
-  chatRoom: ChatRoomWhereInput
-  state: Int
-  state_not: Int
-  state_in: [Int!]
-  state_not_in: [Int!]
-  state_lt: Int
-  state_lte: Int
-  state_gt: Int
-  state_gte: Int
-  AND: [OrderWhereInput!]
-  OR: [OrderWhereInput!]
-  NOT: [OrderWhereInput!]
-}
-
-input OrderWhereUniqueInput {
-  id: ID
-}
-
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
@@ -1193,38 +1292,363 @@ type PageInfo {
 }
 
 type Query {
-  category(where: CategoryWhereUniqueInput!): Category
-  categories(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Category]!
-  categoriesConnection(where: CategoryWhereInput, orderBy: CategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): CategoryConnection!
   chatContent(where: ChatContentWhereUniqueInput!): ChatContent
   chatContents(where: ChatContentWhereInput, orderBy: ChatContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatContent]!
   chatContentsConnection(where: ChatContentWhereInput, orderBy: ChatContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChatContentConnection!
   chatRoom(where: ChatRoomWhereUniqueInput!): ChatRoom
   chatRooms(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom]!
   chatRoomsConnection(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChatRoomConnection!
+  individualOrder(where: IndividualOrderWhereUniqueInput!): IndividualOrder
+  individualOrders(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IndividualOrder]!
+  individualOrdersConnection(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IndividualOrderConnection!
   menu(where: MenuWhereUniqueInput!): Menu
   menus(where: MenuWhereInput, orderBy: MenuOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Menu]!
   menusConnection(where: MenuWhereInput, orderBy: MenuOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MenuConnection!
-  order(where: OrderWhereUniqueInput!): Order
-  orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
-  ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
+  menuCategory(where: MenuCategoryWhereUniqueInput!): MenuCategory
+  menuCategories(where: MenuCategoryWhereInput, orderBy: MenuCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MenuCategory]!
+  menuCategoriesConnection(where: MenuCategoryWhereInput, orderBy: MenuCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MenuCategoryConnection!
+  roomOrder(where: RoomOrderWhereUniqueInput!): RoomOrder
+  roomOrders(where: RoomOrderWhereInput, orderBy: RoomOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [RoomOrder]!
+  roomOrdersConnection(where: RoomOrderWhereInput, orderBy: RoomOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RoomOrderConnection!
   store(where: StoreWhereUniqueInput!): Store
   stores(where: StoreWhereInput, orderBy: StoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Store]!
   storesConnection(where: StoreWhereInput, orderBy: StoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoreConnection!
+  storeCategory(where: StoreCategoryWhereUniqueInput!): StoreCategory
+  storeCategories(where: StoreCategoryWhereInput, orderBy: StoreCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StoreCategory]!
+  storeCategoriesConnection(where: StoreCategoryWhereInput, orderBy: StoreCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoreCategoryConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
+type RoomOrder {
+  id: ID!
+  chatRoom: ChatRoom!
+  individualOrderList(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IndividualOrder!]
+  phoneNumber: String!
+  state: Boolean!
+}
+
+type RoomOrderConnection {
+  pageInfo: PageInfo!
+  edges: [RoomOrderEdge]!
+  aggregate: AggregateRoomOrder!
+}
+
+input RoomOrderCreateInput {
+  id: ID
+  chatRoom: ChatRoomCreateOneInput!
+  individualOrderList: IndividualOrderCreateManyInput
+  phoneNumber: String!
+  state: Boolean!
+}
+
+input RoomOrderCreateManyInput {
+  create: [RoomOrderCreateInput!]
+  connect: [RoomOrderWhereUniqueInput!]
+}
+
+type RoomOrderEdge {
+  node: RoomOrder!
+  cursor: String!
+}
+
+enum RoomOrderOrderByInput {
+  id_ASC
+  id_DESC
+  phoneNumber_ASC
+  phoneNumber_DESC
+  state_ASC
+  state_DESC
+}
+
+type RoomOrderPreviousValues {
+  id: ID!
+  phoneNumber: String!
+  state: Boolean!
+}
+
+input RoomOrderScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  phoneNumber: String
+  phoneNumber_not: String
+  phoneNumber_in: [String!]
+  phoneNumber_not_in: [String!]
+  phoneNumber_lt: String
+  phoneNumber_lte: String
+  phoneNumber_gt: String
+  phoneNumber_gte: String
+  phoneNumber_contains: String
+  phoneNumber_not_contains: String
+  phoneNumber_starts_with: String
+  phoneNumber_not_starts_with: String
+  phoneNumber_ends_with: String
+  phoneNumber_not_ends_with: String
+  state: Boolean
+  state_not: Boolean
+  AND: [RoomOrderScalarWhereInput!]
+  OR: [RoomOrderScalarWhereInput!]
+  NOT: [RoomOrderScalarWhereInput!]
+}
+
+type RoomOrderSubscriptionPayload {
+  mutation: MutationType!
+  node: RoomOrder
+  updatedFields: [String!]
+  previousValues: RoomOrderPreviousValues
+}
+
+input RoomOrderSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: RoomOrderWhereInput
+  AND: [RoomOrderSubscriptionWhereInput!]
+  OR: [RoomOrderSubscriptionWhereInput!]
+  NOT: [RoomOrderSubscriptionWhereInput!]
+}
+
+input RoomOrderUpdateDataInput {
+  chatRoom: ChatRoomUpdateOneRequiredInput
+  individualOrderList: IndividualOrderUpdateManyInput
+  phoneNumber: String
+  state: Boolean
+}
+
+input RoomOrderUpdateInput {
+  chatRoom: ChatRoomUpdateOneRequiredInput
+  individualOrderList: IndividualOrderUpdateManyInput
+  phoneNumber: String
+  state: Boolean
+}
+
+input RoomOrderUpdateManyDataInput {
+  phoneNumber: String
+  state: Boolean
+}
+
+input RoomOrderUpdateManyInput {
+  create: [RoomOrderCreateInput!]
+  update: [RoomOrderUpdateWithWhereUniqueNestedInput!]
+  upsert: [RoomOrderUpsertWithWhereUniqueNestedInput!]
+  delete: [RoomOrderWhereUniqueInput!]
+  connect: [RoomOrderWhereUniqueInput!]
+  set: [RoomOrderWhereUniqueInput!]
+  disconnect: [RoomOrderWhereUniqueInput!]
+  deleteMany: [RoomOrderScalarWhereInput!]
+  updateMany: [RoomOrderUpdateManyWithWhereNestedInput!]
+}
+
+input RoomOrderUpdateManyMutationInput {
+  phoneNumber: String
+  state: Boolean
+}
+
+input RoomOrderUpdateManyWithWhereNestedInput {
+  where: RoomOrderScalarWhereInput!
+  data: RoomOrderUpdateManyDataInput!
+}
+
+input RoomOrderUpdateWithWhereUniqueNestedInput {
+  where: RoomOrderWhereUniqueInput!
+  data: RoomOrderUpdateDataInput!
+}
+
+input RoomOrderUpsertWithWhereUniqueNestedInput {
+  where: RoomOrderWhereUniqueInput!
+  update: RoomOrderUpdateDataInput!
+  create: RoomOrderCreateInput!
+}
+
+input RoomOrderWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  chatRoom: ChatRoomWhereInput
+  individualOrderList_every: IndividualOrderWhereInput
+  individualOrderList_some: IndividualOrderWhereInput
+  individualOrderList_none: IndividualOrderWhereInput
+  phoneNumber: String
+  phoneNumber_not: String
+  phoneNumber_in: [String!]
+  phoneNumber_not_in: [String!]
+  phoneNumber_lt: String
+  phoneNumber_lte: String
+  phoneNumber_gt: String
+  phoneNumber_gte: String
+  phoneNumber_contains: String
+  phoneNumber_not_contains: String
+  phoneNumber_starts_with: String
+  phoneNumber_not_starts_with: String
+  phoneNumber_ends_with: String
+  phoneNumber_not_ends_with: String
+  state: Boolean
+  state_not: Boolean
+  AND: [RoomOrderWhereInput!]
+  OR: [RoomOrderWhereInput!]
+  NOT: [RoomOrderWhereInput!]
+}
+
+input RoomOrderWhereUniqueInput {
+  id: ID
+}
+
 type Store {
   id: ID!
+  storeId: String!
   pwd: String!
-  category: Category!
+  name: String!
+  storeCategory: StoreCategory!
+  menuCategoryList(where: MenuCategoryWhereInput, orderBy: MenuCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [MenuCategory!]
   menuList(where: MenuWhereInput, orderBy: MenuOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Menu!]
   minimumPrice: Int!
   deliveryFee: Int!
-  orderList(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order!]
+  image: String
+  roomOrderList(where: RoomOrderWhereInput, orderBy: RoomOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [RoomOrder!]
+}
+
+type StoreCategory {
+  id: ID!
+  name: String!
+}
+
+type StoreCategoryConnection {
+  pageInfo: PageInfo!
+  edges: [StoreCategoryEdge]!
+  aggregate: AggregateStoreCategory!
+}
+
+input StoreCategoryCreateInput {
+  id: ID
+  name: String!
+}
+
+input StoreCategoryCreateOneInput {
+  create: StoreCategoryCreateInput
+  connect: StoreCategoryWhereUniqueInput
+}
+
+type StoreCategoryEdge {
+  node: StoreCategory!
+  cursor: String!
+}
+
+enum StoreCategoryOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type StoreCategoryPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type StoreCategorySubscriptionPayload {
+  mutation: MutationType!
+  node: StoreCategory
+  updatedFields: [String!]
+  previousValues: StoreCategoryPreviousValues
+}
+
+input StoreCategorySubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: StoreCategoryWhereInput
+  AND: [StoreCategorySubscriptionWhereInput!]
+  OR: [StoreCategorySubscriptionWhereInput!]
+  NOT: [StoreCategorySubscriptionWhereInput!]
+}
+
+input StoreCategoryUpdateDataInput {
+  name: String
+}
+
+input StoreCategoryUpdateInput {
+  name: String
+}
+
+input StoreCategoryUpdateManyMutationInput {
+  name: String
+}
+
+input StoreCategoryUpdateOneRequiredInput {
+  create: StoreCategoryCreateInput
+  update: StoreCategoryUpdateDataInput
+  upsert: StoreCategoryUpsertNestedInput
+  connect: StoreCategoryWhereUniqueInput
+}
+
+input StoreCategoryUpsertNestedInput {
+  update: StoreCategoryUpdateDataInput!
+  create: StoreCategoryCreateInput!
+}
+
+input StoreCategoryWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  AND: [StoreCategoryWhereInput!]
+  OR: [StoreCategoryWhereInput!]
+  NOT: [StoreCategoryWhereInput!]
+}
+
+input StoreCategoryWhereUniqueInput {
+  id: ID
 }
 
 type StoreConnection {
@@ -1235,16 +1659,25 @@ type StoreConnection {
 
 input StoreCreateInput {
   id: ID
+  storeId: String!
   pwd: String!
-  category: CategoryCreateOneInput!
+  name: String!
+  storeCategory: StoreCategoryCreateOneInput!
+  menuCategoryList: MenuCategoryCreateManyWithoutStoreInput
   menuList: MenuCreateManyWithoutStoreInput
   minimumPrice: Int!
   deliveryFee: Int!
-  orderList: OrderCreateManyInput
+  image: String
+  roomOrderList: RoomOrderCreateManyInput
 }
 
 input StoreCreateOneInput {
   create: StoreCreateInput
+  connect: StoreWhereUniqueInput
+}
+
+input StoreCreateOneWithoutMenuCategoryListInput {
+  create: StoreCreateWithoutMenuCategoryListInput
   connect: StoreWhereUniqueInput
 }
 
@@ -1253,13 +1686,30 @@ input StoreCreateOneWithoutMenuListInput {
   connect: StoreWhereUniqueInput
 }
 
-input StoreCreateWithoutMenuListInput {
+input StoreCreateWithoutMenuCategoryListInput {
   id: ID
+  storeId: String!
   pwd: String!
-  category: CategoryCreateOneInput!
+  name: String!
+  storeCategory: StoreCategoryCreateOneInput!
+  menuList: MenuCreateManyWithoutStoreInput
   minimumPrice: Int!
   deliveryFee: Int!
-  orderList: OrderCreateManyInput
+  image: String
+  roomOrderList: RoomOrderCreateManyInput
+}
+
+input StoreCreateWithoutMenuListInput {
+  id: ID
+  storeId: String!
+  pwd: String!
+  name: String!
+  storeCategory: StoreCategoryCreateOneInput!
+  menuCategoryList: MenuCategoryCreateManyWithoutStoreInput
+  minimumPrice: Int!
+  deliveryFee: Int!
+  image: String
+  roomOrderList: RoomOrderCreateManyInput
 }
 
 type StoreEdge {
@@ -1270,19 +1720,28 @@ type StoreEdge {
 enum StoreOrderByInput {
   id_ASC
   id_DESC
+  storeId_ASC
+  storeId_DESC
   pwd_ASC
   pwd_DESC
+  name_ASC
+  name_DESC
   minimumPrice_ASC
   minimumPrice_DESC
   deliveryFee_ASC
   deliveryFee_DESC
+  image_ASC
+  image_DESC
 }
 
 type StorePreviousValues {
   id: ID!
+  storeId: String!
   pwd: String!
+  name: String!
   minimumPrice: Int!
   deliveryFee: Int!
+  image: String
 }
 
 type StoreSubscriptionPayload {
@@ -1304,33 +1763,51 @@ input StoreSubscriptionWhereInput {
 }
 
 input StoreUpdateDataInput {
+  storeId: String
   pwd: String
-  category: CategoryUpdateOneRequiredInput
+  name: String
+  storeCategory: StoreCategoryUpdateOneRequiredInput
+  menuCategoryList: MenuCategoryUpdateManyWithoutStoreInput
   menuList: MenuUpdateManyWithoutStoreInput
   minimumPrice: Int
   deliveryFee: Int
-  orderList: OrderUpdateManyInput
+  image: String
+  roomOrderList: RoomOrderUpdateManyInput
 }
 
 input StoreUpdateInput {
+  storeId: String
   pwd: String
-  category: CategoryUpdateOneRequiredInput
+  name: String
+  storeCategory: StoreCategoryUpdateOneRequiredInput
+  menuCategoryList: MenuCategoryUpdateManyWithoutStoreInput
   menuList: MenuUpdateManyWithoutStoreInput
   minimumPrice: Int
   deliveryFee: Int
-  orderList: OrderUpdateManyInput
+  image: String
+  roomOrderList: RoomOrderUpdateManyInput
 }
 
 input StoreUpdateManyMutationInput {
+  storeId: String
   pwd: String
+  name: String
   minimumPrice: Int
   deliveryFee: Int
+  image: String
 }
 
 input StoreUpdateOneRequiredInput {
   create: StoreCreateInput
   update: StoreUpdateDataInput
   upsert: StoreUpsertNestedInput
+  connect: StoreWhereUniqueInput
+}
+
+input StoreUpdateOneRequiredWithoutMenuCategoryListInput {
+  create: StoreCreateWithoutMenuCategoryListInput
+  update: StoreUpdateWithoutMenuCategoryListDataInput
+  upsert: StoreUpsertWithoutMenuCategoryListInput
   connect: StoreWhereUniqueInput
 }
 
@@ -1341,17 +1818,38 @@ input StoreUpdateOneRequiredWithoutMenuListInput {
   connect: StoreWhereUniqueInput
 }
 
-input StoreUpdateWithoutMenuListDataInput {
+input StoreUpdateWithoutMenuCategoryListDataInput {
+  storeId: String
   pwd: String
-  category: CategoryUpdateOneRequiredInput
+  name: String
+  storeCategory: StoreCategoryUpdateOneRequiredInput
+  menuList: MenuUpdateManyWithoutStoreInput
   minimumPrice: Int
   deliveryFee: Int
-  orderList: OrderUpdateManyInput
+  image: String
+  roomOrderList: RoomOrderUpdateManyInput
+}
+
+input StoreUpdateWithoutMenuListDataInput {
+  storeId: String
+  pwd: String
+  name: String
+  storeCategory: StoreCategoryUpdateOneRequiredInput
+  menuCategoryList: MenuCategoryUpdateManyWithoutStoreInput
+  minimumPrice: Int
+  deliveryFee: Int
+  image: String
+  roomOrderList: RoomOrderUpdateManyInput
 }
 
 input StoreUpsertNestedInput {
   update: StoreUpdateDataInput!
   create: StoreCreateInput!
+}
+
+input StoreUpsertWithoutMenuCategoryListInput {
+  update: StoreUpdateWithoutMenuCategoryListDataInput!
+  create: StoreCreateWithoutMenuCategoryListInput!
 }
 
 input StoreUpsertWithoutMenuListInput {
@@ -1374,6 +1872,20 @@ input StoreWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  storeId: String
+  storeId_not: String
+  storeId_in: [String!]
+  storeId_not_in: [String!]
+  storeId_lt: String
+  storeId_lte: String
+  storeId_gt: String
+  storeId_gte: String
+  storeId_contains: String
+  storeId_not_contains: String
+  storeId_starts_with: String
+  storeId_not_starts_with: String
+  storeId_ends_with: String
+  storeId_not_ends_with: String
   pwd: String
   pwd_not: String
   pwd_in: [String!]
@@ -1388,7 +1900,24 @@ input StoreWhereInput {
   pwd_not_starts_with: String
   pwd_ends_with: String
   pwd_not_ends_with: String
-  category: CategoryWhereInput
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  storeCategory: StoreCategoryWhereInput
+  menuCategoryList_every: MenuCategoryWhereInput
+  menuCategoryList_some: MenuCategoryWhereInput
+  menuCategoryList_none: MenuCategoryWhereInput
   menuList_every: MenuWhereInput
   menuList_some: MenuWhereInput
   menuList_none: MenuWhereInput
@@ -1408,9 +1937,23 @@ input StoreWhereInput {
   deliveryFee_lte: Int
   deliveryFee_gt: Int
   deliveryFee_gte: Int
-  orderList_every: OrderWhereInput
-  orderList_some: OrderWhereInput
-  orderList_none: OrderWhereInput
+  image: String
+  image_not: String
+  image_in: [String!]
+  image_not_in: [String!]
+  image_lt: String
+  image_lte: String
+  image_gt: String
+  image_gte: String
+  image_contains: String
+  image_not_contains: String
+  image_starts_with: String
+  image_not_starts_with: String
+  image_ends_with: String
+  image_not_ends_with: String
+  roomOrderList_every: RoomOrderWhereInput
+  roomOrderList_some: RoomOrderWhereInput
+  roomOrderList_none: RoomOrderWhereInput
   AND: [StoreWhereInput!]
   OR: [StoreWhereInput!]
   NOT: [StoreWhereInput!]
@@ -1421,19 +1964,21 @@ input StoreWhereUniqueInput {
 }
 
 type Subscription {
-  category(where: CategorySubscriptionWhereInput): CategorySubscriptionPayload
   chatContent(where: ChatContentSubscriptionWhereInput): ChatContentSubscriptionPayload
   chatRoom(where: ChatRoomSubscriptionWhereInput): ChatRoomSubscriptionPayload
+  individualOrder(where: IndividualOrderSubscriptionWhereInput): IndividualOrderSubscriptionPayload
   menu(where: MenuSubscriptionWhereInput): MenuSubscriptionPayload
-  order(where: OrderSubscriptionWhereInput): OrderSubscriptionPayload
+  menuCategory(where: MenuCategorySubscriptionWhereInput): MenuCategorySubscriptionPayload
+  roomOrder(where: RoomOrderSubscriptionWhereInput): RoomOrderSubscriptionPayload
   store(where: StoreSubscriptionWhereInput): StoreSubscriptionPayload
+  storeCategory(where: StoreCategorySubscriptionWhereInput): StoreCategorySubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
 }
 
 type User {
   id: ID!
-  email: String!
-  name: String
+  number: Int!
+  pwd: String!
   score: Int!
   chatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
 }
@@ -1446,9 +1991,9 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  email: String!
-  name: String
-  score: Int!
+  number: Int!
+  pwd: String!
+  score: Int
   chatList: ChatRoomCreateManyWithoutBossInput
 }
 
@@ -1469,9 +2014,9 @@ input UserCreateOneWithoutChatListInput {
 
 input UserCreateWithoutChatListInput {
   id: ID
-  email: String!
-  name: String
-  score: Int!
+  number: Int!
+  pwd: String!
+  score: Int
 }
 
 type UserEdge {
@@ -1482,18 +2027,18 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
-  email_ASC
-  email_DESC
-  name_ASC
-  name_DESC
+  number_ASC
+  number_DESC
+  pwd_ASC
+  pwd_DESC
   score_ASC
   score_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  email: String!
-  name: String
+  number: Int!
+  pwd: String!
   score: Int!
 }
 
@@ -1512,34 +2057,28 @@ input UserScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
+  number: Int
+  number_not: Int
+  number_in: [Int!]
+  number_not_in: [Int!]
+  number_lt: Int
+  number_lte: Int
+  number_gt: Int
+  number_gte: Int
+  pwd: String
+  pwd_not: String
+  pwd_in: [String!]
+  pwd_not_in: [String!]
+  pwd_lt: String
+  pwd_lte: String
+  pwd_gt: String
+  pwd_gte: String
+  pwd_contains: String
+  pwd_not_contains: String
+  pwd_starts_with: String
+  pwd_not_starts_with: String
+  pwd_ends_with: String
+  pwd_not_ends_with: String
   score: Int
   score_not: Int
   score_in: [Int!]
@@ -1572,22 +2111,22 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateDataInput {
-  email: String
-  name: String
+  number: Int
+  pwd: String
   score: Int
   chatList: ChatRoomUpdateManyWithoutBossInput
 }
 
 input UserUpdateInput {
-  email: String
-  name: String
+  number: Int
+  pwd: String
   score: Int
   chatList: ChatRoomUpdateManyWithoutBossInput
 }
 
 input UserUpdateManyDataInput {
-  email: String
-  name: String
+  number: Int
+  pwd: String
   score: Int
 }
 
@@ -1604,8 +2143,8 @@ input UserUpdateManyInput {
 }
 
 input UserUpdateManyMutationInput {
-  email: String
-  name: String
+  number: Int
+  pwd: String
   score: Int
 }
 
@@ -1629,8 +2168,8 @@ input UserUpdateOneRequiredWithoutChatListInput {
 }
 
 input UserUpdateWithoutChatListDataInput {
-  email: String
-  name: String
+  number: Int
+  pwd: String
   score: Int
 }
 
@@ -1670,34 +2209,28 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  email: String
-  email_not: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_lt: String
-  email_lte: String
-  email_gt: String
-  email_gte: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
-  name: String
-  name_not: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_lt: String
-  name_lte: String
-  name_gt: String
-  name_gte: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
+  number: Int
+  number_not: Int
+  number_in: [Int!]
+  number_not_in: [Int!]
+  number_lt: Int
+  number_lte: Int
+  number_gt: Int
+  number_gte: Int
+  pwd: String
+  pwd_not: String
+  pwd_in: [String!]
+  pwd_not_in: [String!]
+  pwd_lt: String
+  pwd_lte: String
+  pwd_gt: String
+  pwd_gte: String
+  pwd_contains: String
+  pwd_not_contains: String
+  pwd_starts_with: String
+  pwd_not_starts_with: String
+  pwd_ends_with: String
+  pwd_not_ends_with: String
   score: Int
   score_not: Int
   score_in: [Int!]
