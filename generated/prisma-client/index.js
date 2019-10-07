@@ -9,7 +9,11 @@ var models = [
     embedded: false
   },
   {
-    name: "Category",
+    name: "MenuCategory",
+    embedded: false
+  },
+  {
+    name: "StoreCategory",
     embedded: false
   },
   {
@@ -25,7 +29,11 @@ var models = [
     embedded: false
   },
   {
-    name: "Order",
+    name: "RoomOrder",
+    embedded: false
+  },
+  {
+    name: "IndividualOrder",
     embedded: false
   },
   {
