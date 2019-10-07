@@ -1,56 +1,74 @@
 type User {
-	id : ID!  
-	email : String!
-	name : String
-	score : Int!
-	chatList : [ChatRoom]
+  id : ID!
+  number : Int!
+  pwd : String!
+  score : Int!
+  chatList : [ChatRoom] 
 }
 
-type Category {
-	id : ID!  
-	name : String!
+type MenuCategory {
+  id : ID!
+  name : String!
+  store : Store!
+}
+
+type StoreCategory {
+  id : ID!
+  name : String!
 }
 
 type Store {
-	id : ID!  
-	pwd : String!
-	category : Category!
-	menuList : [Menu]!
-	minimumPrice : Int!
-	deliveryFee : Int!
-	orderList : [Order]
+  id : ID!
+  storeId : String!
+  pwd : String!
+  name : String!
+  storeCategory : StoreCategory!
+  menuCategoryList : [MenuCategory]
+  menuList : [Menu]
+  minimumPrice : Int!
+  deliveryFee : Int!
+  image : String
+  roomOrderList : [RoomOrder]
 }
 
 type Menu {
-	id : ID!  
-	name : String!
-	store : Store!
-	price : Int!
+  id : ID!
+  name : String!
+  store : Store!
+  price : Int!
+  menuCategory : MenuCategory!
 }
 
 type ChatRoom {
-	id : ID!  
-	boss : User!
-	memberList : [User]
-	store : Store!
-	location : String!
-	orderExpectedTime : String!
-	orderList : [Order]
-	chatContentList : [ChatContent]!
-	state : Boolean!
+  id : ID!
+  boss : User!
+  memberList : [User]!
+  store : Store!
+  location : String!
+  orderExpectedTime : String!
+  individualOrderList : [IndividualOrder]
+  chatContentList : [ChatContent] 
+  state: Boolean!
 }
 
-type Order {
-	id : ID!  
-	user : User!
-	menuList : [Menu]!
-	chatRoom : ChatRoom!
-	state : Int!
-}		
+type RoomOrder {
+  id : ID!
+  chatRoom : ChatRoom!
+  individualOrderList : [IndividualOrder!]
+  phoneNumber : String!
+  state: Boolean!
+}
+
+type IndividualOrder {
+  id : ID!
+  user : User!
+  menuList : [Menu!]
+  chatRoom : ChatRoom!
+}
 
 type ChatContent {
-	id : ID!  
-	user : User!
-	chatRoom : ChatRoom!
-	content : String!
+  id : ID!
+  user : User!
+  chatRoom : ChatRoom! 
+  content : String!
 }
