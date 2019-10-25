@@ -20,7 +20,16 @@ const verifyUser=async(payload, done) =>{    //done은 사용자를 찾았을 때 호출해�
     }
 }
 
+export const authenticateJwt = (req,res,next)=> //authenticateJwt 미들웨어가 실행되면 passport authenticate가 실행됨
+    passport.authenticate("jwt",{sessions:false}, (error, user)=>{
+        if(user !==null){
+            req.user=user;  //verifyUser에서 사용자를 받아 온 후에 사용자가 존재하면 사용자 정보를 req객체에 붙여줌
+        }
+        next();
+    })(req,res,next);
+
 passport.use(new Strategy(jwtOptions, verifyUser))//옵션이 잘 맞게 적용되었을 때 JwtStrategy함수가 토큰 해석함 -> 해석한 정보를 verifyUser의 payload로 전달해줌
+passport.initialize();
 
 //헤더의 값으로 BEARER 이후에 토큰이 입력됨
 {Authorization: 'Bearer TOKEN'}
