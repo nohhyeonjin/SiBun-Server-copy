@@ -1,6 +1,6 @@
 type User {
   id : ID! @id
-  number : Int!
+  number : Int! @unique
   pwd : String!
   score : Int! @default(value: 0)
   chatList : [ChatRoom] @relation(name : "BossChatRelation")
