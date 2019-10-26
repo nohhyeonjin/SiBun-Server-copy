@@ -25,6 +25,8 @@ export interface Exists {
   store: (where?: StoreWhereInput) => Promise<boolean>;
   storeCategory: (where?: StoreCategoryWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
+  userVote: (where?: UserVoteWhereInput) => Promise<boolean>;
+  vote: (where?: VoteWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -225,6 +227,44 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => UserConnectionPromise;
+  userVote: (where: UserVoteWhereUniqueInput) => UserVoteNullablePromise;
+  userVotes: (args?: {
+    where?: UserVoteWhereInput;
+    orderBy?: UserVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<UserVote>;
+  userVotesConnection: (args?: {
+    where?: UserVoteWhereInput;
+    orderBy?: UserVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => UserVoteConnectionPromise;
+  vote: (where: VoteWhereUniqueInput) => VoteNullablePromise;
+  votes: (args?: {
+    where?: VoteWhereInput;
+    orderBy?: VoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Vote>;
+  votesConnection: (args?: {
+    where?: VoteWhereInput;
+    orderBy?: VoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => VoteConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
@@ -387,6 +427,34 @@ export interface Prisma {
   }) => UserPromise;
   deleteUser: (where: UserWhereUniqueInput) => UserPromise;
   deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
+  createUserVote: (data: UserVoteCreateInput) => UserVotePromise;
+  updateUserVote: (args: {
+    data: UserVoteUpdateInput;
+    where: UserVoteWhereUniqueInput;
+  }) => UserVotePromise;
+  updateManyUserVotes: (args: {
+    data: UserVoteUpdateManyMutationInput;
+    where?: UserVoteWhereInput;
+  }) => BatchPayloadPromise;
+  upsertUserVote: (args: {
+    where: UserVoteWhereUniqueInput;
+    create: UserVoteCreateInput;
+    update: UserVoteUpdateInput;
+  }) => UserVotePromise;
+  deleteUserVote: (where: UserVoteWhereUniqueInput) => UserVotePromise;
+  deleteManyUserVotes: (where?: UserVoteWhereInput) => BatchPayloadPromise;
+  createVote: (data: VoteCreateInput) => VotePromise;
+  updateVote: (args: {
+    data: VoteUpdateInput;
+    where: VoteWhereUniqueInput;
+  }) => VotePromise;
+  upsertVote: (args: {
+    where: VoteWhereUniqueInput;
+    create: VoteCreateInput;
+    update: VoteUpdateInput;
+  }) => VotePromise;
+  deleteVote: (where: VoteWhereUniqueInput) => VotePromise;
+  deleteManyVotes: (where?: VoteWhereInput) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -423,6 +491,12 @@ export interface Subscription {
   user: (
     where?: UserSubscriptionWhereInput
   ) => UserSubscriptionPayloadSubscription;
+  userVote: (
+    where?: UserVoteSubscriptionWhereInput
+  ) => UserVoteSubscriptionPayloadSubscription;
+  vote: (
+    where?: VoteSubscriptionWhereInput
+  ) => VoteSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -433,7 +507,11 @@ export interface ClientConstructor<T> {
  * Types
  */
 
-export type IndividualOrderOrderByInput = "id_ASC" | "id_DESC";
+export type ChatContentOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "content_ASC"
+  | "content_DESC";
 
 export type ChatRoomOrderByInput =
   | "id_ASC"
@@ -445,6 +523,10 @@ export type ChatRoomOrderByInput =
   | "state_ASC"
   | "state_DESC";
 
+export type IndividualOrderOrderByInput = "id_ASC" | "id_DESC";
+
+export type VoteOrderByInput = "id_ASC" | "id_DESC";
+
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
@@ -454,36 +536,6 @@ export type UserOrderByInput =
   | "pwd_DESC"
   | "score_ASC"
   | "score_DESC";
-
-export type MenuCategoryOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC";
-
-export type MenuOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "name_ASC"
-  | "name_DESC"
-  | "price_ASC"
-  | "price_DESC";
-
-export type RoomOrderOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "phoneNumber_ASC"
-  | "phoneNumber_DESC"
-  | "state_ASC"
-  | "state_DESC";
-
-export type MutationType = "CREATED" | "UPDATED" | "DELETED";
-
-export type ChatContentOrderByInput =
-  | "id_ASC"
-  | "id_DESC"
-  | "content_ASC"
-  | "content_DESC";
 
 export type StoreOrderByInput =
   | "id_ASC"
@@ -501,121 +553,43 @@ export type StoreOrderByInput =
   | "image_ASC"
   | "image_DESC";
 
+export type MenuCategoryOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC";
+
+export type MenuOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "price_ASC"
+  | "price_DESC";
+
+export type UserVoteOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "choice_ASC"
+  | "choice_DESC";
+
+export type MutationType = "CREATED" | "UPDATED" | "DELETED";
+
+export type RoomOrderOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "phoneNumber_ASC"
+  | "phoneNumber_DESC"
+  | "state_ASC"
+  | "state_DESC";
+
 export type StoreCategoryOrderByInput =
   | "id_ASC"
   | "id_DESC"
   | "name_ASC"
   | "name_DESC";
 
-export interface UserUpdateManyDataInput {
-  number?: Maybe<Int>;
-  pwd?: Maybe<String>;
-  score?: Maybe<Int>;
-}
-
-export type ChatContentWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface MenuCategoryUpdateManyWithoutStoreInput {
-  create?: Maybe<
-    MenuCategoryCreateWithoutStoreInput[] | MenuCategoryCreateWithoutStoreInput
-  >;
-  delete?: Maybe<MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput>;
-  connect?: Maybe<
-    MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput
-  >;
-  set?: Maybe<MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput>;
-  disconnect?: Maybe<
-    MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput
-  >;
-  update?: Maybe<
-    | MenuCategoryUpdateWithWhereUniqueWithoutStoreInput[]
-    | MenuCategoryUpdateWithWhereUniqueWithoutStoreInput
-  >;
-  upsert?: Maybe<
-    | MenuCategoryUpsertWithWhereUniqueWithoutStoreInput[]
-    | MenuCategoryUpsertWithWhereUniqueWithoutStoreInput
-  >;
-  deleteMany?: Maybe<
-    MenuCategoryScalarWhereInput[] | MenuCategoryScalarWhereInput
-  >;
-  updateMany?: Maybe<
-    | MenuCategoryUpdateManyWithWhereNestedInput[]
-    | MenuCategoryUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface RoomOrderWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  chatRoom?: Maybe<ChatRoomWhereInput>;
-  individualOrderList_every?: Maybe<IndividualOrderWhereInput>;
-  individualOrderList_some?: Maybe<IndividualOrderWhereInput>;
-  individualOrderList_none?: Maybe<IndividualOrderWhereInput>;
-  phoneNumber?: Maybe<String>;
-  phoneNumber_not?: Maybe<String>;
-  phoneNumber_in?: Maybe<String[] | String>;
-  phoneNumber_not_in?: Maybe<String[] | String>;
-  phoneNumber_lt?: Maybe<String>;
-  phoneNumber_lte?: Maybe<String>;
-  phoneNumber_gt?: Maybe<String>;
-  phoneNumber_gte?: Maybe<String>;
-  phoneNumber_contains?: Maybe<String>;
-  phoneNumber_not_contains?: Maybe<String>;
-  phoneNumber_starts_with?: Maybe<String>;
-  phoneNumber_not_starts_with?: Maybe<String>;
-  phoneNumber_ends_with?: Maybe<String>;
-  phoneNumber_not_ends_with?: Maybe<String>;
-  state?: Maybe<Boolean>;
-  state_not?: Maybe<Boolean>;
-  AND?: Maybe<RoomOrderWhereInput[] | RoomOrderWhereInput>;
-  OR?: Maybe<RoomOrderWhereInput[] | RoomOrderWhereInput>;
-  NOT?: Maybe<RoomOrderWhereInput[] | RoomOrderWhereInput>;
-}
-
-export interface MenuCreateManyInput {
-  create?: Maybe<MenuCreateInput[] | MenuCreateInput>;
-  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-}
-
-export interface RoomOrderUpsertWithWhereUniqueNestedInput {
-  where: RoomOrderWhereUniqueInput;
-  update: RoomOrderUpdateDataInput;
-  create: RoomOrderCreateInput;
-}
-
-export interface MenuCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  store: StoreCreateOneWithoutMenuListInput;
-  price: Int;
-  menuCategory: MenuCategoryCreateOneInput;
-}
-
-export interface MenuCategoryUpdateWithWhereUniqueWithoutStoreInput {
-  where: MenuCategoryWhereUniqueInput;
-  data: MenuCategoryUpdateWithoutStoreDataInput;
-}
-
-export interface StoreCreateOneWithoutMenuListInput {
-  create?: Maybe<StoreCreateWithoutMenuListInput>;
-  connect?: Maybe<StoreWhereUniqueInput>;
-}
-
-export interface MenuWhereInput {
+export interface MenuCategoryScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -644,32 +618,174 @@ export interface MenuWhereInput {
   name_not_starts_with?: Maybe<String>;
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
-  store?: Maybe<StoreWhereInput>;
-  price?: Maybe<Int>;
-  price_not?: Maybe<Int>;
-  price_in?: Maybe<Int[] | Int>;
-  price_not_in?: Maybe<Int[] | Int>;
-  price_lt?: Maybe<Int>;
-  price_lte?: Maybe<Int>;
-  price_gt?: Maybe<Int>;
-  price_gte?: Maybe<Int>;
-  menuCategory?: Maybe<MenuCategoryWhereInput>;
-  AND?: Maybe<MenuWhereInput[] | MenuWhereInput>;
-  OR?: Maybe<MenuWhereInput[] | MenuWhereInput>;
-  NOT?: Maybe<MenuWhereInput[] | MenuWhereInput>;
+  AND?: Maybe<MenuCategoryScalarWhereInput[] | MenuCategoryScalarWhereInput>;
+  OR?: Maybe<MenuCategoryScalarWhereInput[] | MenuCategoryScalarWhereInput>;
+  NOT?: Maybe<MenuCategoryScalarWhereInput[] | MenuCategoryScalarWhereInput>;
 }
 
-export interface StoreCreateWithoutMenuListInput {
+export type ChatContentWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface IndividualOrderUpdateWithWhereUniqueWithoutRoomOrderInput {
+  where: IndividualOrderWhereUniqueInput;
+  data: IndividualOrderUpdateWithoutRoomOrderDataInput;
+}
+
+export interface IndividualOrderWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<UserWhereInput>;
+  menuList_every?: Maybe<MenuWhereInput>;
+  menuList_some?: Maybe<MenuWhereInput>;
+  menuList_none?: Maybe<MenuWhereInput>;
+  roomOrder?: Maybe<RoomOrderWhereInput>;
+  AND?: Maybe<IndividualOrderWhereInput[] | IndividualOrderWhereInput>;
+  OR?: Maybe<IndividualOrderWhereInput[] | IndividualOrderWhereInput>;
+  NOT?: Maybe<IndividualOrderWhereInput[] | IndividualOrderWhereInput>;
+}
+
+export interface IndividualOrderUpdateWithoutRoomOrderDataInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  menuList?: Maybe<MenuUpdateManyInput>;
+}
+
+export interface ChatContentWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  user?: Maybe<UserWhereInput>;
+  chatRoom?: Maybe<ChatRoomWhereInput>;
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ChatContentWhereInput[] | ChatContentWhereInput>;
+  OR?: Maybe<ChatContentWhereInput[] | ChatContentWhereInput>;
+  NOT?: Maybe<ChatContentWhereInput[] | ChatContentWhereInput>;
+}
+
+export interface UserUpdateOneRequiredInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface StoreCreateInput {
   id?: Maybe<ID_Input>;
   storeId: String;
   pwd: String;
   name: String;
-  storeCategory: StoreCategoryCreateOneInput;
+  storeCategory: StoreCategoryCreateOneWithoutStoreListInput;
   menuCategoryList?: Maybe<MenuCategoryCreateManyWithoutStoreInput>;
   minimumPrice: Int;
   deliveryFee: Int;
   image?: Maybe<String>;
-  roomOrderList?: Maybe<RoomOrderCreateManyInput>;
+  chatRoomList?: Maybe<ChatRoomCreateManyWithoutStoreInput>;
+}
+
+export interface UserUpdateDataInput {
+  number?: Maybe<Int>;
+  pwd?: Maybe<String>;
+  score?: Maybe<Int>;
+  chatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
+}
+
+export interface MenuUpdateManyInput {
+  create?: Maybe<MenuCreateInput[] | MenuCreateInput>;
+  update?: Maybe<
+    | MenuUpdateWithWhereUniqueNestedInput[]
+    | MenuUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | MenuUpsertWithWhereUniqueNestedInput[]
+    | MenuUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+  set?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+  disconnect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+  deleteMany?: Maybe<MenuScalarWhereInput[] | MenuScalarWhereInput>;
+  updateMany?: Maybe<
+    MenuUpdateManyWithWhereNestedInput[] | MenuUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ChatRoomUpdateManyWithoutBossInput {
+  create?: Maybe<
+    ChatRoomCreateWithoutBossInput[] | ChatRoomCreateWithoutBossInput
+  >;
+  delete?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  set?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  disconnect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  update?: Maybe<
+    | ChatRoomUpdateWithWhereUniqueWithoutBossInput[]
+    | ChatRoomUpdateWithWhereUniqueWithoutBossInput
+  >;
+  upsert?: Maybe<
+    | ChatRoomUpsertWithWhereUniqueWithoutBossInput[]
+    | ChatRoomUpsertWithWhereUniqueWithoutBossInput
+  >;
+  deleteMany?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
+  updateMany?: Maybe<
+    | ChatRoomUpdateManyWithWhereNestedInput[]
+    | ChatRoomUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserVoteSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserVoteWhereInput>;
+  AND?: Maybe<
+    UserVoteSubscriptionWhereInput[] | UserVoteSubscriptionWhereInput
+  >;
+  OR?: Maybe<UserVoteSubscriptionWhereInput[] | UserVoteSubscriptionWhereInput>;
+  NOT?: Maybe<
+    UserVoteSubscriptionWhereInput[] | UserVoteSubscriptionWhereInput
+  >;
+}
+
+export interface ChatRoomUpdateWithWhereUniqueWithoutBossInput {
+  where: ChatRoomWhereUniqueInput;
+  data: ChatRoomUpdateWithoutBossDataInput;
 }
 
 export interface MenuCategoryWhereInput {
@@ -702,265 +818,60 @@ export interface MenuCategoryWhereInput {
   name_ends_with?: Maybe<String>;
   name_not_ends_with?: Maybe<String>;
   store?: Maybe<StoreWhereInput>;
+  menuList_every?: Maybe<MenuWhereInput>;
+  menuList_some?: Maybe<MenuWhereInput>;
+  menuList_none?: Maybe<MenuWhereInput>;
   AND?: Maybe<MenuCategoryWhereInput[] | MenuCategoryWhereInput>;
   OR?: Maybe<MenuCategoryWhereInput[] | MenuCategoryWhereInput>;
   NOT?: Maybe<MenuCategoryWhereInput[] | MenuCategoryWhereInput>;
 }
 
-export interface ChatContentCreateManyWithoutChatRoomInput {
-  create?: Maybe<
-    | ChatContentCreateWithoutChatRoomInput[]
-    | ChatContentCreateWithoutChatRoomInput
-  >;
-  connect?: Maybe<ChatContentWhereUniqueInput[] | ChatContentWhereUniqueInput>;
-}
-
-export interface StoreSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<StoreWhereInput>;
-  AND?: Maybe<StoreSubscriptionWhereInput[] | StoreSubscriptionWhereInput>;
-  OR?: Maybe<StoreSubscriptionWhereInput[] | StoreSubscriptionWhereInput>;
-  NOT?: Maybe<StoreSubscriptionWhereInput[] | StoreSubscriptionWhereInput>;
-}
-
-export interface ChatContentCreateWithoutChatRoomInput {
-  id?: Maybe<ID_Input>;
-  user: UserCreateOneInput;
-  content: String;
-}
-
-export interface RoomOrderSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<RoomOrderWhereInput>;
-  AND?: Maybe<
-    RoomOrderSubscriptionWhereInput[] | RoomOrderSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    RoomOrderSubscriptionWhereInput[] | RoomOrderSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    RoomOrderSubscriptionWhereInput[] | RoomOrderSubscriptionWhereInput
-  >;
-}
-
-export interface IndividualOrderCreateManyInput {
-  create?: Maybe<IndividualOrderCreateInput[] | IndividualOrderCreateInput>;
-  connect?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
-}
-
-export interface MenuCategorySubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<MenuCategoryWhereInput>;
-  AND?: Maybe<
-    MenuCategorySubscriptionWhereInput[] | MenuCategorySubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    MenuCategorySubscriptionWhereInput[] | MenuCategorySubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    MenuCategorySubscriptionWhereInput[] | MenuCategorySubscriptionWhereInput
-  >;
-}
-
-export interface IndividualOrderCreateInput {
-  id?: Maybe<ID_Input>;
-  user: UserCreateOneInput;
-  menuList?: Maybe<MenuCreateManyInput>;
-  chatRoom: ChatRoomCreateOneWithoutIndividualOrderListInput;
-}
-
-export interface MenuSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<MenuWhereInput>;
-  AND?: Maybe<MenuSubscriptionWhereInput[] | MenuSubscriptionWhereInput>;
-  OR?: Maybe<MenuSubscriptionWhereInput[] | MenuSubscriptionWhereInput>;
-  NOT?: Maybe<MenuSubscriptionWhereInput[] | MenuSubscriptionWhereInput>;
-}
-
-export interface ChatRoomCreateOneWithoutIndividualOrderListInput {
-  create?: Maybe<ChatRoomCreateWithoutIndividualOrderListInput>;
-  connect?: Maybe<ChatRoomWhereUniqueInput>;
-}
-
-export interface IndividualOrderSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<IndividualOrderWhereInput>;
-  AND?: Maybe<
-    | IndividualOrderSubscriptionWhereInput[]
-    | IndividualOrderSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    | IndividualOrderSubscriptionWhereInput[]
-    | IndividualOrderSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    | IndividualOrderSubscriptionWhereInput[]
-    | IndividualOrderSubscriptionWhereInput
-  >;
-}
-
-export interface ChatRoomCreateWithoutIndividualOrderListInput {
-  id?: Maybe<ID_Input>;
-  boss: UserCreateOneWithoutChatListInput;
-  memberList?: Maybe<UserCreateManyInput>;
-  store: StoreCreateOneInput;
-  location: String;
-  orderExpectedTime: DateTimeInput;
-  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
-}
-
-export interface ChatContentSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ChatContentWhereInput>;
-  AND?: Maybe<
-    ChatContentSubscriptionWhereInput[] | ChatContentSubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    ChatContentSubscriptionWhereInput[] | ChatContentSubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    ChatContentSubscriptionWhereInput[] | ChatContentSubscriptionWhereInput
-  >;
-}
-
-export interface ChatRoomCreateOneWithoutChatContentListInput {
-  create?: Maybe<ChatRoomCreateWithoutChatContentListInput>;
-  connect?: Maybe<ChatRoomWhereUniqueInput>;
-}
-
-export interface UserUpdateInput {
-  number?: Maybe<Int>;
-  pwd?: Maybe<String>;
-  score?: Maybe<Int>;
-  chatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
-}
-
-export interface ChatRoomCreateWithoutChatContentListInput {
-  id?: Maybe<ID_Input>;
-  boss: UserCreateOneWithoutChatListInput;
-  memberList?: Maybe<UserCreateManyInput>;
-  store: StoreCreateOneInput;
-  location: String;
-  orderExpectedTime: DateTimeInput;
-  individualOrderList?: Maybe<IndividualOrderCreateManyWithoutChatRoomInput>;
-  state: Boolean;
-}
-
-export type ChatRoomWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ChatContentUpdateInput {
-  user?: Maybe<UserUpdateOneRequiredInput>;
-  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutChatContentListInput>;
-  content?: Maybe<String>;
-}
-
-export interface StoreUpdateManyMutationInput {
-  storeId?: Maybe<String>;
-  pwd?: Maybe<String>;
-  name?: Maybe<String>;
-  minimumPrice?: Maybe<Int>;
-  deliveryFee?: Maybe<Int>;
-  image?: Maybe<String>;
-}
-
-export interface UserUpdateOneRequiredInput {
-  create?: Maybe<UserCreateInput>;
-  update?: Maybe<UserUpdateDataInput>;
-  upsert?: Maybe<UserUpsertNestedInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export type IndividualOrderWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface UserUpdateDataInput {
-  number?: Maybe<Int>;
-  pwd?: Maybe<String>;
-  score?: Maybe<Int>;
-  chatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
-}
-
-export interface RoomOrderUpdateInput {
-  chatRoom?: Maybe<ChatRoomUpdateOneRequiredInput>;
-  individualOrderList?: Maybe<IndividualOrderUpdateManyInput>;
-  phoneNumber?: Maybe<String>;
-  state?: Maybe<Boolean>;
-}
-
-export interface ChatRoomUpdateManyWithoutBossInput {
-  create?: Maybe<
-    ChatRoomCreateWithoutBossInput[] | ChatRoomCreateWithoutBossInput
-  >;
-  delete?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
-  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
-  set?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
-  disconnect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
-  update?: Maybe<
-    | ChatRoomUpdateWithWhereUniqueWithoutBossInput[]
-    | ChatRoomUpdateWithWhereUniqueWithoutBossInput
-  >;
-  upsert?: Maybe<
-    | ChatRoomUpsertWithWhereUniqueWithoutBossInput[]
-    | ChatRoomUpsertWithWhereUniqueWithoutBossInput
-  >;
-  deleteMany?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
-  updateMany?: Maybe<
-    | ChatRoomUpdateManyWithWhereNestedInput[]
-    | ChatRoomUpdateManyWithWhereNestedInput
-  >;
-}
-
-export type MenuWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
-
-export interface ChatRoomUpdateWithWhereUniqueWithoutBossInput {
-  where: ChatRoomWhereUniqueInput;
-  data: ChatRoomUpdateWithoutBossDataInput;
-}
-
-export interface MenuUpdateManyMutationInput {
-  name?: Maybe<String>;
-  price?: Maybe<Int>;
-}
-
 export interface ChatRoomUpdateWithoutBossDataInput {
   memberList?: Maybe<UserUpdateManyInput>;
-  store?: Maybe<StoreUpdateOneRequiredInput>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
   location?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
-  individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutChatRoomInput>;
+  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
   state?: Maybe<Boolean>;
 }
 
-export type MenuCategoryWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface StoreCategoryWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  storeList_every?: Maybe<StoreWhereInput>;
+  storeList_some?: Maybe<StoreWhereInput>;
+  storeList_none?: Maybe<StoreWhereInput>;
+  AND?: Maybe<StoreCategoryWhereInput[] | StoreCategoryWhereInput>;
+  OR?: Maybe<StoreCategoryWhereInput[] | StoreCategoryWhereInput>;
+  NOT?: Maybe<StoreCategoryWhereInput[] | StoreCategoryWhereInput>;
+}
 
 export interface UserUpdateManyInput {
   create?: Maybe<UserCreateInput[] | UserCreateInput>;
@@ -982,10 +893,15 @@ export interface UserUpdateManyInput {
   >;
 }
 
-export interface ChatRoomUpdateManyMutationInput {
-  location?: Maybe<String>;
-  orderExpectedTime?: Maybe<DateTimeInput>;
-  state?: Maybe<Boolean>;
+export interface StoreSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<StoreWhereInput>;
+  AND?: Maybe<StoreSubscriptionWhereInput[] | StoreSubscriptionWhereInput>;
+  OR?: Maybe<StoreSubscriptionWhereInput[] | StoreSubscriptionWhereInput>;
+  NOT?: Maybe<StoreSubscriptionWhereInput[] | StoreSubscriptionWhereInput>;
 }
 
 export interface UserUpdateWithWhereUniqueNestedInput {
@@ -993,9 +909,22 @@ export interface UserUpdateWithWhereUniqueNestedInput {
   data: UserUpdateDataInput;
 }
 
-export type RoomOrderWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface RoomOrderSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<RoomOrderWhereInput>;
+  AND?: Maybe<
+    RoomOrderSubscriptionWhereInput[] | RoomOrderSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    RoomOrderSubscriptionWhereInput[] | RoomOrderSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    RoomOrderSubscriptionWhereInput[] | RoomOrderSubscriptionWhereInput
+  >;
+}
 
 export interface UserUpsertWithWhereUniqueNestedInput {
   where: UserWhereUniqueInput;
@@ -1003,9 +932,21 @@ export interface UserUpsertWithWhereUniqueNestedInput {
   create: UserCreateInput;
 }
 
-export interface ChatRoomUpsertWithoutChatContentListInput {
-  update: ChatRoomUpdateWithoutChatContentListDataInput;
-  create: ChatRoomCreateWithoutChatContentListInput;
+export interface MenuCategorySubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<MenuCategoryWhereInput>;
+  AND?: Maybe<
+    MenuCategorySubscriptionWhereInput[] | MenuCategorySubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    MenuCategorySubscriptionWhereInput[] | MenuCategorySubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    MenuCategorySubscriptionWhereInput[] | MenuCategorySubscriptionWhereInput
+  >;
 }
 
 export interface UserScalarWhereInput {
@@ -1058,305 +999,189 @@ export interface UserScalarWhereInput {
   NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
 }
 
-export type StoreWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface IndividualOrderSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<IndividualOrderWhereInput>;
+  AND?: Maybe<
+    | IndividualOrderSubscriptionWhereInput[]
+    | IndividualOrderSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    | IndividualOrderSubscriptionWhereInput[]
+    | IndividualOrderSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    | IndividualOrderSubscriptionWhereInput[]
+    | IndividualOrderSubscriptionWhereInput
+  >;
+}
 
 export interface UserUpdateManyWithWhereNestedInput {
   where: UserScalarWhereInput;
   data: UserUpdateManyDataInput;
 }
 
-export interface UserUpsertNestedInput {
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
-}
-
-export interface RoomOrderUpdateManyWithWhereNestedInput {
-  where: RoomOrderScalarWhereInput;
-  data: RoomOrderUpdateManyDataInput;
-}
-
-export interface ChatRoomUpdateManyWithWhereNestedInput {
-  where: ChatRoomScalarWhereInput;
-  data: ChatRoomUpdateManyDataInput;
-}
-
-export interface StoreUpdateOneRequiredInput {
-  create?: Maybe<StoreCreateInput>;
-  update?: Maybe<StoreUpdateDataInput>;
-  upsert?: Maybe<StoreUpsertNestedInput>;
-  connect?: Maybe<StoreWhereUniqueInput>;
-}
-
-export interface ChatRoomScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  location?: Maybe<String>;
-  location_not?: Maybe<String>;
-  location_in?: Maybe<String[] | String>;
-  location_not_in?: Maybe<String[] | String>;
-  location_lt?: Maybe<String>;
-  location_lte?: Maybe<String>;
-  location_gt?: Maybe<String>;
-  location_gte?: Maybe<String>;
-  location_contains?: Maybe<String>;
-  location_not_contains?: Maybe<String>;
-  location_starts_with?: Maybe<String>;
-  location_not_starts_with?: Maybe<String>;
-  location_ends_with?: Maybe<String>;
-  location_not_ends_with?: Maybe<String>;
-  orderExpectedTime?: Maybe<DateTimeInput>;
-  orderExpectedTime_not?: Maybe<DateTimeInput>;
-  orderExpectedTime_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  orderExpectedTime_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  orderExpectedTime_lt?: Maybe<DateTimeInput>;
-  orderExpectedTime_lte?: Maybe<DateTimeInput>;
-  orderExpectedTime_gt?: Maybe<DateTimeInput>;
-  orderExpectedTime_gte?: Maybe<DateTimeInput>;
-  state?: Maybe<Boolean>;
-  state_not?: Maybe<Boolean>;
-  AND?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
-  OR?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
-  NOT?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
-}
-
-export interface StoreUpdateDataInput {
-  storeId?: Maybe<String>;
-  pwd?: Maybe<String>;
-  name?: Maybe<String>;
-  storeCategory?: Maybe<StoreCategoryUpdateOneRequiredInput>;
-  menuCategoryList?: Maybe<MenuCategoryUpdateManyWithoutStoreInput>;
-  menuList?: Maybe<MenuUpdateManyWithoutStoreInput>;
-  minimumPrice?: Maybe<Int>;
-  deliveryFee?: Maybe<Int>;
-  image?: Maybe<String>;
-  roomOrderList?: Maybe<RoomOrderUpdateManyInput>;
-}
-
-export interface StoreUpsertNestedInput {
-  update: StoreUpdateDataInput;
-  create: StoreCreateInput;
-}
-
-export interface StoreCategoryUpdateOneRequiredInput {
-  create?: Maybe<StoreCategoryCreateInput>;
-  update?: Maybe<StoreCategoryUpdateDataInput>;
-  upsert?: Maybe<StoreCategoryUpsertNestedInput>;
-  connect?: Maybe<StoreCategoryWhereUniqueInput>;
-}
-
-export type UserWhereUniqueInput = AtLeastOne<{
+export type ChatRoomWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface StoreCategoryUpdateDataInput {
+export interface UserUpdateManyDataInput {
+  number?: Maybe<Int>;
+  pwd?: Maybe<String>;
+  score?: Maybe<Int>;
+}
+
+export interface UserVoteUpdateManyDataInput {
+  choice?: Maybe<Boolean>;
+}
+
+export interface StoreUpdateOneRequiredWithoutChatRoomListInput {
+  create?: Maybe<StoreCreateWithoutChatRoomListInput>;
+  update?: Maybe<StoreUpdateWithoutChatRoomListDataInput>;
+  upsert?: Maybe<StoreUpsertWithoutChatRoomListInput>;
+  connect?: Maybe<StoreWhereUniqueInput>;
+}
+
+export type IndividualOrderWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface StoreUpdateWithoutChatRoomListDataInput {
+  storeId?: Maybe<String>;
+  pwd?: Maybe<String>;
+  name?: Maybe<String>;
+  storeCategory?: Maybe<StoreCategoryUpdateOneRequiredWithoutStoreListInput>;
+  menuCategoryList?: Maybe<MenuCategoryUpdateManyWithoutStoreInput>;
+  minimumPrice?: Maybe<Int>;
+  deliveryFee?: Maybe<Int>;
+  image?: Maybe<String>;
+}
+
+export interface UserVoteUpsertWithWhereUniqueWithoutVoteInput {
+  where: UserVoteWhereUniqueInput;
+  update: UserVoteUpdateWithoutVoteDataInput;
+  create: UserVoteCreateWithoutVoteInput;
+}
+
+export interface StoreCategoryUpdateOneRequiredWithoutStoreListInput {
+  create?: Maybe<StoreCategoryCreateWithoutStoreListInput>;
+  update?: Maybe<StoreCategoryUpdateWithoutStoreListDataInput>;
+  upsert?: Maybe<StoreCategoryUpsertWithoutStoreListInput>;
+  connect?: Maybe<StoreCategoryWhereUniqueInput>;
+}
+
+export type MenuWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface StoreCategoryUpdateWithoutStoreListDataInput {
   name?: Maybe<String>;
 }
 
-export interface StoreUpsertWithoutMenuCategoryListInput {
-  update: StoreUpdateWithoutMenuCategoryListDataInput;
-  create: StoreCreateWithoutMenuCategoryListInput;
-}
-
-export interface StoreCategoryUpsertNestedInput {
-  update: StoreCategoryUpdateDataInput;
-  create: StoreCategoryCreateInput;
-}
-
-export interface UserCreateOneInput {
-  create?: Maybe<UserCreateInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface IndividualOrderWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  user?: Maybe<UserWhereInput>;
-  menuList_every?: Maybe<MenuWhereInput>;
-  menuList_some?: Maybe<MenuWhereInput>;
-  menuList_none?: Maybe<MenuWhereInput>;
-  chatRoom?: Maybe<ChatRoomWhereInput>;
-  AND?: Maybe<IndividualOrderWhereInput[] | IndividualOrderWhereInput>;
-  OR?: Maybe<IndividualOrderWhereInput[] | IndividualOrderWhereInput>;
-  NOT?: Maybe<IndividualOrderWhereInput[] | IndividualOrderWhereInput>;
-}
-
-export interface ChatRoomCreateManyWithoutBossInput {
+export interface UserVoteUpdateManyWithoutVoteInput {
   create?: Maybe<
-    ChatRoomCreateWithoutBossInput[] | ChatRoomCreateWithoutBossInput
+    UserVoteCreateWithoutVoteInput[] | UserVoteCreateWithoutVoteInput
   >;
-  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  delete?: Maybe<UserVoteWhereUniqueInput[] | UserVoteWhereUniqueInput>;
+  connect?: Maybe<UserVoteWhereUniqueInput[] | UserVoteWhereUniqueInput>;
+  set?: Maybe<UserVoteWhereUniqueInput[] | UserVoteWhereUniqueInput>;
+  disconnect?: Maybe<UserVoteWhereUniqueInput[] | UserVoteWhereUniqueInput>;
+  update?: Maybe<
+    | UserVoteUpdateWithWhereUniqueWithoutVoteInput[]
+    | UserVoteUpdateWithWhereUniqueWithoutVoteInput
+  >;
+  upsert?: Maybe<
+    | UserVoteUpsertWithWhereUniqueWithoutVoteInput[]
+    | UserVoteUpsertWithWhereUniqueWithoutVoteInput
+  >;
+  deleteMany?: Maybe<UserVoteScalarWhereInput[] | UserVoteScalarWhereInput>;
+  updateMany?: Maybe<
+    | UserVoteUpdateManyWithWhereNestedInput[]
+    | UserVoteUpdateManyWithWhereNestedInput
+  >;
 }
 
-export interface RoomOrderScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  phoneNumber?: Maybe<String>;
-  phoneNumber_not?: Maybe<String>;
-  phoneNumber_in?: Maybe<String[] | String>;
-  phoneNumber_not_in?: Maybe<String[] | String>;
-  phoneNumber_lt?: Maybe<String>;
-  phoneNumber_lte?: Maybe<String>;
-  phoneNumber_gt?: Maybe<String>;
-  phoneNumber_gte?: Maybe<String>;
-  phoneNumber_contains?: Maybe<String>;
-  phoneNumber_not_contains?: Maybe<String>;
-  phoneNumber_starts_with?: Maybe<String>;
-  phoneNumber_not_starts_with?: Maybe<String>;
-  phoneNumber_ends_with?: Maybe<String>;
-  phoneNumber_not_ends_with?: Maybe<String>;
-  state?: Maybe<Boolean>;
-  state_not?: Maybe<Boolean>;
-  AND?: Maybe<RoomOrderScalarWhereInput[] | RoomOrderScalarWhereInput>;
-  OR?: Maybe<RoomOrderScalarWhereInput[] | RoomOrderScalarWhereInput>;
-  NOT?: Maybe<RoomOrderScalarWhereInput[] | RoomOrderScalarWhereInput>;
+export interface StoreCategoryUpsertWithoutStoreListInput {
+  update: StoreCategoryUpdateWithoutStoreListDataInput;
+  create: StoreCategoryCreateWithoutStoreListInput;
 }
 
-export interface UserCreateManyInput {
-  create?: Maybe<UserCreateInput[] | UserCreateInput>;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+export type MenuCategoryWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface MenuCategoryUpdateManyWithoutStoreInput {
+  create?: Maybe<
+    MenuCategoryCreateWithoutStoreInput[] | MenuCategoryCreateWithoutStoreInput
+  >;
+  delete?: Maybe<MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput>;
+  connect?: Maybe<
+    MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput
+  >;
+  set?: Maybe<MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput>;
+  disconnect?: Maybe<
+    MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput
+  >;
+  update?: Maybe<
+    | MenuCategoryUpdateWithWhereUniqueWithoutStoreInput[]
+    | MenuCategoryUpdateWithWhereUniqueWithoutStoreInput
+  >;
+  upsert?: Maybe<
+    | MenuCategoryUpsertWithWhereUniqueWithoutStoreInput[]
+    | MenuCategoryUpsertWithWhereUniqueWithoutStoreInput
+  >;
+  deleteMany?: Maybe<
+    MenuCategoryScalarWhereInput[] | MenuCategoryScalarWhereInput
+  >;
+  updateMany?: Maybe<
+    | MenuCategoryUpdateManyWithWhereNestedInput[]
+    | MenuCategoryUpdateManyWithWhereNestedInput
+  >;
 }
+
+export interface UserVoteCreateManyWithoutVoteInput {
+  create?: Maybe<
+    UserVoteCreateWithoutVoteInput[] | UserVoteCreateWithoutVoteInput
+  >;
+  connect?: Maybe<UserVoteWhereUniqueInput[] | UserVoteWhereUniqueInput>;
+}
+
+export interface MenuCategoryUpdateWithWhereUniqueWithoutStoreInput {
+  where: MenuCategoryWhereUniqueInput;
+  data: MenuCategoryUpdateWithoutStoreDataInput;
+}
+
+export type RoomOrderWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
 
 export interface MenuCategoryUpdateWithoutStoreDataInput {
   name?: Maybe<String>;
+  menuList?: Maybe<MenuUpdateManyWithoutMenuCategoryInput>;
 }
 
-export interface StoreCreateInput {
-  id?: Maybe<ID_Input>;
-  storeId: String;
-  pwd: String;
-  name: String;
-  storeCategory: StoreCategoryCreateOneInput;
-  menuCategoryList?: Maybe<MenuCategoryCreateManyWithoutStoreInput>;
-  menuList?: Maybe<MenuCreateManyWithoutStoreInput>;
-  minimumPrice: Int;
-  deliveryFee: Int;
-  image?: Maybe<String>;
-  roomOrderList?: Maybe<RoomOrderCreateManyInput>;
+export interface UserVoteUpdateManyMutationInput {
+  choice?: Maybe<Boolean>;
 }
 
-export interface MenuCategoryUpsertWithWhereUniqueWithoutStoreInput {
-  where: MenuCategoryWhereUniqueInput;
-  update: MenuCategoryUpdateWithoutStoreDataInput;
-  create: MenuCategoryCreateWithoutStoreInput;
-}
-
-export interface StoreCategoryCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-}
-
-export interface MenuCategoryScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<MenuCategoryScalarWhereInput[] | MenuCategoryScalarWhereInput>;
-  OR?: Maybe<MenuCategoryScalarWhereInput[] | MenuCategoryScalarWhereInput>;
-  NOT?: Maybe<MenuCategoryScalarWhereInput[] | MenuCategoryScalarWhereInput>;
-}
-
-export interface MenuCategoryCreateWithoutStoreInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-}
-
-export interface MenuCategoryUpdateManyWithWhereNestedInput {
-  where: MenuCategoryScalarWhereInput;
-  data: MenuCategoryUpdateManyDataInput;
-}
-
-export interface MenuCreateWithoutStoreInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  price: Int;
-  menuCategory: MenuCategoryCreateOneInput;
-}
-
-export interface MenuCategoryUpdateManyDataInput {
-  name?: Maybe<String>;
-}
-
-export interface MenuCategoryCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  store: StoreCreateOneWithoutMenuCategoryListInput;
-}
-
-export interface MenuUpdateManyWithoutStoreInput {
-  create?: Maybe<MenuCreateWithoutStoreInput[] | MenuCreateWithoutStoreInput>;
+export interface MenuUpdateManyWithoutMenuCategoryInput {
+  create?: Maybe<
+    MenuCreateWithoutMenuCategoryInput[] | MenuCreateWithoutMenuCategoryInput
+  >;
   delete?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
   connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
   set?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
   disconnect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
   update?: Maybe<
-    | MenuUpdateWithWhereUniqueWithoutStoreInput[]
-    | MenuUpdateWithWhereUniqueWithoutStoreInput
+    | MenuUpdateWithWhereUniqueWithoutMenuCategoryInput[]
+    | MenuUpdateWithWhereUniqueWithoutMenuCategoryInput
   >;
   upsert?: Maybe<
-    | MenuUpsertWithWhereUniqueWithoutStoreInput[]
-    | MenuUpsertWithWhereUniqueWithoutStoreInput
+    | MenuUpsertWithWhereUniqueWithoutMenuCategoryInput[]
+    | MenuUpsertWithWhereUniqueWithoutMenuCategoryInput
   >;
   deleteMany?: Maybe<MenuScalarWhereInput[] | MenuScalarWhereInput>;
   updateMany?: Maybe<
@@ -1364,490 +1189,47 @@ export interface MenuUpdateManyWithoutStoreInput {
   >;
 }
 
-export interface StoreCreateWithoutMenuCategoryListInput {
-  id?: Maybe<ID_Input>;
-  storeId: String;
-  pwd: String;
-  name: String;
-  storeCategory: StoreCategoryCreateOneInput;
-  menuList?: Maybe<MenuCreateManyWithoutStoreInput>;
-  minimumPrice: Int;
-  deliveryFee: Int;
-  image?: Maybe<String>;
-  roomOrderList?: Maybe<RoomOrderCreateManyInput>;
+export interface ChatRoomUpsertNestedInput {
+  update: ChatRoomUpdateDataInput;
+  create: ChatRoomCreateInput;
 }
 
-export interface MenuUpdateWithWhereUniqueWithoutStoreInput {
+export interface MenuUpdateWithWhereUniqueWithoutMenuCategoryInput {
   where: MenuWhereUniqueInput;
-  data: MenuUpdateWithoutStoreDataInput;
-}
-
-export interface RoomOrderCreateInput {
-  id?: Maybe<ID_Input>;
-  chatRoom: ChatRoomCreateOneInput;
-  individualOrderList?: Maybe<IndividualOrderCreateManyInput>;
-  phoneNumber: String;
-  state: Boolean;
-}
-
-export interface MenuUpdateWithoutStoreDataInput {
-  name?: Maybe<String>;
-  price?: Maybe<Int>;
-  menuCategory?: Maybe<MenuCategoryUpdateOneRequiredInput>;
-}
-
-export interface ChatRoomCreateInput {
-  id?: Maybe<ID_Input>;
-  boss: UserCreateOneWithoutChatListInput;
-  memberList?: Maybe<UserCreateManyInput>;
-  store: StoreCreateOneInput;
-  location: String;
-  orderExpectedTime: DateTimeInput;
-  individualOrderList?: Maybe<IndividualOrderCreateManyWithoutChatRoomInput>;
-  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
-}
-
-export interface MenuCategoryUpdateOneRequiredInput {
-  create?: Maybe<MenuCategoryCreateInput>;
-  update?: Maybe<MenuCategoryUpdateDataInput>;
-  upsert?: Maybe<MenuCategoryUpsertNestedInput>;
-  connect?: Maybe<MenuCategoryWhereUniqueInput>;
-}
-
-export interface UserCreateWithoutChatListInput {
-  id?: Maybe<ID_Input>;
-  number: Int;
-  pwd: String;
-  score?: Maybe<Int>;
-}
-
-export interface MenuCategoryUpdateDataInput {
-  name?: Maybe<String>;
-  store?: Maybe<StoreUpdateOneRequiredWithoutMenuCategoryListInput>;
-}
-
-export interface IndividualOrderCreateWithoutChatRoomInput {
-  id?: Maybe<ID_Input>;
-  user: UserCreateOneInput;
-  menuList?: Maybe<MenuCreateManyInput>;
-}
-
-export interface StoreUpdateOneRequiredWithoutMenuCategoryListInput {
-  create?: Maybe<StoreCreateWithoutMenuCategoryListInput>;
-  update?: Maybe<StoreUpdateWithoutMenuCategoryListDataInput>;
-  upsert?: Maybe<StoreUpsertWithoutMenuCategoryListInput>;
-  connect?: Maybe<StoreWhereUniqueInput>;
-}
-
-export interface UserSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<UserWhereInput>;
-  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
-}
-
-export interface StoreUpdateWithoutMenuCategoryListDataInput {
-  storeId?: Maybe<String>;
-  pwd?: Maybe<String>;
-  name?: Maybe<String>;
-  storeCategory?: Maybe<StoreCategoryUpdateOneRequiredInput>;
-  menuList?: Maybe<MenuUpdateManyWithoutStoreInput>;
-  minimumPrice?: Maybe<Int>;
-  deliveryFee?: Maybe<Int>;
-  image?: Maybe<String>;
-  roomOrderList?: Maybe<RoomOrderUpdateManyInput>;
-}
-
-export interface StoreCategoryWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  AND?: Maybe<StoreCategoryWhereInput[] | StoreCategoryWhereInput>;
-  OR?: Maybe<StoreCategoryWhereInput[] | StoreCategoryWhereInput>;
-  NOT?: Maybe<StoreCategoryWhereInput[] | StoreCategoryWhereInput>;
-}
-
-export interface RoomOrderUpdateManyInput {
-  create?: Maybe<RoomOrderCreateInput[] | RoomOrderCreateInput>;
-  update?: Maybe<
-    | RoomOrderUpdateWithWhereUniqueNestedInput[]
-    | RoomOrderUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | RoomOrderUpsertWithWhereUniqueNestedInput[]
-    | RoomOrderUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<RoomOrderWhereUniqueInput[] | RoomOrderWhereUniqueInput>;
-  connect?: Maybe<RoomOrderWhereUniqueInput[] | RoomOrderWhereUniqueInput>;
-  set?: Maybe<RoomOrderWhereUniqueInput[] | RoomOrderWhereUniqueInput>;
-  disconnect?: Maybe<RoomOrderWhereUniqueInput[] | RoomOrderWhereUniqueInput>;
-  deleteMany?: Maybe<RoomOrderScalarWhereInput[] | RoomOrderScalarWhereInput>;
-  updateMany?: Maybe<
-    | RoomOrderUpdateManyWithWhereNestedInput[]
-    | RoomOrderUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface UserWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  number?: Maybe<Int>;
-  number_not?: Maybe<Int>;
-  number_in?: Maybe<Int[] | Int>;
-  number_not_in?: Maybe<Int[] | Int>;
-  number_lt?: Maybe<Int>;
-  number_lte?: Maybe<Int>;
-  number_gt?: Maybe<Int>;
-  number_gte?: Maybe<Int>;
-  pwd?: Maybe<String>;
-  pwd_not?: Maybe<String>;
-  pwd_in?: Maybe<String[] | String>;
-  pwd_not_in?: Maybe<String[] | String>;
-  pwd_lt?: Maybe<String>;
-  pwd_lte?: Maybe<String>;
-  pwd_gt?: Maybe<String>;
-  pwd_gte?: Maybe<String>;
-  pwd_contains?: Maybe<String>;
-  pwd_not_contains?: Maybe<String>;
-  pwd_starts_with?: Maybe<String>;
-  pwd_not_starts_with?: Maybe<String>;
-  pwd_ends_with?: Maybe<String>;
-  pwd_not_ends_with?: Maybe<String>;
-  score?: Maybe<Int>;
-  score_not?: Maybe<Int>;
-  score_in?: Maybe<Int[] | Int>;
-  score_not_in?: Maybe<Int[] | Int>;
-  score_lt?: Maybe<Int>;
-  score_lte?: Maybe<Int>;
-  score_gt?: Maybe<Int>;
-  score_gte?: Maybe<Int>;
-  chatList_every?: Maybe<ChatRoomWhereInput>;
-  chatList_some?: Maybe<ChatRoomWhereInput>;
-  chatList_none?: Maybe<ChatRoomWhereInput>;
-  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
-  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
-  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
-}
-
-export interface RoomOrderUpdateWithWhereUniqueNestedInput {
-  where: RoomOrderWhereUniqueInput;
-  data: RoomOrderUpdateDataInput;
-}
-
-export interface ChatRoomSubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<ChatRoomWhereInput>;
-  AND?: Maybe<
-    ChatRoomSubscriptionWhereInput[] | ChatRoomSubscriptionWhereInput
-  >;
-  OR?: Maybe<ChatRoomSubscriptionWhereInput[] | ChatRoomSubscriptionWhereInput>;
-  NOT?: Maybe<
-    ChatRoomSubscriptionWhereInput[] | ChatRoomSubscriptionWhereInput
-  >;
-}
-
-export interface RoomOrderUpdateDataInput {
-  chatRoom?: Maybe<ChatRoomUpdateOneRequiredInput>;
-  individualOrderList?: Maybe<IndividualOrderUpdateManyInput>;
-  phoneNumber?: Maybe<String>;
-  state?: Maybe<Boolean>;
-}
-
-export interface StoreCategoryUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface ChatRoomUpdateOneRequiredInput {
-  create?: Maybe<ChatRoomCreateInput>;
-  update?: Maybe<ChatRoomUpdateDataInput>;
-  upsert?: Maybe<ChatRoomUpsertNestedInput>;
-  connect?: Maybe<ChatRoomWhereUniqueInput>;
-}
-
-export interface StoreUpdateInput {
-  storeId?: Maybe<String>;
-  pwd?: Maybe<String>;
-  name?: Maybe<String>;
-  storeCategory?: Maybe<StoreCategoryUpdateOneRequiredInput>;
-  menuCategoryList?: Maybe<MenuCategoryUpdateManyWithoutStoreInput>;
-  menuList?: Maybe<MenuUpdateManyWithoutStoreInput>;
-  minimumPrice?: Maybe<Int>;
-  deliveryFee?: Maybe<Int>;
-  image?: Maybe<String>;
-  roomOrderList?: Maybe<RoomOrderUpdateManyInput>;
+  data: MenuUpdateWithoutMenuCategoryDataInput;
 }
 
 export interface ChatRoomUpdateDataInput {
   boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
   memberList?: Maybe<UserUpdateManyInput>;
-  store?: Maybe<StoreUpdateOneRequiredInput>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
   location?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
-  individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutChatRoomInput>;
+  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
   state?: Maybe<Boolean>;
 }
 
-export interface MenuCategoryUpdateManyMutationInput {
+export interface MenuUpdateWithoutMenuCategoryDataInput {
   name?: Maybe<String>;
-}
-
-export interface UserUpdateOneRequiredWithoutChatListInput {
-  create?: Maybe<UserCreateWithoutChatListInput>;
-  update?: Maybe<UserUpdateWithoutChatListDataInput>;
-  upsert?: Maybe<UserUpsertWithoutChatListInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface MenuUpdateInput {
-  name?: Maybe<String>;
-  store?: Maybe<StoreUpdateOneRequiredWithoutMenuListInput>;
   price?: Maybe<Int>;
-  menuCategory?: Maybe<MenuCategoryUpdateOneRequiredInput>;
 }
 
-export interface UserUpdateWithoutChatListDataInput {
-  number?: Maybe<Int>;
-  pwd?: Maybe<String>;
-  score?: Maybe<Int>;
+export interface VoteUpdateWithoutVoteListDataInput {
+  chatRoom?: Maybe<ChatRoomUpdateOneRequiredInput>;
 }
 
-export interface ChatRoomUpdateInput {
-  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
-  memberList?: Maybe<UserUpdateManyInput>;
-  store?: Maybe<StoreUpdateOneRequiredInput>;
-  location?: Maybe<String>;
-  orderExpectedTime?: Maybe<DateTimeInput>;
-  individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutChatRoomInput>;
-  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
-}
-
-export interface UserUpsertWithoutChatListInput {
-  update: UserUpdateWithoutChatListDataInput;
-  create: UserCreateWithoutChatListInput;
-}
-
-export interface ChatRoomUpdateWithoutChatContentListDataInput {
-  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
-  memberList?: Maybe<UserUpdateManyInput>;
-  store?: Maybe<StoreUpdateOneRequiredInput>;
-  location?: Maybe<String>;
-  orderExpectedTime?: Maybe<DateTimeInput>;
-  individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
-}
-
-export interface IndividualOrderUpdateManyWithoutChatRoomInput {
-  create?: Maybe<
-    | IndividualOrderCreateWithoutChatRoomInput[]
-    | IndividualOrderCreateWithoutChatRoomInput
-  >;
-  delete?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
-  connect?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
-  set?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
-  disconnect?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
-  update?: Maybe<
-    | IndividualOrderUpdateWithWhereUniqueWithoutChatRoomInput[]
-    | IndividualOrderUpdateWithWhereUniqueWithoutChatRoomInput
-  >;
-  upsert?: Maybe<
-    | IndividualOrderUpsertWithWhereUniqueWithoutChatRoomInput[]
-    | IndividualOrderUpsertWithWhereUniqueWithoutChatRoomInput
-  >;
-  deleteMany?: Maybe<
-    IndividualOrderScalarWhereInput[] | IndividualOrderScalarWhereInput
-  >;
-}
-
-export interface ChatRoomUpdateManyDataInput {
-  location?: Maybe<String>;
-  orderExpectedTime?: Maybe<DateTimeInput>;
-  state?: Maybe<Boolean>;
-}
-
-export interface IndividualOrderUpdateWithWhereUniqueWithoutChatRoomInput {
-  where: IndividualOrderWhereUniqueInput;
-  data: IndividualOrderUpdateWithoutChatRoomDataInput;
-}
-
-export interface ChatRoomUpsertWithWhereUniqueWithoutBossInput {
-  where: ChatRoomWhereUniqueInput;
-  update: ChatRoomUpdateWithoutBossDataInput;
-  create: ChatRoomCreateWithoutBossInput;
-}
-
-export interface IndividualOrderUpdateWithoutChatRoomDataInput {
-  user?: Maybe<UserUpdateOneRequiredInput>;
-  menuList?: Maybe<MenuUpdateManyInput>;
-}
-
-export interface MenuCategoryUpsertNestedInput {
-  update: MenuCategoryUpdateDataInput;
-  create: MenuCategoryCreateInput;
-}
-
-export interface MenuUpdateManyInput {
-  create?: Maybe<MenuCreateInput[] | MenuCreateInput>;
-  update?: Maybe<
-    | MenuUpdateWithWhereUniqueNestedInput[]
-    | MenuUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | MenuUpsertWithWhereUniqueNestedInput[]
-    | MenuUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-  set?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-  disconnect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-  deleteMany?: Maybe<MenuScalarWhereInput[] | MenuScalarWhereInput>;
-  updateMany?: Maybe<
-    MenuUpdateManyWithWhereNestedInput[] | MenuUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface ChatContentCreateInput {
-  id?: Maybe<ID_Input>;
-  user: UserCreateOneInput;
-  chatRoom: ChatRoomCreateOneWithoutChatContentListInput;
-  content: String;
-}
-
-export interface MenuUpdateWithWhereUniqueNestedInput {
+export interface MenuUpsertWithWhereUniqueWithoutMenuCategoryInput {
   where: MenuWhereUniqueInput;
-  data: MenuUpdateDataInput;
+  update: MenuUpdateWithoutMenuCategoryDataInput;
+  create: MenuCreateWithoutMenuCategoryInput;
 }
 
-export interface ChatRoomCreateWithoutBossInput {
-  id?: Maybe<ID_Input>;
-  memberList?: Maybe<UserCreateManyInput>;
-  store: StoreCreateOneInput;
-  location: String;
-  orderExpectedTime: DateTimeInput;
-  individualOrderList?: Maybe<IndividualOrderCreateManyWithoutChatRoomInput>;
-  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
-}
-
-export interface MenuUpdateDataInput {
-  name?: Maybe<String>;
-  store?: Maybe<StoreUpdateOneRequiredWithoutMenuListInput>;
-  price?: Maybe<Int>;
-  menuCategory?: Maybe<MenuCategoryUpdateOneRequiredInput>;
-}
-
-export interface StoreCategoryCreateOneInput {
-  create?: Maybe<StoreCategoryCreateInput>;
-  connect?: Maybe<StoreCategoryWhereUniqueInput>;
-}
-
-export interface StoreUpdateOneRequiredWithoutMenuListInput {
-  create?: Maybe<StoreCreateWithoutMenuListInput>;
-  update?: Maybe<StoreUpdateWithoutMenuListDataInput>;
-  upsert?: Maybe<StoreUpsertWithoutMenuListInput>;
-  connect?: Maybe<StoreWhereUniqueInput>;
-}
-
-export interface MenuCreateManyWithoutStoreInput {
-  create?: Maybe<MenuCreateWithoutStoreInput[] | MenuCreateWithoutStoreInput>;
-  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-}
-
-export interface StoreUpdateWithoutMenuListDataInput {
-  storeId?: Maybe<String>;
-  pwd?: Maybe<String>;
-  name?: Maybe<String>;
-  storeCategory?: Maybe<StoreCategoryUpdateOneRequiredInput>;
-  menuCategoryList?: Maybe<MenuCategoryUpdateManyWithoutStoreInput>;
-  minimumPrice?: Maybe<Int>;
-  deliveryFee?: Maybe<Int>;
-  image?: Maybe<String>;
-  roomOrderList?: Maybe<RoomOrderUpdateManyInput>;
-}
-
-export interface StoreCreateOneWithoutMenuCategoryListInput {
-  create?: Maybe<StoreCreateWithoutMenuCategoryListInput>;
-  connect?: Maybe<StoreWhereUniqueInput>;
-}
-
-export interface StoreUpsertWithoutMenuListInput {
-  update: StoreUpdateWithoutMenuListDataInput;
-  create: StoreCreateWithoutMenuListInput;
-}
-
-export interface ChatRoomCreateOneInput {
-  create?: Maybe<ChatRoomCreateInput>;
-  connect?: Maybe<ChatRoomWhereUniqueInput>;
-}
-
-export interface MenuUpsertWithWhereUniqueNestedInput {
-  where: MenuWhereUniqueInput;
-  update: MenuUpdateDataInput;
-  create: MenuCreateInput;
-}
-
-export interface IndividualOrderCreateManyWithoutChatRoomInput {
-  create?: Maybe<
-    | IndividualOrderCreateWithoutChatRoomInput[]
-    | IndividualOrderCreateWithoutChatRoomInput
-  >;
-  connect?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
+export interface VoteUpdateOneRequiredWithoutVoteListInput {
+  create?: Maybe<VoteCreateWithoutVoteListInput>;
+  update?: Maybe<VoteUpdateWithoutVoteListDataInput>;
+  upsert?: Maybe<VoteUpsertWithoutVoteListInput>;
+  connect?: Maybe<VoteWhereUniqueInput>;
 }
 
 export interface MenuScalarWhereInput {
@@ -1892,21 +1274,9 @@ export interface MenuScalarWhereInput {
   NOT?: Maybe<MenuScalarWhereInput[] | MenuScalarWhereInput>;
 }
 
-export interface StoreCategorySubscriptionWhereInput {
-  mutation_in?: Maybe<MutationType[] | MutationType>;
-  updatedFields_contains?: Maybe<String>;
-  updatedFields_contains_every?: Maybe<String[] | String>;
-  updatedFields_contains_some?: Maybe<String[] | String>;
-  node?: Maybe<StoreCategoryWhereInput>;
-  AND?: Maybe<
-    StoreCategorySubscriptionWhereInput[] | StoreCategorySubscriptionWhereInput
-  >;
-  OR?: Maybe<
-    StoreCategorySubscriptionWhereInput[] | StoreCategorySubscriptionWhereInput
-  >;
-  NOT?: Maybe<
-    StoreCategorySubscriptionWhereInput[] | StoreCategorySubscriptionWhereInput
-  >;
+export interface ChatRoomCreateOneInput {
+  create?: Maybe<ChatRoomCreateInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput>;
 }
 
 export interface MenuUpdateManyWithWhereNestedInput {
@@ -1914,82 +1284,55 @@ export interface MenuUpdateManyWithWhereNestedInput {
   data: MenuUpdateManyDataInput;
 }
 
-export interface ChatRoomWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  boss?: Maybe<UserWhereInput>;
-  memberList_every?: Maybe<UserWhereInput>;
-  memberList_some?: Maybe<UserWhereInput>;
-  memberList_none?: Maybe<UserWhereInput>;
-  store?: Maybe<StoreWhereInput>;
-  location?: Maybe<String>;
-  location_not?: Maybe<String>;
-  location_in?: Maybe<String[] | String>;
-  location_not_in?: Maybe<String[] | String>;
-  location_lt?: Maybe<String>;
-  location_lte?: Maybe<String>;
-  location_gt?: Maybe<String>;
-  location_gte?: Maybe<String>;
-  location_contains?: Maybe<String>;
-  location_not_contains?: Maybe<String>;
-  location_starts_with?: Maybe<String>;
-  location_not_starts_with?: Maybe<String>;
-  location_ends_with?: Maybe<String>;
-  location_not_ends_with?: Maybe<String>;
-  orderExpectedTime?: Maybe<DateTimeInput>;
-  orderExpectedTime_not?: Maybe<DateTimeInput>;
-  orderExpectedTime_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  orderExpectedTime_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  orderExpectedTime_lt?: Maybe<DateTimeInput>;
-  orderExpectedTime_lte?: Maybe<DateTimeInput>;
-  orderExpectedTime_gt?: Maybe<DateTimeInput>;
-  orderExpectedTime_gte?: Maybe<DateTimeInput>;
-  individualOrderList_every?: Maybe<IndividualOrderWhereInput>;
-  individualOrderList_some?: Maybe<IndividualOrderWhereInput>;
-  individualOrderList_none?: Maybe<IndividualOrderWhereInput>;
-  chatContentList_every?: Maybe<ChatContentWhereInput>;
-  chatContentList_some?: Maybe<ChatContentWhereInput>;
-  chatContentList_none?: Maybe<ChatContentWhereInput>;
-  state?: Maybe<Boolean>;
-  state_not?: Maybe<Boolean>;
-  AND?: Maybe<ChatRoomWhereInput[] | ChatRoomWhereInput>;
-  OR?: Maybe<ChatRoomWhereInput[] | ChatRoomWhereInput>;
-  NOT?: Maybe<ChatRoomWhereInput[] | ChatRoomWhereInput>;
-}
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  number?: Maybe<Int>;
+}>;
 
 export interface MenuUpdateManyDataInput {
   name?: Maybe<String>;
   price?: Maybe<Int>;
 }
 
-export interface StoreCategoryUpdateInput {
+export interface UserVoteCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  choice: Boolean;
+  vote: VoteCreateOneWithoutVoteListInput;
+}
+
+export interface MenuCategoryUpsertWithWhereUniqueWithoutStoreInput {
+  where: MenuCategoryWhereUniqueInput;
+  update: MenuCategoryUpdateWithoutStoreDataInput;
+  create: MenuCategoryCreateWithoutStoreInput;
+}
+
+export type UserVoteWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface StoreCreateWithoutStoreCategoryInput {
+  id?: Maybe<ID_Input>;
+  storeId: String;
+  pwd: String;
+  name: String;
+  menuCategoryList?: Maybe<MenuCategoryCreateManyWithoutStoreInput>;
+  minimumPrice: Int;
+  deliveryFee: Int;
+  image?: Maybe<String>;
+  chatRoomList?: Maybe<ChatRoomCreateManyWithoutStoreInput>;
+}
+
+export interface StoreCategoryUpdateManyMutationInput {
   name?: Maybe<String>;
 }
 
-export interface IndividualOrderUpsertWithWhereUniqueWithoutChatRoomInput {
-  where: IndividualOrderWhereUniqueInput;
-  update: IndividualOrderUpdateWithoutChatRoomDataInput;
-  create: IndividualOrderCreateWithoutChatRoomInput;
+export interface MenuCategoryUpdateManyWithWhereNestedInput {
+  where: MenuCategoryScalarWhereInput;
+  data: MenuCategoryUpdateManyDataInput;
 }
 
-export interface MenuCategoryUpdateInput {
-  name?: Maybe<String>;
-  store?: Maybe<StoreUpdateOneRequiredWithoutMenuCategoryListInput>;
-}
-
-export interface IndividualOrderScalarWhereInput {
+export interface VoteWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -2004,19 +1347,382 @@ export interface IndividualOrderScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  AND?: Maybe<
-    IndividualOrderScalarWhereInput[] | IndividualOrderScalarWhereInput
+  chatRoom?: Maybe<ChatRoomWhereInput>;
+  voteList_every?: Maybe<UserVoteWhereInput>;
+  voteList_some?: Maybe<UserVoteWhereInput>;
+  voteList_none?: Maybe<UserVoteWhereInput>;
+  AND?: Maybe<VoteWhereInput[] | VoteWhereInput>;
+  OR?: Maybe<VoteWhereInput[] | VoteWhereInput>;
+  NOT?: Maybe<VoteWhereInput[] | VoteWhereInput>;
+}
+
+export interface MenuCategoryUpdateManyDataInput {
+  name?: Maybe<String>;
+}
+
+export interface StoreUpdateManyWithWhereNestedInput {
+  where: StoreScalarWhereInput;
+  data: StoreUpdateManyDataInput;
+}
+
+export interface StoreUpsertWithoutChatRoomListInput {
+  update: StoreUpdateWithoutChatRoomListDataInput;
+  create: StoreCreateWithoutChatRoomListInput;
+}
+
+export interface StoreUpsertWithWhereUniqueWithoutStoreCategoryInput {
+  where: StoreWhereUniqueInput;
+  update: StoreUpdateWithoutStoreCategoryDataInput;
+  create: StoreCreateWithoutStoreCategoryInput;
+}
+
+export interface RoomOrderUpdateOneWithoutChatRoomInput {
+  create?: Maybe<RoomOrderCreateWithoutChatRoomInput>;
+  update?: Maybe<RoomOrderUpdateWithoutChatRoomDataInput>;
+  upsert?: Maybe<RoomOrderUpsertWithoutChatRoomInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<RoomOrderWhereUniqueInput>;
+}
+
+export interface StoreUpdateWithoutStoreCategoryDataInput {
+  storeId?: Maybe<String>;
+  pwd?: Maybe<String>;
+  name?: Maybe<String>;
+  menuCategoryList?: Maybe<MenuCategoryUpdateManyWithoutStoreInput>;
+  minimumPrice?: Maybe<Int>;
+  deliveryFee?: Maybe<Int>;
+  image?: Maybe<String>;
+  chatRoomList?: Maybe<ChatRoomUpdateManyWithoutStoreInput>;
+}
+
+export interface RoomOrderUpdateWithoutChatRoomDataInput {
+  individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutRoomOrderInput>;
+  phoneNumber?: Maybe<String>;
+  state?: Maybe<Boolean>;
+}
+
+export interface StoreUpdateManyWithoutStoreCategoryInput {
+  create?: Maybe<
+    | StoreCreateWithoutStoreCategoryInput[]
+    | StoreCreateWithoutStoreCategoryInput
   >;
-  OR?: Maybe<
-    IndividualOrderScalarWhereInput[] | IndividualOrderScalarWhereInput
+  delete?: Maybe<StoreWhereUniqueInput[] | StoreWhereUniqueInput>;
+  connect?: Maybe<StoreWhereUniqueInput[] | StoreWhereUniqueInput>;
+  set?: Maybe<StoreWhereUniqueInput[] | StoreWhereUniqueInput>;
+  disconnect?: Maybe<StoreWhereUniqueInput[] | StoreWhereUniqueInput>;
+  update?: Maybe<
+    | StoreUpdateWithWhereUniqueWithoutStoreCategoryInput[]
+    | StoreUpdateWithWhereUniqueWithoutStoreCategoryInput
   >;
-  NOT?: Maybe<
+  upsert?: Maybe<
+    | StoreUpsertWithWhereUniqueWithoutStoreCategoryInput[]
+    | StoreUpsertWithWhereUniqueWithoutStoreCategoryInput
+  >;
+  deleteMany?: Maybe<StoreScalarWhereInput[] | StoreScalarWhereInput>;
+  updateMany?: Maybe<
+    StoreUpdateManyWithWhereNestedInput[] | StoreUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface IndividualOrderUpdateManyWithoutRoomOrderInput {
+  create?: Maybe<
+    | IndividualOrderCreateWithoutRoomOrderInput[]
+    | IndividualOrderCreateWithoutRoomOrderInput
+  >;
+  delete?: Maybe<
+    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
+  >;
+  connect?: Maybe<
+    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
+  >;
+  set?: Maybe<
+    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
+  >;
+  disconnect?: Maybe<
+    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
+  >;
+  update?: Maybe<
+    | IndividualOrderUpdateWithWhereUniqueWithoutRoomOrderInput[]
+    | IndividualOrderUpdateWithWhereUniqueWithoutRoomOrderInput
+  >;
+  upsert?: Maybe<
+    | IndividualOrderUpsertWithWhereUniqueWithoutRoomOrderInput[]
+    | IndividualOrderUpsertWithWhereUniqueWithoutRoomOrderInput
+  >;
+  deleteMany?: Maybe<
     IndividualOrderScalarWhereInput[] | IndividualOrderScalarWhereInput
   >;
 }
 
-export interface ChatContentUpdateManyMutationInput {
-  content?: Maybe<String>;
+export interface UserCreateOneInput {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface StoreCreateManyWithoutStoreCategoryInput {
+  create?: Maybe<
+    | StoreCreateWithoutStoreCategoryInput[]
+    | StoreCreateWithoutStoreCategoryInput
+  >;
+  connect?: Maybe<StoreWhereUniqueInput[] | StoreWhereUniqueInput>;
+}
+
+export interface ChatRoomCreateManyWithoutBossInput {
+  create?: Maybe<
+    ChatRoomCreateWithoutBossInput[] | ChatRoomCreateWithoutBossInput
+  >;
+  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+}
+
+export interface RoomOrderWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  chatRoom?: Maybe<ChatRoomWhereInput>;
+  individualOrderList_every?: Maybe<IndividualOrderWhereInput>;
+  individualOrderList_some?: Maybe<IndividualOrderWhereInput>;
+  individualOrderList_none?: Maybe<IndividualOrderWhereInput>;
+  phoneNumber?: Maybe<String>;
+  phoneNumber_not?: Maybe<String>;
+  phoneNumber_in?: Maybe<String[] | String>;
+  phoneNumber_not_in?: Maybe<String[] | String>;
+  phoneNumber_lt?: Maybe<String>;
+  phoneNumber_lte?: Maybe<String>;
+  phoneNumber_gt?: Maybe<String>;
+  phoneNumber_gte?: Maybe<String>;
+  phoneNumber_contains?: Maybe<String>;
+  phoneNumber_not_contains?: Maybe<String>;
+  phoneNumber_starts_with?: Maybe<String>;
+  phoneNumber_not_starts_with?: Maybe<String>;
+  phoneNumber_ends_with?: Maybe<String>;
+  phoneNumber_not_ends_with?: Maybe<String>;
+  state?: Maybe<Boolean>;
+  state_not?: Maybe<Boolean>;
+  AND?: Maybe<RoomOrderWhereInput[] | RoomOrderWhereInput>;
+  OR?: Maybe<RoomOrderWhereInput[] | RoomOrderWhereInput>;
+  NOT?: Maybe<RoomOrderWhereInput[] | RoomOrderWhereInput>;
+}
+
+export interface UserCreateManyInput {
+  create?: Maybe<UserCreateInput[] | UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+}
+
+export interface StoreCategoryCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  storeList?: Maybe<StoreCreateManyWithoutStoreCategoryInput>;
+}
+
+export interface StoreCreateWithoutChatRoomListInput {
+  id?: Maybe<ID_Input>;
+  storeId: String;
+  pwd: String;
+  name: String;
+  storeCategory: StoreCategoryCreateOneWithoutStoreListInput;
+  menuCategoryList?: Maybe<MenuCategoryCreateManyWithoutStoreInput>;
+  minimumPrice: Int;
+  deliveryFee: Int;
+  image?: Maybe<String>;
+}
+
+export interface MenuUpdateWithWhereUniqueNestedInput {
+  where: MenuWhereUniqueInput;
+  data: MenuUpdateDataInput;
+}
+
+export interface StoreCategoryCreateWithoutStoreListInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+}
+
+export interface MenuUpdateDataInput {
+  name?: Maybe<String>;
+  price?: Maybe<Int>;
+  menuCategory?: Maybe<MenuCategoryUpdateOneRequiredWithoutMenuListInput>;
+}
+
+export interface MenuCategoryCreateWithoutStoreInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  menuList?: Maybe<MenuCreateManyWithoutMenuCategoryInput>;
+}
+
+export interface MenuCategoryUpdateOneRequiredWithoutMenuListInput {
+  create?: Maybe<MenuCategoryCreateWithoutMenuListInput>;
+  update?: Maybe<MenuCategoryUpdateWithoutMenuListDataInput>;
+  upsert?: Maybe<MenuCategoryUpsertWithoutMenuListInput>;
+  connect?: Maybe<MenuCategoryWhereUniqueInput>;
+}
+
+export interface MenuCreateWithoutMenuCategoryInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  price: Int;
+}
+
+export interface MenuCategoryUpdateWithoutMenuListDataInput {
+  name?: Maybe<String>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutMenuCategoryListInput>;
+}
+
+export interface RoomOrderCreateWithoutChatRoomInput {
+  id?: Maybe<ID_Input>;
+  individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
+  phoneNumber: String;
+  state: Boolean;
+}
+
+export interface StoreUpdateOneRequiredWithoutMenuCategoryListInput {
+  create?: Maybe<StoreCreateWithoutMenuCategoryListInput>;
+  update?: Maybe<StoreUpdateWithoutMenuCategoryListDataInput>;
+  upsert?: Maybe<StoreUpsertWithoutMenuCategoryListInput>;
+  connect?: Maybe<StoreWhereUniqueInput>;
+}
+
+export interface IndividualOrderCreateWithoutRoomOrderInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  menuList?: Maybe<MenuCreateManyInput>;
+}
+
+export interface StoreUpdateWithoutMenuCategoryListDataInput {
+  storeId?: Maybe<String>;
+  pwd?: Maybe<String>;
+  name?: Maybe<String>;
+  storeCategory?: Maybe<StoreCategoryUpdateOneRequiredWithoutStoreListInput>;
+  minimumPrice?: Maybe<Int>;
+  deliveryFee?: Maybe<Int>;
+  image?: Maybe<String>;
+  chatRoomList?: Maybe<ChatRoomUpdateManyWithoutStoreInput>;
+}
+
+export interface MenuCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  price: Int;
+  menuCategory: MenuCategoryCreateOneWithoutMenuListInput;
+}
+
+export interface ChatRoomUpdateManyWithoutStoreInput {
+  create?: Maybe<
+    ChatRoomCreateWithoutStoreInput[] | ChatRoomCreateWithoutStoreInput
+  >;
+  delete?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  set?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  disconnect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  update?: Maybe<
+    | ChatRoomUpdateWithWhereUniqueWithoutStoreInput[]
+    | ChatRoomUpdateWithWhereUniqueWithoutStoreInput
+  >;
+  upsert?: Maybe<
+    | ChatRoomUpsertWithWhereUniqueWithoutStoreInput[]
+    | ChatRoomUpsertWithWhereUniqueWithoutStoreInput
+  >;
+  deleteMany?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
+  updateMany?: Maybe<
+    | ChatRoomUpdateManyWithWhereNestedInput[]
+    | ChatRoomUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface MenuCategoryCreateWithoutMenuListInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  store: StoreCreateOneWithoutMenuCategoryListInput;
+}
+
+export interface ChatRoomUpdateWithWhereUniqueWithoutStoreInput {
+  where: ChatRoomWhereUniqueInput;
+  data: ChatRoomUpdateWithoutStoreDataInput;
+}
+
+export interface StoreCreateWithoutMenuCategoryListInput {
+  id?: Maybe<ID_Input>;
+  storeId: String;
+  pwd: String;
+  name: String;
+  storeCategory: StoreCategoryCreateOneWithoutStoreListInput;
+  minimumPrice: Int;
+  deliveryFee: Int;
+  image?: Maybe<String>;
+  chatRoomList?: Maybe<ChatRoomCreateManyWithoutStoreInput>;
+}
+
+export interface ChatRoomUpdateWithoutStoreDataInput {
+  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
+  memberList?: Maybe<UserUpdateManyInput>;
+  location?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
+  state?: Maybe<Boolean>;
+}
+
+export interface ChatRoomCreateWithoutStoreInput {
+  id?: Maybe<ID_Input>;
+  boss: UserCreateOneWithoutChatListInput;
+  memberList?: Maybe<UserCreateManyInput>;
+  location: String;
+  orderExpectedTime: DateTimeInput;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
+  state: Boolean;
+}
+
+export interface UserUpdateOneRequiredWithoutChatListInput {
+  create?: Maybe<UserCreateWithoutChatListInput>;
+  update?: Maybe<UserUpdateWithoutChatListDataInput>;
+  upsert?: Maybe<UserUpsertWithoutChatListInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutChatListInput {
+  id?: Maybe<ID_Input>;
+  number: Int;
+  pwd: String;
+  score?: Maybe<Int>;
+}
+
+export interface UserUpdateWithoutChatListDataInput {
+  number?: Maybe<Int>;
+  pwd?: Maybe<String>;
+  score?: Maybe<Int>;
+}
+
+export interface ChatContentCreateWithoutChatRoomInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  content: String;
+}
+
+export interface UserUpsertWithoutChatListInput {
+  update: UserUpdateWithoutChatListDataInput;
+  create: UserCreateWithoutChatListInput;
+}
+
+export interface ChatRoomCreateWithoutChatContentListInput {
+  id?: Maybe<ID_Input>;
+  boss: UserCreateOneWithoutChatListInput;
+  memberList?: Maybe<UserCreateManyInput>;
+  store: StoreCreateOneWithoutChatRoomListInput;
+  location: String;
+  orderExpectedTime: DateTimeInput;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
+  state: Boolean;
 }
 
 export interface ChatContentUpdateManyWithoutChatRoomInput {
@@ -2047,83 +1753,36 @@ export interface ChatContentUpdateManyWithoutChatRoomInput {
   >;
 }
 
-export type StoreCategoryWhereUniqueInput = AtLeastOne<{
-  id: Maybe<ID_Input>;
-}>;
+export interface VoteSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<VoteWhereInput>;
+  AND?: Maybe<VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput>;
+  OR?: Maybe<VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput>;
+  NOT?: Maybe<VoteSubscriptionWhereInput[] | VoteSubscriptionWhereInput>;
+}
 
 export interface ChatContentUpdateWithWhereUniqueWithoutChatRoomInput {
   where: ChatContentWhereUniqueInput;
   data: ChatContentUpdateWithoutChatRoomDataInput;
 }
 
-export interface RoomOrderUpdateManyDataInput {
-  phoneNumber?: Maybe<String>;
-  state?: Maybe<Boolean>;
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
 }
 
 export interface ChatContentUpdateWithoutChatRoomDataInput {
   user?: Maybe<UserUpdateOneRequiredInput>;
   content?: Maybe<String>;
-}
-
-export interface StoreCreateOneInput {
-  create?: Maybe<StoreCreateInput>;
-  connect?: Maybe<StoreWhereUniqueInput>;
-}
-
-export interface ChatContentUpsertWithWhereUniqueWithoutChatRoomInput {
-  where: ChatContentWhereUniqueInput;
-  update: ChatContentUpdateWithoutChatRoomDataInput;
-  create: ChatContentCreateWithoutChatRoomInput;
-}
-
-export interface MenuCategoryCreateOneInput {
-  create?: Maybe<MenuCategoryCreateInput>;
-  connect?: Maybe<MenuCategoryWhereUniqueInput>;
-}
-
-export interface ChatContentScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  content?: Maybe<String>;
-  content_not?: Maybe<String>;
-  content_in?: Maybe<String[] | String>;
-  content_not_in?: Maybe<String[] | String>;
-  content_lt?: Maybe<String>;
-  content_lte?: Maybe<String>;
-  content_gt?: Maybe<String>;
-  content_gte?: Maybe<String>;
-  content_contains?: Maybe<String>;
-  content_not_contains?: Maybe<String>;
-  content_starts_with?: Maybe<String>;
-  content_not_starts_with?: Maybe<String>;
-  content_ends_with?: Maybe<String>;
-  content_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ChatContentScalarWhereInput[] | ChatContentScalarWhereInput>;
-  OR?: Maybe<ChatContentScalarWhereInput[] | ChatContentScalarWhereInput>;
-  NOT?: Maybe<ChatContentScalarWhereInput[] | ChatContentScalarWhereInput>;
-}
-
-export interface UserCreateOneWithoutChatListInput {
-  create?: Maybe<UserCreateWithoutChatListInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface ChatContentUpdateManyWithWhereNestedInput {
-  where: ChatContentScalarWhereInput;
-  data: ChatContentUpdateManyDataInput;
 }
 
 export interface StoreWhereInput {
@@ -2187,9 +1846,6 @@ export interface StoreWhereInput {
   menuCategoryList_every?: Maybe<MenuCategoryWhereInput>;
   menuCategoryList_some?: Maybe<MenuCategoryWhereInput>;
   menuCategoryList_none?: Maybe<MenuCategoryWhereInput>;
-  menuList_every?: Maybe<MenuWhereInput>;
-  menuList_some?: Maybe<MenuWhereInput>;
-  menuList_none?: Maybe<MenuWhereInput>;
   minimumPrice?: Maybe<Int>;
   minimumPrice_not?: Maybe<Int>;
   minimumPrice_in?: Maybe<Int[] | Int>;
@@ -2220,84 +1876,259 @@ export interface StoreWhereInput {
   image_not_starts_with?: Maybe<String>;
   image_ends_with?: Maybe<String>;
   image_not_ends_with?: Maybe<String>;
-  roomOrderList_every?: Maybe<RoomOrderWhereInput>;
-  roomOrderList_some?: Maybe<RoomOrderWhereInput>;
-  roomOrderList_none?: Maybe<RoomOrderWhereInput>;
+  chatRoomList_every?: Maybe<ChatRoomWhereInput>;
+  chatRoomList_some?: Maybe<ChatRoomWhereInput>;
+  chatRoomList_none?: Maybe<ChatRoomWhereInput>;
   AND?: Maybe<StoreWhereInput[] | StoreWhereInput>;
   OR?: Maybe<StoreWhereInput[] | StoreWhereInput>;
   NOT?: Maybe<StoreWhereInput[] | StoreWhereInput>;
+}
+
+export interface ChatContentUpsertWithWhereUniqueWithoutChatRoomInput {
+  where: ChatContentWhereUniqueInput;
+  update: ChatContentUpdateWithoutChatRoomDataInput;
+  create: ChatContentCreateWithoutChatRoomInput;
+}
+
+export interface MenuSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<MenuWhereInput>;
+  AND?: Maybe<MenuSubscriptionWhereInput[] | MenuSubscriptionWhereInput>;
+  OR?: Maybe<MenuSubscriptionWhereInput[] | MenuSubscriptionWhereInput>;
+  NOT?: Maybe<MenuSubscriptionWhereInput[] | MenuSubscriptionWhereInput>;
+}
+
+export interface ChatContentScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  content?: Maybe<String>;
+  content_not?: Maybe<String>;
+  content_in?: Maybe<String[] | String>;
+  content_not_in?: Maybe<String[] | String>;
+  content_lt?: Maybe<String>;
+  content_lte?: Maybe<String>;
+  content_gt?: Maybe<String>;
+  content_gte?: Maybe<String>;
+  content_contains?: Maybe<String>;
+  content_not_contains?: Maybe<String>;
+  content_starts_with?: Maybe<String>;
+  content_not_starts_with?: Maybe<String>;
+  content_ends_with?: Maybe<String>;
+  content_not_ends_with?: Maybe<String>;
+  AND?: Maybe<ChatContentScalarWhereInput[] | ChatContentScalarWhereInput>;
+  OR?: Maybe<ChatContentScalarWhereInput[] | ChatContentScalarWhereInput>;
+  NOT?: Maybe<ChatContentScalarWhereInput[] | ChatContentScalarWhereInput>;
+}
+
+export interface ChatContentSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ChatContentWhereInput>;
+  AND?: Maybe<
+    ChatContentSubscriptionWhereInput[] | ChatContentSubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    ChatContentSubscriptionWhereInput[] | ChatContentSubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    ChatContentSubscriptionWhereInput[] | ChatContentSubscriptionWhereInput
+  >;
+}
+
+export interface ChatContentUpdateManyWithWhereNestedInput {
+  where: ChatContentScalarWhereInput;
+  data: ChatContentUpdateManyDataInput;
+}
+
+export interface UserVoteScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  choice?: Maybe<Boolean>;
+  choice_not?: Maybe<Boolean>;
+  AND?: Maybe<UserVoteScalarWhereInput[] | UserVoteScalarWhereInput>;
+  OR?: Maybe<UserVoteScalarWhereInput[] | UserVoteScalarWhereInput>;
+  NOT?: Maybe<UserVoteScalarWhereInput[] | UserVoteScalarWhereInput>;
 }
 
 export interface ChatContentUpdateManyDataInput {
   content?: Maybe<String>;
 }
 
-export interface RoomOrderUpdateManyMutationInput {
-  phoneNumber?: Maybe<String>;
+export interface UserVoteUpdateWithWhereUniqueWithoutVoteInput {
+  where: UserVoteWhereUniqueInput;
+  data: UserVoteUpdateWithoutVoteDataInput;
+}
+
+export interface ChatRoomUpsertWithWhereUniqueWithoutStoreInput {
+  where: ChatRoomWhereUniqueInput;
+  update: ChatRoomUpdateWithoutStoreDataInput;
+  create: ChatRoomCreateWithoutStoreInput;
+}
+
+export interface UserVoteCreateWithoutVoteInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  choice: Boolean;
+}
+
+export interface ChatRoomScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  location?: Maybe<String>;
+  location_not?: Maybe<String>;
+  location_in?: Maybe<String[] | String>;
+  location_not_in?: Maybe<String[] | String>;
+  location_lt?: Maybe<String>;
+  location_lte?: Maybe<String>;
+  location_gt?: Maybe<String>;
+  location_gte?: Maybe<String>;
+  location_contains?: Maybe<String>;
+  location_not_contains?: Maybe<String>;
+  location_starts_with?: Maybe<String>;
+  location_not_starts_with?: Maybe<String>;
+  location_ends_with?: Maybe<String>;
+  location_not_ends_with?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  orderExpectedTime_not?: Maybe<DateTimeInput>;
+  orderExpectedTime_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  orderExpectedTime_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  orderExpectedTime_lt?: Maybe<DateTimeInput>;
+  orderExpectedTime_lte?: Maybe<DateTimeInput>;
+  orderExpectedTime_gt?: Maybe<DateTimeInput>;
+  orderExpectedTime_gte?: Maybe<DateTimeInput>;
+  state?: Maybe<Boolean>;
+  state_not?: Maybe<Boolean>;
+  AND?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
+  OR?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
+  NOT?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
+}
+
+export interface ChatRoomWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  boss?: Maybe<UserWhereInput>;
+  memberList_every?: Maybe<UserWhereInput>;
+  memberList_some?: Maybe<UserWhereInput>;
+  memberList_none?: Maybe<UserWhereInput>;
+  store?: Maybe<StoreWhereInput>;
+  location?: Maybe<String>;
+  location_not?: Maybe<String>;
+  location_in?: Maybe<String[] | String>;
+  location_not_in?: Maybe<String[] | String>;
+  location_lt?: Maybe<String>;
+  location_lte?: Maybe<String>;
+  location_gt?: Maybe<String>;
+  location_gte?: Maybe<String>;
+  location_contains?: Maybe<String>;
+  location_not_contains?: Maybe<String>;
+  location_starts_with?: Maybe<String>;
+  location_not_starts_with?: Maybe<String>;
+  location_ends_with?: Maybe<String>;
+  location_not_ends_with?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  orderExpectedTime_not?: Maybe<DateTimeInput>;
+  orderExpectedTime_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  orderExpectedTime_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  orderExpectedTime_lt?: Maybe<DateTimeInput>;
+  orderExpectedTime_lte?: Maybe<DateTimeInput>;
+  orderExpectedTime_gt?: Maybe<DateTimeInput>;
+  orderExpectedTime_gte?: Maybe<DateTimeInput>;
+  roomOrder?: Maybe<RoomOrderWhereInput>;
+  chatContentList_every?: Maybe<ChatContentWhereInput>;
+  chatContentList_some?: Maybe<ChatContentWhereInput>;
+  chatContentList_none?: Maybe<ChatContentWhereInput>;
+  state?: Maybe<Boolean>;
+  state_not?: Maybe<Boolean>;
+  AND?: Maybe<ChatRoomWhereInput[] | ChatRoomWhereInput>;
+  OR?: Maybe<ChatRoomWhereInput[] | ChatRoomWhereInput>;
+  NOT?: Maybe<ChatRoomWhereInput[] | ChatRoomWhereInput>;
+}
+
+export interface ChatRoomUpdateManyWithWhereNestedInput {
+  where: ChatRoomScalarWhereInput;
+  data: ChatRoomUpdateManyDataInput;
+}
+
+export type StoreWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface ChatRoomUpdateManyDataInput {
+  location?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
   state?: Maybe<Boolean>;
 }
 
-export interface ChatRoomUpsertNestedInput {
-  update: ChatRoomUpdateDataInput;
-  create: ChatRoomCreateInput;
+export type StoreCategoryWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface StoreUpsertWithoutMenuCategoryListInput {
+  update: StoreUpdateWithoutMenuCategoryListDataInput;
+  create: StoreCreateWithoutMenuCategoryListInput;
 }
 
-export interface ChatRoomUpdateOneRequiredWithoutChatContentListInput {
-  create?: Maybe<ChatRoomCreateWithoutChatContentListInput>;
-  update?: Maybe<ChatRoomUpdateWithoutChatContentListDataInput>;
-  upsert?: Maybe<ChatRoomUpsertWithoutChatContentListInput>;
-  connect?: Maybe<ChatRoomWhereUniqueInput>;
-}
-
-export interface IndividualOrderUpdateManyInput {
-  create?: Maybe<IndividualOrderCreateInput[] | IndividualOrderCreateInput>;
-  update?: Maybe<
-    | IndividualOrderUpdateWithWhereUniqueNestedInput[]
-    | IndividualOrderUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | IndividualOrderUpsertWithWhereUniqueNestedInput[]
-    | IndividualOrderUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
-  connect?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
-  set?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
-  disconnect?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
-  deleteMany?: Maybe<
-    IndividualOrderScalarWhereInput[] | IndividualOrderScalarWhereInput
-  >;
-}
-
-export interface UserCreateInput {
+export interface VoteCreateWithoutVoteListInput {
   id?: Maybe<ID_Input>;
-  number: Int;
-  pwd: String;
-  score?: Maybe<Int>;
-  chatList?: Maybe<ChatRoomCreateManyWithoutBossInput>;
+  chatRoom: ChatRoomCreateOneInput;
 }
 
-export interface IndividualOrderUpdateWithWhereUniqueNestedInput {
-  where: IndividualOrderWhereUniqueInput;
-  data: IndividualOrderUpdateDataInput;
-}
-
-export interface RoomOrderCreateManyInput {
-  create?: Maybe<RoomOrderCreateInput[] | RoomOrderCreateInput>;
-  connect?: Maybe<RoomOrderWhereUniqueInput[] | RoomOrderWhereUniqueInput>;
-}
-
-export interface IndividualOrderUpdateDataInput {
-  user?: Maybe<UserUpdateOneRequiredInput>;
-  menuList?: Maybe<MenuUpdateManyInput>;
-  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutIndividualOrderListInput>;
+export interface MenuCategoryUpsertWithoutMenuListInput {
+  update: MenuCategoryUpdateWithoutMenuListDataInput;
+  create: MenuCategoryCreateWithoutMenuListInput;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -2306,41 +2137,13 @@ export interface UserUpdateManyMutationInput {
   score?: Maybe<Int>;
 }
 
-export interface IndividualOrderUpsertWithWhereUniqueNestedInput {
-  where: IndividualOrderWhereUniqueInput;
-  update: IndividualOrderUpdateDataInput;
-  create: IndividualOrderCreateInput;
+export interface MenuUpsertWithWhereUniqueNestedInput {
+  where: MenuWhereUniqueInput;
+  update: MenuUpdateDataInput;
+  create: MenuCreateInput;
 }
 
-export interface ChatRoomUpsertWithoutIndividualOrderListInput {
-  update: ChatRoomUpdateWithoutIndividualOrderListDataInput;
-  create: ChatRoomCreateWithoutIndividualOrderListInput;
-}
-
-export interface ChatRoomUpdateWithoutIndividualOrderListDataInput {
-  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
-  memberList?: Maybe<UserUpdateManyInput>;
-  store?: Maybe<StoreUpdateOneRequiredInput>;
-  location?: Maybe<String>;
-  orderExpectedTime?: Maybe<DateTimeInput>;
-  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
-}
-
-export interface ChatRoomUpdateOneRequiredWithoutIndividualOrderListInput {
-  create?: Maybe<ChatRoomCreateWithoutIndividualOrderListInput>;
-  update?: Maybe<ChatRoomUpdateWithoutIndividualOrderListDataInput>;
-  upsert?: Maybe<ChatRoomUpsertWithoutIndividualOrderListInput>;
-  connect?: Maybe<ChatRoomWhereUniqueInput>;
-}
-
-export interface IndividualOrderUpdateInput {
-  user?: Maybe<UserUpdateOneRequiredInput>;
-  menuList?: Maybe<MenuUpdateManyInput>;
-  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutIndividualOrderListInput>;
-}
-
-export interface ChatContentWhereInput {
+export interface UserVoteWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -2356,24 +2159,550 @@ export interface ChatContentWhereInput {
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
   user?: Maybe<UserWhereInput>;
-  chatRoom?: Maybe<ChatRoomWhereInput>;
+  choice?: Maybe<Boolean>;
+  choice_not?: Maybe<Boolean>;
+  vote?: Maybe<VoteWhereInput>;
+  AND?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
+  OR?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
+  NOT?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
+}
+
+export interface IndividualOrderUpsertWithWhereUniqueWithoutRoomOrderInput {
+  where: IndividualOrderWhereUniqueInput;
+  update: IndividualOrderUpdateWithoutRoomOrderDataInput;
+  create: IndividualOrderCreateWithoutRoomOrderInput;
+}
+
+export interface StoreScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  storeId?: Maybe<String>;
+  storeId_not?: Maybe<String>;
+  storeId_in?: Maybe<String[] | String>;
+  storeId_not_in?: Maybe<String[] | String>;
+  storeId_lt?: Maybe<String>;
+  storeId_lte?: Maybe<String>;
+  storeId_gt?: Maybe<String>;
+  storeId_gte?: Maybe<String>;
+  storeId_contains?: Maybe<String>;
+  storeId_not_contains?: Maybe<String>;
+  storeId_starts_with?: Maybe<String>;
+  storeId_not_starts_with?: Maybe<String>;
+  storeId_ends_with?: Maybe<String>;
+  storeId_not_ends_with?: Maybe<String>;
+  pwd?: Maybe<String>;
+  pwd_not?: Maybe<String>;
+  pwd_in?: Maybe<String[] | String>;
+  pwd_not_in?: Maybe<String[] | String>;
+  pwd_lt?: Maybe<String>;
+  pwd_lte?: Maybe<String>;
+  pwd_gt?: Maybe<String>;
+  pwd_gte?: Maybe<String>;
+  pwd_contains?: Maybe<String>;
+  pwd_not_contains?: Maybe<String>;
+  pwd_starts_with?: Maybe<String>;
+  pwd_not_starts_with?: Maybe<String>;
+  pwd_ends_with?: Maybe<String>;
+  pwd_not_ends_with?: Maybe<String>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  minimumPrice?: Maybe<Int>;
+  minimumPrice_not?: Maybe<Int>;
+  minimumPrice_in?: Maybe<Int[] | Int>;
+  minimumPrice_not_in?: Maybe<Int[] | Int>;
+  minimumPrice_lt?: Maybe<Int>;
+  minimumPrice_lte?: Maybe<Int>;
+  minimumPrice_gt?: Maybe<Int>;
+  minimumPrice_gte?: Maybe<Int>;
+  deliveryFee?: Maybe<Int>;
+  deliveryFee_not?: Maybe<Int>;
+  deliveryFee_in?: Maybe<Int[] | Int>;
+  deliveryFee_not_in?: Maybe<Int[] | Int>;
+  deliveryFee_lt?: Maybe<Int>;
+  deliveryFee_lte?: Maybe<Int>;
+  deliveryFee_gt?: Maybe<Int>;
+  deliveryFee_gte?: Maybe<Int>;
+  image?: Maybe<String>;
+  image_not?: Maybe<String>;
+  image_in?: Maybe<String[] | String>;
+  image_not_in?: Maybe<String[] | String>;
+  image_lt?: Maybe<String>;
+  image_lte?: Maybe<String>;
+  image_gt?: Maybe<String>;
+  image_gte?: Maybe<String>;
+  image_contains?: Maybe<String>;
+  image_not_contains?: Maybe<String>;
+  image_starts_with?: Maybe<String>;
+  image_not_starts_with?: Maybe<String>;
+  image_ends_with?: Maybe<String>;
+  image_not_ends_with?: Maybe<String>;
+  AND?: Maybe<StoreScalarWhereInput[] | StoreScalarWhereInput>;
+  OR?: Maybe<StoreScalarWhereInput[] | StoreScalarWhereInput>;
+  NOT?: Maybe<StoreScalarWhereInput[] | StoreScalarWhereInput>;
+}
+
+export interface IndividualOrderScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  AND?: Maybe<
+    IndividualOrderScalarWhereInput[] | IndividualOrderScalarWhereInput
+  >;
+  OR?: Maybe<
+    IndividualOrderScalarWhereInput[] | IndividualOrderScalarWhereInput
+  >;
+  NOT?: Maybe<
+    IndividualOrderScalarWhereInput[] | IndividualOrderScalarWhereInput
+  >;
+}
+
+export interface StoreUpdateWithWhereUniqueWithoutStoreCategoryInput {
+  where: StoreWhereUniqueInput;
+  data: StoreUpdateWithoutStoreCategoryDataInput;
+}
+
+export interface RoomOrderUpsertWithoutChatRoomInput {
+  update: RoomOrderUpdateWithoutChatRoomDataInput;
+  create: RoomOrderCreateWithoutChatRoomInput;
+}
+
+export interface ChatContentCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  chatRoom: ChatRoomCreateOneWithoutChatContentListInput;
+  content: String;
+}
+
+export interface ChatRoomUpsertWithWhereUniqueWithoutBossInput {
+  where: ChatRoomWhereUniqueInput;
+  update: ChatRoomUpdateWithoutBossDataInput;
+  create: ChatRoomCreateWithoutBossInput;
+}
+
+export interface ChatRoomCreateWithoutBossInput {
+  id?: Maybe<ID_Input>;
+  memberList?: Maybe<UserCreateManyInput>;
+  store: StoreCreateOneWithoutChatRoomListInput;
+  location: String;
+  orderExpectedTime: DateTimeInput;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
+  state: Boolean;
+}
+
+export interface UserUpsertNestedInput {
+  update: UserUpdateDataInput;
+  create: UserCreateInput;
+}
+
+export interface StoreCategoryCreateOneWithoutStoreListInput {
+  create?: Maybe<StoreCategoryCreateWithoutStoreListInput>;
+  connect?: Maybe<StoreCategoryWhereUniqueInput>;
+}
+
+export interface ChatRoomUpdateOneRequiredWithoutChatContentListInput {
+  create?: Maybe<ChatRoomCreateWithoutChatContentListInput>;
+  update?: Maybe<ChatRoomUpdateWithoutChatContentListDataInput>;
+  upsert?: Maybe<ChatRoomUpsertWithoutChatContentListInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput>;
+}
+
+export interface MenuCreateManyWithoutMenuCategoryInput {
+  create?: Maybe<
+    MenuCreateWithoutMenuCategoryInput[] | MenuCreateWithoutMenuCategoryInput
+  >;
+  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+}
+
+export interface ChatRoomUpdateWithoutChatContentListDataInput {
+  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
+  memberList?: Maybe<UserUpdateManyInput>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
+  location?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
+  state?: Maybe<Boolean>;
+}
+
+export interface IndividualOrderCreateManyWithoutRoomOrderInput {
+  create?: Maybe<
+    | IndividualOrderCreateWithoutRoomOrderInput[]
+    | IndividualOrderCreateWithoutRoomOrderInput
+  >;
+  connect?: Maybe<
+    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
+  >;
+}
+
+export interface ChatRoomUpsertWithoutChatContentListInput {
+  update: ChatRoomUpdateWithoutChatContentListDataInput;
+  create: ChatRoomCreateWithoutChatContentListInput;
+}
+
+export interface MenuCategoryCreateOneWithoutMenuListInput {
+  create?: Maybe<MenuCategoryCreateWithoutMenuListInput>;
+  connect?: Maybe<MenuCategoryWhereUniqueInput>;
+}
+
+export interface ChatContentUpdateManyMutationInput {
   content?: Maybe<String>;
-  content_not?: Maybe<String>;
-  content_in?: Maybe<String[] | String>;
-  content_not_in?: Maybe<String[] | String>;
-  content_lt?: Maybe<String>;
-  content_lte?: Maybe<String>;
-  content_gt?: Maybe<String>;
-  content_gte?: Maybe<String>;
-  content_contains?: Maybe<String>;
-  content_not_contains?: Maybe<String>;
-  content_starts_with?: Maybe<String>;
-  content_not_starts_with?: Maybe<String>;
-  content_ends_with?: Maybe<String>;
-  content_not_ends_with?: Maybe<String>;
-  AND?: Maybe<ChatContentWhereInput[] | ChatContentWhereInput>;
-  OR?: Maybe<ChatContentWhereInput[] | ChatContentWhereInput>;
-  NOT?: Maybe<ChatContentWhereInput[] | ChatContentWhereInput>;
+}
+
+export interface ChatRoomCreateManyWithoutStoreInput {
+  create?: Maybe<
+    ChatRoomCreateWithoutStoreInput[] | ChatRoomCreateWithoutStoreInput
+  >;
+  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+}
+
+export interface StoreUpdateManyMutationInput {
+  storeId?: Maybe<String>;
+  pwd?: Maybe<String>;
+  name?: Maybe<String>;
+  minimumPrice?: Maybe<Int>;
+  deliveryFee?: Maybe<Int>;
+  image?: Maybe<String>;
+}
+
+export interface ChatContentCreateManyWithoutChatRoomInput {
+  create?: Maybe<
+    | ChatContentCreateWithoutChatRoomInput[]
+    | ChatContentCreateWithoutChatRoomInput
+  >;
+  connect?: Maybe<ChatContentWhereUniqueInput[] | ChatContentWhereUniqueInput>;
+}
+
+export interface StoreUpdateInput {
+  storeId?: Maybe<String>;
+  pwd?: Maybe<String>;
+  name?: Maybe<String>;
+  storeCategory?: Maybe<StoreCategoryUpdateOneRequiredWithoutStoreListInput>;
+  menuCategoryList?: Maybe<MenuCategoryUpdateManyWithoutStoreInput>;
+  minimumPrice?: Maybe<Int>;
+  deliveryFee?: Maybe<Int>;
+  image?: Maybe<String>;
+  chatRoomList?: Maybe<ChatRoomUpdateManyWithoutStoreInput>;
+}
+
+export interface ChatContentUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutChatContentListInput>;
+  content?: Maybe<String>;
+}
+
+export interface ChatRoomCreateInput {
+  id?: Maybe<ID_Input>;
+  boss: UserCreateOneWithoutChatListInput;
+  memberList?: Maybe<UserCreateManyInput>;
+  store: StoreCreateOneWithoutChatRoomListInput;
+  location: String;
+  orderExpectedTime: DateTimeInput;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
+  state: Boolean;
+}
+
+export interface StoreCategorySubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<StoreCategoryWhereInput>;
+  AND?: Maybe<
+    StoreCategorySubscriptionWhereInput[] | StoreCategorySubscriptionWhereInput
+  >;
+  OR?: Maybe<
+    StoreCategorySubscriptionWhereInput[] | StoreCategorySubscriptionWhereInput
+  >;
+  NOT?: Maybe<
+    StoreCategorySubscriptionWhereInput[] | StoreCategorySubscriptionWhereInput
+  >;
+}
+
+export interface ChatRoomUpdateInput {
+  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
+  memberList?: Maybe<UserUpdateManyInput>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
+  location?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
+  state?: Maybe<Boolean>;
+}
+
+export interface ChatRoomSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ChatRoomWhereInput>;
+  AND?: Maybe<
+    ChatRoomSubscriptionWhereInput[] | ChatRoomSubscriptionWhereInput
+  >;
+  OR?: Maybe<ChatRoomSubscriptionWhereInput[] | ChatRoomSubscriptionWhereInput>;
+  NOT?: Maybe<
+    ChatRoomSubscriptionWhereInput[] | ChatRoomSubscriptionWhereInput
+  >;
+}
+
+export interface ChatRoomUpdateManyMutationInput {
+  location?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  state?: Maybe<Boolean>;
+}
+
+export interface UserVoteUpdateWithoutVoteDataInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  choice?: Maybe<Boolean>;
+}
+
+export interface IndividualOrderCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  menuList?: Maybe<MenuCreateManyInput>;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutIndividualOrderListInput>;
+}
+
+export interface VoteCreateInput {
+  id?: Maybe<ID_Input>;
+  chatRoom: ChatRoomCreateOneInput;
+  voteList?: Maybe<UserVoteCreateManyWithoutVoteInput>;
+}
+
+export interface RoomOrderCreateOneWithoutIndividualOrderListInput {
+  create?: Maybe<RoomOrderCreateWithoutIndividualOrderListInput>;
+  connect?: Maybe<RoomOrderWhereUniqueInput>;
+}
+
+export interface ChatRoomUpdateOneRequiredInput {
+  create?: Maybe<ChatRoomCreateInput>;
+  update?: Maybe<ChatRoomUpdateDataInput>;
+  upsert?: Maybe<ChatRoomUpsertNestedInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput>;
+}
+
+export interface RoomOrderCreateWithoutIndividualOrderListInput {
+  id?: Maybe<ID_Input>;
+  chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
+  phoneNumber: String;
+  state: Boolean;
+}
+
+export interface VoteCreateOneWithoutVoteListInput {
+  create?: Maybe<VoteCreateWithoutVoteListInput>;
+  connect?: Maybe<VoteWhereUniqueInput>;
+}
+
+export interface ChatRoomCreateOneWithoutRoomOrderInput {
+  create?: Maybe<ChatRoomCreateWithoutRoomOrderInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput>;
+}
+
+export interface StoreUpdateManyDataInput {
+  storeId?: Maybe<String>;
+  pwd?: Maybe<String>;
+  name?: Maybe<String>;
+  minimumPrice?: Maybe<Int>;
+  deliveryFee?: Maybe<Int>;
+  image?: Maybe<String>;
+}
+
+export interface ChatRoomCreateWithoutRoomOrderInput {
+  id?: Maybe<ID_Input>;
+  boss: UserCreateOneWithoutChatListInput;
+  memberList?: Maybe<UserCreateManyInput>;
+  store: StoreCreateOneWithoutChatRoomListInput;
+  location: String;
+  orderExpectedTime: DateTimeInput;
+  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
+  state: Boolean;
+}
+
+export interface StoreCategoryUpdateInput {
+  name?: Maybe<String>;
+  storeList?: Maybe<StoreUpdateManyWithoutStoreCategoryInput>;
+}
+
+export interface IndividualOrderUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  menuList?: Maybe<MenuUpdateManyInput>;
+  roomOrder?: Maybe<RoomOrderUpdateOneWithoutIndividualOrderListInput>;
+}
+
+export interface StoreCreateOneWithoutChatRoomListInput {
+  create?: Maybe<StoreCreateWithoutChatRoomListInput>;
+  connect?: Maybe<StoreWhereUniqueInput>;
+}
+
+export interface RoomOrderUpdateOneWithoutIndividualOrderListInput {
+  create?: Maybe<RoomOrderCreateWithoutIndividualOrderListInput>;
+  update?: Maybe<RoomOrderUpdateWithoutIndividualOrderListDataInput>;
+  upsert?: Maybe<RoomOrderUpsertWithoutIndividualOrderListInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<RoomOrderWhereUniqueInput>;
+}
+
+export interface RoomOrderCreateOneWithoutChatRoomInput {
+  create?: Maybe<RoomOrderCreateWithoutChatRoomInput>;
+  connect?: Maybe<RoomOrderWhereUniqueInput>;
+}
+
+export interface RoomOrderUpdateWithoutIndividualOrderListDataInput {
+  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutRoomOrderInput>;
+  phoneNumber?: Maybe<String>;
+  state?: Maybe<Boolean>;
+}
+
+export interface StoreCreateOneWithoutMenuCategoryListInput {
+  create?: Maybe<StoreCreateWithoutMenuCategoryListInput>;
+  connect?: Maybe<StoreWhereUniqueInput>;
+}
+
+export interface ChatRoomUpdateOneRequiredWithoutRoomOrderInput {
+  create?: Maybe<ChatRoomCreateWithoutRoomOrderInput>;
+  update?: Maybe<ChatRoomUpdateWithoutRoomOrderDataInput>;
+  upsert?: Maybe<ChatRoomUpsertWithoutRoomOrderInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput>;
+}
+
+export interface ChatRoomCreateOneWithoutChatContentListInput {
+  create?: Maybe<ChatRoomCreateWithoutChatContentListInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput>;
+}
+
+export interface ChatRoomUpdateWithoutRoomOrderDataInput {
+  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
+  memberList?: Maybe<UserUpdateManyInput>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
+  location?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
+  state?: Maybe<Boolean>;
+}
+
+export interface UserWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  number?: Maybe<Int>;
+  number_not?: Maybe<Int>;
+  number_in?: Maybe<Int[] | Int>;
+  number_not_in?: Maybe<Int[] | Int>;
+  number_lt?: Maybe<Int>;
+  number_lte?: Maybe<Int>;
+  number_gt?: Maybe<Int>;
+  number_gte?: Maybe<Int>;
+  pwd?: Maybe<String>;
+  pwd_not?: Maybe<String>;
+  pwd_in?: Maybe<String[] | String>;
+  pwd_not_in?: Maybe<String[] | String>;
+  pwd_lt?: Maybe<String>;
+  pwd_lte?: Maybe<String>;
+  pwd_gt?: Maybe<String>;
+  pwd_gte?: Maybe<String>;
+  pwd_contains?: Maybe<String>;
+  pwd_not_contains?: Maybe<String>;
+  pwd_starts_with?: Maybe<String>;
+  pwd_not_starts_with?: Maybe<String>;
+  pwd_ends_with?: Maybe<String>;
+  pwd_not_ends_with?: Maybe<String>;
+  score?: Maybe<Int>;
+  score_not?: Maybe<Int>;
+  score_in?: Maybe<Int[] | Int>;
+  score_not_in?: Maybe<Int[] | Int>;
+  score_lt?: Maybe<Int>;
+  score_lte?: Maybe<Int>;
+  score_gt?: Maybe<Int>;
+  score_gte?: Maybe<Int>;
+  chatList_every?: Maybe<ChatRoomWhereInput>;
+  chatList_some?: Maybe<ChatRoomWhereInput>;
+  chatList_none?: Maybe<ChatRoomWhereInput>;
+  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
+  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
+  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export interface ChatRoomUpsertWithoutRoomOrderInput {
+  update: ChatRoomUpdateWithoutRoomOrderDataInput;
+  create: ChatRoomCreateWithoutRoomOrderInput;
+}
+
+export interface VoteUpdateInput {
+  chatRoom?: Maybe<ChatRoomUpdateOneRequiredInput>;
+  voteList?: Maybe<UserVoteUpdateManyWithoutVoteInput>;
+}
+
+export interface RoomOrderUpsertWithoutIndividualOrderListInput {
+  update: RoomOrderUpdateWithoutIndividualOrderListDataInput;
+  create: RoomOrderCreateWithoutIndividualOrderListInput;
+}
+
+export interface UserVoteUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  choice?: Maybe<Boolean>;
+  vote?: Maybe<VoteUpdateOneRequiredWithoutVoteListInput>;
+}
+
+export interface MenuUpdateInput {
+  name?: Maybe<String>;
+  price?: Maybe<Int>;
+  menuCategory?: Maybe<MenuCategoryUpdateOneRequiredWithoutMenuListInput>;
+}
+
+export type VoteWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
+export interface MenuUpdateManyMutationInput {
+  name?: Maybe<String>;
+  price?: Maybe<Int>;
 }
 
 export interface MenuCategoryCreateManyWithoutStoreInput {
@@ -2385,39 +2714,402 @@ export interface MenuCategoryCreateManyWithoutStoreInput {
   >;
 }
 
-export interface MenuUpsertWithWhereUniqueWithoutStoreInput {
-  where: MenuWhereUniqueInput;
-  update: MenuUpdateWithoutStoreDataInput;
-  create: MenuCreateWithoutStoreInput;
+export interface MenuCategoryCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  store: StoreCreateOneWithoutMenuCategoryListInput;
+  menuList?: Maybe<MenuCreateManyWithoutMenuCategoryInput>;
+}
+
+export interface UserCreateOneWithoutChatListInput {
+  create?: Maybe<UserCreateWithoutChatListInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface MenuCategoryUpdateInput {
+  name?: Maybe<String>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutMenuCategoryListInput>;
+  menuList?: Maybe<MenuUpdateManyWithoutMenuCategoryInput>;
+}
+
+export interface UserVoteUpdateManyWithWhereNestedInput {
+  where: UserVoteScalarWhereInput;
+  data: UserVoteUpdateManyDataInput;
+}
+
+export interface RoomOrderUpdateManyMutationInput {
+  phoneNumber?: Maybe<String>;
+  state?: Maybe<Boolean>;
+}
+
+export interface RoomOrderUpdateInput {
+  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutRoomOrderInput>;
+  individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutRoomOrderInput>;
+  phoneNumber?: Maybe<String>;
+  state?: Maybe<Boolean>;
+}
+
+export interface RoomOrderCreateInput {
+  id?: Maybe<ID_Input>;
+  chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
+  individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
+  phoneNumber: String;
+  state: Boolean;
+}
+
+export interface MenuCategoryUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface VoteUpsertWithoutVoteListInput {
+  update: VoteUpdateWithoutVoteListDataInput;
+  create: VoteCreateWithoutVoteListInput;
+}
+
+export interface MenuWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  price?: Maybe<Int>;
+  price_not?: Maybe<Int>;
+  price_in?: Maybe<Int[] | Int>;
+  price_not_in?: Maybe<Int[] | Int>;
+  price_lt?: Maybe<Int>;
+  price_lte?: Maybe<Int>;
+  price_gt?: Maybe<Int>;
+  price_gte?: Maybe<Int>;
+  menuCategory?: Maybe<MenuCategoryWhereInput>;
+  AND?: Maybe<MenuWhereInput[] | MenuWhereInput>;
+  OR?: Maybe<MenuWhereInput[] | MenuWhereInput>;
+  NOT?: Maybe<MenuWhereInput[] | MenuWhereInput>;
+}
+
+export interface MenuCreateManyInput {
+  create?: Maybe<MenuCreateInput[] | MenuCreateInput>;
+  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  number: Int;
+  pwd: String;
+  score?: Maybe<Int>;
+  chatList?: Maybe<ChatRoomCreateManyWithoutBossInput>;
+}
+
+export interface UserUpdateInput {
+  number?: Maybe<Int>;
+  pwd?: Maybe<String>;
+  score?: Maybe<Int>;
+  chatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
 }
 
 export interface NodeNode {
   id: ID_Output;
 }
 
-export interface UserPreviousValues {
+export interface VotePreviousValues {
   id: ID_Output;
-  number: Int;
-  pwd: String;
-  score: Int;
 }
 
-export interface UserPreviousValuesPromise
-  extends Promise<UserPreviousValues>,
+export interface VotePreviousValuesPromise
+  extends Promise<VotePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  number: () => Promise<Int>;
-  pwd: () => Promise<String>;
-  score: () => Promise<Int>;
 }
 
-export interface UserPreviousValuesSubscription
-  extends Promise<AsyncIterator<UserPreviousValues>>,
+export interface VotePreviousValuesSubscription
+  extends Promise<AsyncIterator<VotePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  number: () => Promise<AsyncIterator<Int>>;
-  pwd: () => Promise<AsyncIterator<String>>;
-  score: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface IndividualOrderConnection {
+  pageInfo: PageInfo;
+  edges: IndividualOrderEdge[];
+}
+
+export interface IndividualOrderConnectionPromise
+  extends Promise<IndividualOrderConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<IndividualOrderEdge>>() => T;
+  aggregate: <T = AggregateIndividualOrderPromise>() => T;
+}
+
+export interface IndividualOrderConnectionSubscription
+  extends Promise<AsyncIterator<IndividualOrderConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<IndividualOrderEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateIndividualOrderSubscription>() => T;
+}
+
+export interface ChatRoom {
+  id: ID_Output;
+  location: String;
+  orderExpectedTime: DateTimeOutput;
+  state: Boolean;
+}
+
+export interface ChatRoomPromise extends Promise<ChatRoom>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  boss: <T = UserPromise>() => T;
+  memberList: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  store: <T = StorePromise>() => T;
+  location: () => Promise<String>;
+  orderExpectedTime: () => Promise<DateTimeOutput>;
+  roomOrder: <T = RoomOrderPromise>() => T;
+  chatContentList: <T = FragmentableArray<ChatContent>>(args?: {
+    where?: ChatContentWhereInput;
+    orderBy?: ChatContentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  state: () => Promise<Boolean>;
+}
+
+export interface ChatRoomSubscription
+  extends Promise<AsyncIterator<ChatRoom>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  boss: <T = UserSubscription>() => T;
+  memberList: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  store: <T = StoreSubscription>() => T;
+  location: () => Promise<AsyncIterator<String>>;
+  orderExpectedTime: () => Promise<AsyncIterator<DateTimeOutput>>;
+  roomOrder: <T = RoomOrderSubscription>() => T;
+  chatContentList: <
+    T = Promise<AsyncIterator<ChatContentSubscription>>
+  >(args?: {
+    where?: ChatContentWhereInput;
+    orderBy?: ChatContentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  state: () => Promise<AsyncIterator<Boolean>>;
+}
+
+export interface ChatRoomNullablePromise
+  extends Promise<ChatRoom | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  boss: <T = UserPromise>() => T;
+  memberList: <T = FragmentableArray<User>>(args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  store: <T = StorePromise>() => T;
+  location: () => Promise<String>;
+  orderExpectedTime: () => Promise<DateTimeOutput>;
+  roomOrder: <T = RoomOrderPromise>() => T;
+  chatContentList: <T = FragmentableArray<ChatContent>>(args?: {
+    where?: ChatContentWhereInput;
+    orderBy?: ChatContentOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  state: () => Promise<Boolean>;
+}
+
+export interface IndividualOrderEdge {
+  node: IndividualOrder;
+  cursor: String;
+}
+
+export interface IndividualOrderEdgePromise
+  extends Promise<IndividualOrderEdge>,
+    Fragmentable {
+  node: <T = IndividualOrderPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface IndividualOrderEdgeSubscription
+  extends Promise<AsyncIterator<IndividualOrderEdge>>,
+    Fragmentable {
+  node: <T = IndividualOrderSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface StoreCategory {
+  id: ID_Output;
+  name: String;
+}
+
+export interface StoreCategoryPromise
+  extends Promise<StoreCategory>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  storeList: <T = FragmentableArray<Store>>(args?: {
+    where?: StoreWhereInput;
+    orderBy?: StoreOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface StoreCategorySubscription
+  extends Promise<AsyncIterator<StoreCategory>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  storeList: <T = Promise<AsyncIterator<StoreSubscription>>>(args?: {
+    where?: StoreWhereInput;
+    orderBy?: StoreOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface StoreCategoryNullablePromise
+  extends Promise<StoreCategory | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  storeList: <T = FragmentableArray<Store>>(args?: {
+    where?: StoreWhereInput;
+    orderBy?: StoreOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface BatchPayload {
+  count: Long;
+}
+
+export interface BatchPayloadPromise
+  extends Promise<BatchPayload>,
+    Fragmentable {
+  count: () => Promise<Long>;
+}
+
+export interface BatchPayloadSubscription
+  extends Promise<AsyncIterator<BatchPayload>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Long>>;
+}
+
+export interface AggregateChatRoom {
+  count: Int;
+}
+
+export interface AggregateChatRoomPromise
+  extends Promise<AggregateChatRoom>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateChatRoomSubscription
+  extends Promise<AsyncIterator<AggregateChatRoom>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserVoteSubscriptionPayload {
+  mutation: MutationType;
+  node: UserVote;
+  updatedFields: String[];
+  previousValues: UserVotePreviousValues;
+}
+
+export interface UserVoteSubscriptionPayloadPromise
+  extends Promise<UserVoteSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserVotePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserVotePreviousValuesPromise>() => T;
+}
+
+export interface UserVoteSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserVoteSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserVoteSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserVotePreviousValuesSubscription>() => T;
+}
+
+export interface AggregateVote {
+  count: Int;
+}
+
+export interface AggregateVotePromise
+  extends Promise<AggregateVote>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateVoteSubscription
+  extends Promise<AsyncIterator<AggregateVote>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface ChatRoomEdge {
@@ -2439,134 +3131,25 @@ export interface ChatRoomEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface Store {
-  id: ID_Output;
-  storeId: String;
-  pwd: String;
-  name: String;
-  minimumPrice: Int;
-  deliveryFee: Int;
-  image?: String;
+export interface VoteConnection {
+  pageInfo: PageInfo;
+  edges: VoteEdge[];
 }
 
-export interface StorePromise extends Promise<Store>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  storeId: () => Promise<String>;
-  pwd: () => Promise<String>;
-  name: () => Promise<String>;
-  storeCategory: <T = StoreCategoryPromise>() => T;
-  menuCategoryList: <T = FragmentableArray<MenuCategory>>(args?: {
-    where?: MenuCategoryWhereInput;
-    orderBy?: MenuCategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  menuList: <T = FragmentableArray<Menu>>(args?: {
-    where?: MenuWhereInput;
-    orderBy?: MenuOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  minimumPrice: () => Promise<Int>;
-  deliveryFee: () => Promise<Int>;
-  image: () => Promise<String>;
-  roomOrderList: <T = FragmentableArray<RoomOrder>>(args?: {
-    where?: RoomOrderWhereInput;
-    orderBy?: RoomOrderOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface StoreSubscription
-  extends Promise<AsyncIterator<Store>>,
+export interface VoteConnectionPromise
+  extends Promise<VoteConnection>,
     Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  storeId: () => Promise<AsyncIterator<String>>;
-  pwd: () => Promise<AsyncIterator<String>>;
-  name: () => Promise<AsyncIterator<String>>;
-  storeCategory: <T = StoreCategorySubscription>() => T;
-  menuCategoryList: <
-    T = Promise<AsyncIterator<MenuCategorySubscription>>
-  >(args?: {
-    where?: MenuCategoryWhereInput;
-    orderBy?: MenuCategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  menuList: <T = Promise<AsyncIterator<MenuSubscription>>>(args?: {
-    where?: MenuWhereInput;
-    orderBy?: MenuOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  minimumPrice: () => Promise<AsyncIterator<Int>>;
-  deliveryFee: () => Promise<AsyncIterator<Int>>;
-  image: () => Promise<AsyncIterator<String>>;
-  roomOrderList: <T = Promise<AsyncIterator<RoomOrderSubscription>>>(args?: {
-    where?: RoomOrderWhereInput;
-    orderBy?: RoomOrderOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<VoteEdge>>() => T;
+  aggregate: <T = AggregateVotePromise>() => T;
 }
 
-export interface StoreNullablePromise
-  extends Promise<Store | null>,
+export interface VoteConnectionSubscription
+  extends Promise<AsyncIterator<VoteConnection>>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  storeId: () => Promise<String>;
-  pwd: () => Promise<String>;
-  name: () => Promise<String>;
-  storeCategory: <T = StoreCategoryPromise>() => T;
-  menuCategoryList: <T = FragmentableArray<MenuCategory>>(args?: {
-    where?: MenuCategoryWhereInput;
-    orderBy?: MenuCategoryOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  menuList: <T = FragmentableArray<Menu>>(args?: {
-    where?: MenuWhereInput;
-    orderBy?: MenuOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  minimumPrice: () => Promise<Int>;
-  deliveryFee: () => Promise<Int>;
-  image: () => Promise<String>;
-  roomOrderList: <T = FragmentableArray<RoomOrder>>(args?: {
-    where?: RoomOrderWhereInput;
-    orderBy?: RoomOrderOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<VoteEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateVoteSubscription>() => T;
 }
 
 export interface ChatRoomConnection {
@@ -2590,170 +3173,18 @@ export interface ChatRoomConnectionSubscription
   aggregate: <T = AggregateChatRoomSubscription>() => T;
 }
 
-export interface AggregateChatContent {
+export interface AggregateUserVote {
   count: Int;
 }
 
-export interface AggregateChatContentPromise
-  extends Promise<AggregateChatContent>,
+export interface AggregateUserVotePromise
+  extends Promise<AggregateUserVote>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateChatContentSubscription
-  extends Promise<AsyncIterator<AggregateChatContent>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface StoreCategoryPreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface StoreCategoryPreviousValuesPromise
-  extends Promise<StoreCategoryPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface StoreCategoryPreviousValuesSubscription
-  extends Promise<AsyncIterator<StoreCategoryPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface UserEdge {
-  node: User;
-  cursor: String;
-}
-
-export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
-  node: <T = UserPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface UserEdgeSubscription
-  extends Promise<AsyncIterator<UserEdge>>,
-    Fragmentable {
-  node: <T = UserSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface ChatContentEdge {
-  node: ChatContent;
-  cursor: String;
-}
-
-export interface ChatContentEdgePromise
-  extends Promise<ChatContentEdge>,
-    Fragmentable {
-  node: <T = ChatContentPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface ChatContentEdgeSubscription
-  extends Promise<AsyncIterator<ChatContentEdge>>,
-    Fragmentable {
-  node: <T = ChatContentSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateStoreCategory {
-  count: Int;
-}
-
-export interface AggregateStoreCategoryPromise
-  extends Promise<AggregateStoreCategory>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateStoreCategorySubscription
-  extends Promise<AsyncIterator<AggregateStoreCategory>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface PageInfo {
-  hasNextPage: Boolean;
-  hasPreviousPage: Boolean;
-  startCursor?: String;
-  endCursor?: String;
-}
-
-export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
-  hasNextPage: () => Promise<Boolean>;
-  hasPreviousPage: () => Promise<Boolean>;
-  startCursor: () => Promise<String>;
-  endCursor: () => Promise<String>;
-}
-
-export interface PageInfoSubscription
-  extends Promise<AsyncIterator<PageInfo>>,
-    Fragmentable {
-  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
-  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
-  startCursor: () => Promise<AsyncIterator<String>>;
-  endCursor: () => Promise<AsyncIterator<String>>;
-}
-
-export interface StoreCategoryConnection {
-  pageInfo: PageInfo;
-  edges: StoreCategoryEdge[];
-}
-
-export interface StoreCategoryConnectionPromise
-  extends Promise<StoreCategoryConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<StoreCategoryEdge>>() => T;
-  aggregate: <T = AggregateStoreCategoryPromise>() => T;
-}
-
-export interface StoreCategoryConnectionSubscription
-  extends Promise<AsyncIterator<StoreCategoryConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<StoreCategoryEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateStoreCategorySubscription>() => T;
-}
-
-export interface ChatContentConnection {
-  pageInfo: PageInfo;
-  edges: ChatContentEdge[];
-}
-
-export interface ChatContentConnectionPromise
-  extends Promise<ChatContentConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<ChatContentEdge>>() => T;
-  aggregate: <T = AggregateChatContentPromise>() => T;
-}
-
-export interface ChatContentConnectionSubscription
-  extends Promise<AsyncIterator<ChatContentConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<ChatContentEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateChatContentSubscription>() => T;
-}
-
-export interface AggregateStore {
-  count: Int;
-}
-
-export interface AggregateStorePromise
-  extends Promise<AggregateStore>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateStoreSubscription
-  extends Promise<AsyncIterator<AggregateStore>>,
+export interface AggregateUserVoteSubscription
+  extends Promise<AsyncIterator<AggregateUserVote>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -2788,25 +3219,25 @@ export interface ChatContentNullablePromise
   content: () => Promise<String>;
 }
 
-export interface StoreConnection {
+export interface UserVoteConnection {
   pageInfo: PageInfo;
-  edges: StoreEdge[];
+  edges: UserVoteEdge[];
 }
 
-export interface StoreConnectionPromise
-  extends Promise<StoreConnection>,
+export interface UserVoteConnectionPromise
+  extends Promise<UserVoteConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<StoreEdge>>() => T;
-  aggregate: <T = AggregateStorePromise>() => T;
+  edges: <T = FragmentableArray<UserVoteEdge>>() => T;
+  aggregate: <T = AggregateUserVotePromise>() => T;
 }
 
-export interface StoreConnectionSubscription
-  extends Promise<AsyncIterator<StoreConnection>>,
+export interface UserVoteConnectionSubscription
+  extends Promise<AsyncIterator<UserVoteConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<StoreEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateStoreSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserVoteEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserVoteSubscription>() => T;
 }
 
 export interface ChatContentSubscriptionPayload {
@@ -2834,20 +3265,54 @@ export interface ChatContentSubscriptionPayloadSubscription
   previousValues: <T = ChatContentPreviousValuesSubscription>() => T;
 }
 
-export interface AggregateRoomOrder {
-  count: Int;
+export interface Vote {
+  id: ID_Output;
 }
 
-export interface AggregateRoomOrderPromise
-  extends Promise<AggregateRoomOrder>,
-    Fragmentable {
-  count: () => Promise<Int>;
+export interface VotePromise extends Promise<Vote>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  chatRoom: <T = ChatRoomPromise>() => T;
+  voteList: <T = FragmentableArray<UserVote>>(args?: {
+    where?: UserVoteWhereInput;
+    orderBy?: UserVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
-export interface AggregateRoomOrderSubscription
-  extends Promise<AsyncIterator<AggregateRoomOrder>>,
+export interface VoteSubscription
+  extends Promise<AsyncIterator<Vote>>,
     Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  chatRoom: <T = ChatRoomSubscription>() => T;
+  voteList: <T = Promise<AsyncIterator<UserVoteSubscription>>>(args?: {
+    where?: UserVoteWhereInput;
+    orderBy?: UserVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface VoteNullablePromise
+  extends Promise<Vote | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  chatRoom: <T = ChatRoomPromise>() => T;
+  voteList: <T = FragmentableArray<UserVote>>(args?: {
+    where?: UserVoteWhereInput;
+    orderBy?: UserVoteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ChatContentPreviousValues {
@@ -2869,173 +3334,57 @@ export interface ChatContentPreviousValuesSubscription
   content: () => Promise<AsyncIterator<String>>;
 }
 
-export interface RoomOrderConnection {
-  pageInfo: PageInfo;
-  edges: RoomOrderEdge[];
+export interface AggregateUser {
+  count: Int;
 }
 
-export interface RoomOrderConnectionPromise
-  extends Promise<RoomOrderConnection>,
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface AggregateChatContent {
+  count: Int;
+}
+
+export interface AggregateChatContentPromise
+  extends Promise<AggregateChatContent>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateChatContentSubscription
+  extends Promise<AsyncIterator<AggregateChatContent>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
     Fragmentable {
   pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<RoomOrderEdge>>() => T;
-  aggregate: <T = AggregateRoomOrderPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
 }
 
-export interface RoomOrderConnectionSubscription
-  extends Promise<AsyncIterator<RoomOrderConnection>>,
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
     Fragmentable {
   pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<RoomOrderEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateRoomOrderSubscription>() => T;
-}
-
-export interface StoreCategorySubscriptionPayload {
-  mutation: MutationType;
-  node: StoreCategory;
-  updatedFields: String[];
-  previousValues: StoreCategoryPreviousValues;
-}
-
-export interface StoreCategorySubscriptionPayloadPromise
-  extends Promise<StoreCategorySubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = StoreCategoryPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = StoreCategoryPreviousValuesPromise>() => T;
-}
-
-export interface StoreCategorySubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<StoreCategorySubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = StoreCategorySubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = StoreCategoryPreviousValuesSubscription>() => T;
-}
-
-export interface ChatRoom {
-  id: ID_Output;
-  location: String;
-  orderExpectedTime: DateTimeOutput;
-  state: Boolean;
-}
-
-export interface ChatRoomPromise extends Promise<ChatRoom>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  boss: <T = UserPromise>() => T;
-  memberList: <T = FragmentableArray<User>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  store: <T = StorePromise>() => T;
-  location: () => Promise<String>;
-  orderExpectedTime: () => Promise<DateTimeOutput>;
-  individualOrderList: <T = FragmentableArray<IndividualOrder>>(args?: {
-    where?: IndividualOrderWhereInput;
-    orderBy?: IndividualOrderOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  chatContentList: <T = FragmentableArray<ChatContent>>(args?: {
-    where?: ChatContentWhereInput;
-    orderBy?: ChatContentOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  state: () => Promise<Boolean>;
-}
-
-export interface ChatRoomSubscription
-  extends Promise<AsyncIterator<ChatRoom>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  boss: <T = UserSubscription>() => T;
-  memberList: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  store: <T = StoreSubscription>() => T;
-  location: () => Promise<AsyncIterator<String>>;
-  orderExpectedTime: () => Promise<AsyncIterator<DateTimeOutput>>;
-  individualOrderList: <
-    T = Promise<AsyncIterator<IndividualOrderSubscription>>
-  >(args?: {
-    where?: IndividualOrderWhereInput;
-    orderBy?: IndividualOrderOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  chatContentList: <
-    T = Promise<AsyncIterator<ChatContentSubscription>>
-  >(args?: {
-    where?: ChatContentWhereInput;
-    orderBy?: ChatContentOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  state: () => Promise<AsyncIterator<Boolean>>;
-}
-
-export interface ChatRoomNullablePromise
-  extends Promise<ChatRoom | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  boss: <T = UserPromise>() => T;
-  memberList: <T = FragmentableArray<User>>(args?: {
-    where?: UserWhereInput;
-    orderBy?: UserOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  store: <T = StorePromise>() => T;
-  location: () => Promise<String>;
-  orderExpectedTime: () => Promise<DateTimeOutput>;
-  individualOrderList: <T = FragmentableArray<IndividualOrder>>(args?: {
-    where?: IndividualOrderWhereInput;
-    orderBy?: IndividualOrderOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  chatContentList: <T = FragmentableArray<ChatContent>>(args?: {
-    where?: ChatContentWhereInput;
-    orderBy?: ChatContentOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  state: () => Promise<Boolean>;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
 }
 
 export interface ChatRoomSubscriptionPayload {
@@ -3063,22 +3412,22 @@ export interface ChatRoomSubscriptionPayloadSubscription
   previousValues: <T = ChatRoomPreviousValuesSubscription>() => T;
 }
 
-export interface MenuCategoryEdge {
-  node: MenuCategory;
+export interface StoreCategoryEdge {
+  node: StoreCategory;
   cursor: String;
 }
 
-export interface MenuCategoryEdgePromise
-  extends Promise<MenuCategoryEdge>,
+export interface StoreCategoryEdgePromise
+  extends Promise<StoreCategoryEdge>,
     Fragmentable {
-  node: <T = MenuCategoryPromise>() => T;
+  node: <T = StoreCategoryPromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface MenuCategoryEdgeSubscription
-  extends Promise<AsyncIterator<MenuCategoryEdge>>,
+export interface StoreCategoryEdgeSubscription
+  extends Promise<AsyncIterator<StoreCategoryEdge>>,
     Fragmentable {
-  node: <T = MenuCategorySubscription>() => T;
+  node: <T = StoreCategorySubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
@@ -3107,96 +3456,59 @@ export interface ChatRoomPreviousValuesSubscription
   state: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface AggregateMenu {
-  count: Int;
-}
-
-export interface AggregateMenuPromise
-  extends Promise<AggregateMenu>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateMenuSubscription
-  extends Promise<AsyncIterator<AggregateMenu>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface IndividualOrder {
+export interface UserVotePreviousValues {
   id: ID_Output;
+  choice: Boolean;
 }
 
-export interface IndividualOrderPromise
-  extends Promise<IndividualOrder>,
+export interface UserVotePreviousValuesPromise
+  extends Promise<UserVotePreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  user: <T = UserPromise>() => T;
-  menuList: <T = FragmentableArray<Menu>>(args?: {
-    where?: MenuWhereInput;
-    orderBy?: MenuOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  chatRoom: <T = ChatRoomPromise>() => T;
+  choice: () => Promise<Boolean>;
 }
 
-export interface IndividualOrderSubscription
-  extends Promise<AsyncIterator<IndividualOrder>>,
+export interface UserVotePreviousValuesSubscription
+  extends Promise<AsyncIterator<UserVotePreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  user: <T = UserSubscription>() => T;
-  menuList: <T = Promise<AsyncIterator<MenuSubscription>>>(args?: {
-    where?: MenuWhereInput;
-    orderBy?: MenuOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  chatRoom: <T = ChatRoomSubscription>() => T;
+  choice: () => Promise<AsyncIterator<Boolean>>;
 }
 
-export interface IndividualOrderNullablePromise
-  extends Promise<IndividualOrder | null>,
+export interface ChatContentEdge {
+  node: ChatContent;
+  cursor: String;
+}
+
+export interface ChatContentEdgePromise
+  extends Promise<ChatContentEdge>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  user: <T = UserPromise>() => T;
-  menuList: <T = FragmentableArray<Menu>>(args?: {
-    where?: MenuWhereInput;
-    orderBy?: MenuOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-  chatRoom: <T = ChatRoomPromise>() => T;
+  node: <T = ChatContentPromise>() => T;
+  cursor: () => Promise<String>;
 }
 
-export interface MenuConnection {
-  pageInfo: PageInfo;
-  edges: MenuEdge[];
-}
-
-export interface MenuConnectionPromise
-  extends Promise<MenuConnection>,
+export interface ChatContentEdgeSubscription
+  extends Promise<AsyncIterator<ChatContentEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<MenuEdge>>() => T;
-  aggregate: <T = AggregateMenuPromise>() => T;
+  node: <T = ChatContentSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface MenuConnectionSubscription
-  extends Promise<AsyncIterator<MenuConnection>>,
+export interface StoreEdge {
+  node: Store;
+  cursor: String;
+}
+
+export interface StoreEdgePromise extends Promise<StoreEdge>, Fragmentable {
+  node: <T = StorePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface StoreEdgeSubscription
+  extends Promise<AsyncIterator<StoreEdge>>,
     Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<MenuEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateMenuSubscription>() => T;
+  node: <T = StoreSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface IndividualOrderSubscriptionPayload {
@@ -3224,23 +3536,20 @@ export interface IndividualOrderSubscriptionPayloadSubscription
   previousValues: <T = IndividualOrderPreviousValuesSubscription>() => T;
 }
 
-export interface IndividualOrderEdge {
-  node: IndividualOrder;
-  cursor: String;
+export interface AggregateRoomOrder {
+  count: Int;
 }
 
-export interface IndividualOrderEdgePromise
-  extends Promise<IndividualOrderEdge>,
+export interface AggregateRoomOrderPromise
+  extends Promise<AggregateRoomOrder>,
     Fragmentable {
-  node: <T = IndividualOrderPromise>() => T;
-  cursor: () => Promise<String>;
+  count: () => Promise<Int>;
 }
 
-export interface IndividualOrderEdgeSubscription
-  extends Promise<AsyncIterator<IndividualOrderEdge>>,
+export interface AggregateRoomOrderSubscription
+  extends Promise<AsyncIterator<AggregateRoomOrder>>,
     Fragmentable {
-  node: <T = IndividualOrderSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface IndividualOrderPreviousValues {
@@ -3259,20 +3568,564 @@ export interface IndividualOrderPreviousValuesSubscription
   id: () => Promise<AsyncIterator<ID_Output>>;
 }
 
-export interface AggregateChatRoom {
+export interface RoomOrderConnection {
+  pageInfo: PageInfo;
+  edges: RoomOrderEdge[];
+}
+
+export interface RoomOrderConnectionPromise
+  extends Promise<RoomOrderConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<RoomOrderEdge>>() => T;
+  aggregate: <T = AggregateRoomOrderPromise>() => T;
+}
+
+export interface RoomOrderConnectionSubscription
+  extends Promise<AsyncIterator<RoomOrderConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<RoomOrderEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateRoomOrderSubscription>() => T;
+}
+
+export interface PageInfo {
+  hasNextPage: Boolean;
+  hasPreviousPage: Boolean;
+  startCursor?: String;
+  endCursor?: String;
+}
+
+export interface PageInfoPromise extends Promise<PageInfo>, Fragmentable {
+  hasNextPage: () => Promise<Boolean>;
+  hasPreviousPage: () => Promise<Boolean>;
+  startCursor: () => Promise<String>;
+  endCursor: () => Promise<String>;
+}
+
+export interface PageInfoSubscription
+  extends Promise<AsyncIterator<PageInfo>>,
+    Fragmentable {
+  hasNextPage: () => Promise<AsyncIterator<Boolean>>;
+  hasPreviousPage: () => Promise<AsyncIterator<Boolean>>;
+  startCursor: () => Promise<AsyncIterator<String>>;
+  endCursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MenuCategoryEdge {
+  node: MenuCategory;
+  cursor: String;
+}
+
+export interface MenuCategoryEdgePromise
+  extends Promise<MenuCategoryEdge>,
+    Fragmentable {
+  node: <T = MenuCategoryPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MenuCategoryEdgeSubscription
+  extends Promise<AsyncIterator<MenuCategoryEdge>>,
+    Fragmentable {
+  node: <T = MenuCategorySubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface MenuSubscriptionPayload {
+  mutation: MutationType;
+  node: Menu;
+  updatedFields: String[];
+  previousValues: MenuPreviousValues;
+}
+
+export interface MenuSubscriptionPayloadPromise
+  extends Promise<MenuSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MenuPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MenuPreviousValuesPromise>() => T;
+}
+
+export interface MenuSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MenuSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MenuSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MenuPreviousValuesSubscription>() => T;
+}
+
+export interface AggregateMenu {
   count: Int;
 }
 
-export interface AggregateChatRoomPromise
-  extends Promise<AggregateChatRoom>,
+export interface AggregateMenuPromise
+  extends Promise<AggregateMenu>,
     Fragmentable {
   count: () => Promise<Int>;
 }
 
-export interface AggregateChatRoomSubscription
-  extends Promise<AsyncIterator<AggregateChatRoom>>,
+export interface AggregateMenuSubscription
+  extends Promise<AsyncIterator<AggregateMenu>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface MenuPreviousValues {
+  id: ID_Output;
+  name: String;
+  price: Int;
+}
+
+export interface MenuPreviousValuesPromise
+  extends Promise<MenuPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  price: () => Promise<Int>;
+}
+
+export interface MenuPreviousValuesSubscription
+  extends Promise<AsyncIterator<MenuPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  price: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface MenuConnection {
+  pageInfo: PageInfo;
+  edges: MenuEdge[];
+}
+
+export interface MenuConnectionPromise
+  extends Promise<MenuConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MenuEdge>>() => T;
+  aggregate: <T = AggregateMenuPromise>() => T;
+}
+
+export interface MenuConnectionSubscription
+  extends Promise<AsyncIterator<MenuConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MenuEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMenuSubscription>() => T;
+}
+
+export interface ChatContentConnection {
+  pageInfo: PageInfo;
+  edges: ChatContentEdge[];
+}
+
+export interface ChatContentConnectionPromise
+  extends Promise<ChatContentConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ChatContentEdge>>() => T;
+  aggregate: <T = AggregateChatContentPromise>() => T;
+}
+
+export interface ChatContentConnectionSubscription
+  extends Promise<AsyncIterator<ChatContentConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ChatContentEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateChatContentSubscription>() => T;
+}
+
+export interface VoteSubscriptionPayload {
+  mutation: MutationType;
+  node: Vote;
+  updatedFields: String[];
+  previousValues: VotePreviousValues;
+}
+
+export interface VoteSubscriptionPayloadPromise
+  extends Promise<VoteSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = VotePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = VotePreviousValuesPromise>() => T;
+}
+
+export interface VoteSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<VoteSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = VoteSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = VotePreviousValuesSubscription>() => T;
+}
+
+export interface MenuCategorySubscriptionPayload {
+  mutation: MutationType;
+  node: MenuCategory;
+  updatedFields: String[];
+  previousValues: MenuCategoryPreviousValues;
+}
+
+export interface MenuCategorySubscriptionPayloadPromise
+  extends Promise<MenuCategorySubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = MenuCategoryPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = MenuCategoryPreviousValuesPromise>() => T;
+}
+
+export interface MenuCategorySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<MenuCategorySubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = MenuCategorySubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = MenuCategoryPreviousValuesSubscription>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  number: Int;
+  pwd: String;
+  score: Int;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  number: () => Promise<Int>;
+  pwd: () => Promise<String>;
+  score: () => Promise<Int>;
+  chatList: <T = FragmentableArray<ChatRoom>>(args?: {
+    where?: ChatRoomWhereInput;
+    orderBy?: ChatRoomOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  number: () => Promise<AsyncIterator<Int>>;
+  pwd: () => Promise<AsyncIterator<String>>;
+  score: () => Promise<AsyncIterator<Int>>;
+  chatList: <T = Promise<AsyncIterator<ChatRoomSubscription>>>(args?: {
+    where?: ChatRoomWhereInput;
+    orderBy?: ChatRoomOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  number: () => Promise<Int>;
+  pwd: () => Promise<String>;
+  score: () => Promise<Int>;
+  chatList: <T = FragmentableArray<ChatRoom>>(args?: {
+    where?: ChatRoomWhereInput;
+    orderBy?: ChatRoomOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface MenuCategoryPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface MenuCategoryPreviousValuesPromise
+  extends Promise<MenuCategoryPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+}
+
+export interface MenuCategoryPreviousValuesSubscription
+  extends Promise<AsyncIterator<MenuCategoryPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Store {
+  id: ID_Output;
+  storeId: String;
+  pwd: String;
+  name: String;
+  minimumPrice: Int;
+  deliveryFee: Int;
+  image?: String;
+}
+
+export interface StorePromise extends Promise<Store>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  storeId: () => Promise<String>;
+  pwd: () => Promise<String>;
+  name: () => Promise<String>;
+  storeCategory: <T = StoreCategoryPromise>() => T;
+  menuCategoryList: <T = FragmentableArray<MenuCategory>>(args?: {
+    where?: MenuCategoryWhereInput;
+    orderBy?: MenuCategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  minimumPrice: () => Promise<Int>;
+  deliveryFee: () => Promise<Int>;
+  image: () => Promise<String>;
+  chatRoomList: <T = FragmentableArray<ChatRoom>>(args?: {
+    where?: ChatRoomWhereInput;
+    orderBy?: ChatRoomOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface StoreSubscription
+  extends Promise<AsyncIterator<Store>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  storeId: () => Promise<AsyncIterator<String>>;
+  pwd: () => Promise<AsyncIterator<String>>;
+  name: () => Promise<AsyncIterator<String>>;
+  storeCategory: <T = StoreCategorySubscription>() => T;
+  menuCategoryList: <
+    T = Promise<AsyncIterator<MenuCategorySubscription>>
+  >(args?: {
+    where?: MenuCategoryWhereInput;
+    orderBy?: MenuCategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  minimumPrice: () => Promise<AsyncIterator<Int>>;
+  deliveryFee: () => Promise<AsyncIterator<Int>>;
+  image: () => Promise<AsyncIterator<String>>;
+  chatRoomList: <T = Promise<AsyncIterator<ChatRoomSubscription>>>(args?: {
+    where?: ChatRoomWhereInput;
+    orderBy?: ChatRoomOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface StoreNullablePromise
+  extends Promise<Store | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  storeId: () => Promise<String>;
+  pwd: () => Promise<String>;
+  name: () => Promise<String>;
+  storeCategory: <T = StoreCategoryPromise>() => T;
+  menuCategoryList: <T = FragmentableArray<MenuCategory>>(args?: {
+    where?: MenuCategoryWhereInput;
+    orderBy?: MenuCategoryOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  minimumPrice: () => Promise<Int>;
+  deliveryFee: () => Promise<Int>;
+  image: () => Promise<String>;
+  chatRoomList: <T = FragmentableArray<ChatRoom>>(args?: {
+    where?: ChatRoomWhereInput;
+    orderBy?: ChatRoomOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface IndividualOrder {
+  id: ID_Output;
+}
+
+export interface IndividualOrderPromise
+  extends Promise<IndividualOrder>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  menuList: <T = FragmentableArray<Menu>>(args?: {
+    where?: MenuWhereInput;
+    orderBy?: MenuOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  roomOrder: <T = RoomOrderPromise>() => T;
+}
+
+export interface IndividualOrderSubscription
+  extends Promise<AsyncIterator<IndividualOrder>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  menuList: <T = Promise<AsyncIterator<MenuSubscription>>>(args?: {
+    where?: MenuWhereInput;
+    orderBy?: MenuOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  roomOrder: <T = RoomOrderSubscription>() => T;
+}
+
+export interface IndividualOrderNullablePromise
+  extends Promise<IndividualOrder | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  menuList: <T = FragmentableArray<Menu>>(args?: {
+    where?: MenuWhereInput;
+    orderBy?: MenuOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  roomOrder: <T = RoomOrderPromise>() => T;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface RoomOrderSubscriptionPayload {
+  mutation: MutationType;
+  node: RoomOrder;
+  updatedFields: String[];
+  previousValues: RoomOrderPreviousValues;
+}
+
+export interface RoomOrderSubscriptionPayloadPromise
+  extends Promise<RoomOrderSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = RoomOrderPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = RoomOrderPreviousValuesPromise>() => T;
+}
+
+export interface RoomOrderSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<RoomOrderSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = RoomOrderSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = RoomOrderPreviousValuesSubscription>() => T;
+}
+
+export interface StoreCategoryConnection {
+  pageInfo: PageInfo;
+  edges: StoreCategoryEdge[];
+}
+
+export interface StoreCategoryConnectionPromise
+  extends Promise<StoreCategoryConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<StoreCategoryEdge>>() => T;
+  aggregate: <T = AggregateStoreCategoryPromise>() => T;
+}
+
+export interface StoreCategoryConnectionSubscription
+  extends Promise<AsyncIterator<StoreCategoryConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<StoreCategoryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateStoreCategorySubscription>() => T;
+}
+
+export interface RoomOrderPreviousValues {
+  id: ID_Output;
+  phoneNumber: String;
+  state: Boolean;
+}
+
+export interface RoomOrderPreviousValuesPromise
+  extends Promise<RoomOrderPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  phoneNumber: () => Promise<String>;
+  state: () => Promise<Boolean>;
+}
+
+export interface RoomOrderPreviousValuesSubscription
+  extends Promise<AsyncIterator<RoomOrderPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  phoneNumber: () => Promise<AsyncIterator<String>>;
+  state: () => Promise<AsyncIterator<Boolean>>;
+}
+
+export interface StoreConnection {
+  pageInfo: PageInfo;
+  edges: StoreEdge[];
+}
+
+export interface StoreConnectionPromise
+  extends Promise<StoreConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<StoreEdge>>() => T;
+  aggregate: <T = AggregateStorePromise>() => T;
+}
+
+export interface StoreConnectionSubscription
+  extends Promise<AsyncIterator<StoreConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<StoreEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateStoreSubscription>() => T;
 }
 
 export interface RoomOrder {
@@ -3335,376 +4188,6 @@ export interface RoomOrderNullablePromise
   state: () => Promise<Boolean>;
 }
 
-export interface UserConnection {
-  pageInfo: PageInfo;
-  edges: UserEdge[];
-}
-
-export interface UserConnectionPromise
-  extends Promise<UserConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<UserEdge>>() => T;
-  aggregate: <T = AggregateUserPromise>() => T;
-}
-
-export interface UserConnectionSubscription
-  extends Promise<AsyncIterator<UserConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateUserSubscription>() => T;
-}
-
-export interface MenuSubscriptionPayload {
-  mutation: MutationType;
-  node: Menu;
-  updatedFields: String[];
-  previousValues: MenuPreviousValues;
-}
-
-export interface MenuSubscriptionPayloadPromise
-  extends Promise<MenuSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = MenuPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = MenuPreviousValuesPromise>() => T;
-}
-
-export interface MenuSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<MenuSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = MenuSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = MenuPreviousValuesSubscription>() => T;
-}
-
-export interface User {
-  id: ID_Output;
-  number: Int;
-  pwd: String;
-  score: Int;
-}
-
-export interface UserPromise extends Promise<User>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  number: () => Promise<Int>;
-  pwd: () => Promise<String>;
-  score: () => Promise<Int>;
-  chatList: <T = FragmentableArray<ChatRoom>>(args?: {
-    where?: ChatRoomWhereInput;
-    orderBy?: ChatRoomOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserSubscription
-  extends Promise<AsyncIterator<User>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  number: () => Promise<AsyncIterator<Int>>;
-  pwd: () => Promise<AsyncIterator<String>>;
-  score: () => Promise<AsyncIterator<Int>>;
-  chatList: <T = Promise<AsyncIterator<ChatRoomSubscription>>>(args?: {
-    where?: ChatRoomWhereInput;
-    orderBy?: ChatRoomOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface UserNullablePromise
-  extends Promise<User | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  number: () => Promise<Int>;
-  pwd: () => Promise<String>;
-  score: () => Promise<Int>;
-  chatList: <T = FragmentableArray<ChatRoom>>(args?: {
-    where?: ChatRoomWhereInput;
-    orderBy?: ChatRoomOrderByInput;
-    skip?: Int;
-    after?: String;
-    before?: String;
-    first?: Int;
-    last?: Int;
-  }) => T;
-}
-
-export interface MenuPreviousValues {
-  id: ID_Output;
-  name: String;
-  price: Int;
-}
-
-export interface MenuPreviousValuesPromise
-  extends Promise<MenuPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  price: () => Promise<Int>;
-}
-
-export interface MenuPreviousValuesSubscription
-  extends Promise<AsyncIterator<MenuPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  price: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType;
-  node: User;
-  updatedFields: String[];
-  previousValues: UserPreviousValues;
-}
-
-export interface UserSubscriptionPayloadPromise
-  extends Promise<UserSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = UserPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = UserPreviousValuesPromise>() => T;
-}
-
-export interface UserSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = UserSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = UserPreviousValuesSubscription>() => T;
-}
-
-export interface Menu {
-  id: ID_Output;
-  name: String;
-  price: Int;
-}
-
-export interface MenuPromise extends Promise<Menu>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  store: <T = StorePromise>() => T;
-  price: () => Promise<Int>;
-  menuCategory: <T = MenuCategoryPromise>() => T;
-}
-
-export interface MenuSubscription
-  extends Promise<AsyncIterator<Menu>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  store: <T = StoreSubscription>() => T;
-  price: () => Promise<AsyncIterator<Int>>;
-  menuCategory: <T = MenuCategorySubscription>() => T;
-}
-
-export interface MenuNullablePromise
-  extends Promise<Menu | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  store: <T = StorePromise>() => T;
-  price: () => Promise<Int>;
-  menuCategory: <T = MenuCategoryPromise>() => T;
-}
-
-export interface BatchPayload {
-  count: Long;
-}
-
-export interface BatchPayloadPromise
-  extends Promise<BatchPayload>,
-    Fragmentable {
-  count: () => Promise<Long>;
-}
-
-export interface BatchPayloadSubscription
-  extends Promise<AsyncIterator<BatchPayload>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Long>>;
-}
-
-export interface MenuCategorySubscriptionPayload {
-  mutation: MutationType;
-  node: MenuCategory;
-  updatedFields: String[];
-  previousValues: MenuCategoryPreviousValues;
-}
-
-export interface MenuCategorySubscriptionPayloadPromise
-  extends Promise<MenuCategorySubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = MenuCategoryPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = MenuCategoryPreviousValuesPromise>() => T;
-}
-
-export interface MenuCategorySubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<MenuCategorySubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = MenuCategorySubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = MenuCategoryPreviousValuesSubscription>() => T;
-}
-
-export interface MenuCategoryConnection {
-  pageInfo: PageInfo;
-  edges: MenuCategoryEdge[];
-}
-
-export interface MenuCategoryConnectionPromise
-  extends Promise<MenuCategoryConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<MenuCategoryEdge>>() => T;
-  aggregate: <T = AggregateMenuCategoryPromise>() => T;
-}
-
-export interface MenuCategoryConnectionSubscription
-  extends Promise<AsyncIterator<MenuCategoryConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<MenuCategoryEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateMenuCategorySubscription>() => T;
-}
-
-export interface MenuCategoryPreviousValues {
-  id: ID_Output;
-  name: String;
-}
-
-export interface MenuCategoryPreviousValuesPromise
-  extends Promise<MenuCategoryPreviousValues>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-}
-
-export interface MenuCategoryPreviousValuesSubscription
-  extends Promise<AsyncIterator<MenuCategoryPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-}
-
-export interface AggregateIndividualOrder {
-  count: Int;
-}
-
-export interface AggregateIndividualOrderPromise
-  extends Promise<AggregateIndividualOrder>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateIndividualOrderSubscription
-  extends Promise<AsyncIterator<AggregateIndividualOrder>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface MenuCategory {
-  id: ID_Output;
-  name: String;
-}
-
-export interface MenuCategoryPromise
-  extends Promise<MenuCategory>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  store: <T = StorePromise>() => T;
-}
-
-export interface MenuCategorySubscription
-  extends Promise<AsyncIterator<MenuCategory>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  name: () => Promise<AsyncIterator<String>>;
-  store: <T = StoreSubscription>() => T;
-}
-
-export interface MenuCategoryNullablePromise
-  extends Promise<MenuCategory | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
-  store: <T = StorePromise>() => T;
-}
-
-export interface AggregateUser {
-  count: Int;
-}
-
-export interface AggregateUserPromise
-  extends Promise<AggregateUser>,
-    Fragmentable {
-  count: () => Promise<Int>;
-}
-
-export interface AggregateUserSubscription
-  extends Promise<AsyncIterator<AggregateUser>>,
-    Fragmentable {
-  count: () => Promise<AsyncIterator<Int>>;
-}
-
-export interface RoomOrderSubscriptionPayload {
-  mutation: MutationType;
-  node: RoomOrder;
-  updatedFields: String[];
-  previousValues: RoomOrderPreviousValues;
-}
-
-export interface RoomOrderSubscriptionPayloadPromise
-  extends Promise<RoomOrderSubscriptionPayload>,
-    Fragmentable {
-  mutation: () => Promise<MutationType>;
-  node: <T = RoomOrderPromise>() => T;
-  updatedFields: () => Promise<String[]>;
-  previousValues: <T = RoomOrderPreviousValuesPromise>() => T;
-}
-
-export interface RoomOrderSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<RoomOrderSubscriptionPayload>>,
-    Fragmentable {
-  mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = RoomOrderSubscription>() => T;
-  updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = RoomOrderPreviousValuesSubscription>() => T;
-}
-
-export interface StoreEdge {
-  node: Store;
-  cursor: String;
-}
-
-export interface StoreEdgePromise extends Promise<StoreEdge>, Fragmentable {
-  node: <T = StorePromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface StoreEdgeSubscription
-  extends Promise<AsyncIterator<StoreEdge>>,
-    Fragmentable {
-  node: <T = StoreSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
-}
-
 export interface AggregateMenuCategory {
   count: Int;
 }
@@ -3719,6 +4202,48 @@ export interface AggregateMenuCategorySubscription
   extends Promise<AsyncIterator<AggregateMenuCategory>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface StoreSubscriptionPayload {
+  mutation: MutationType;
+  node: Store;
+  updatedFields: String[];
+  previousValues: StorePreviousValues;
+}
+
+export interface StoreSubscriptionPayloadPromise
+  extends Promise<StoreSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = StorePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = StorePreviousValuesPromise>() => T;
+}
+
+export interface StoreSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<StoreSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = StoreSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = StorePreviousValuesSubscription>() => T;
+}
+
+export interface MenuEdge {
+  node: Menu;
+  cursor: String;
+}
+
+export interface MenuEdgePromise extends Promise<MenuEdge>, Fragmentable {
+  node: <T = MenuPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface MenuEdgeSubscription
+  extends Promise<AsyncIterator<MenuEdge>>,
+    Fragmentable {
+  node: <T = MenuSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
 }
 
 export interface StorePreviousValues {
@@ -3755,94 +4280,285 @@ export interface StorePreviousValuesSubscription
   image: () => Promise<AsyncIterator<String>>;
 }
 
-export interface StoreSubscriptionPayload {
-  mutation: MutationType;
-  node: Store;
-  updatedFields: String[];
-  previousValues: StorePreviousValues;
+export interface VoteEdge {
+  node: Vote;
+  cursor: String;
 }
 
-export interface StoreSubscriptionPayloadPromise
-  extends Promise<StoreSubscriptionPayload>,
+export interface VoteEdgePromise extends Promise<VoteEdge>, Fragmentable {
+  node: <T = VotePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface VoteEdgeSubscription
+  extends Promise<AsyncIterator<VoteEdge>>,
+    Fragmentable {
+  node: <T = VoteSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface Menu {
+  id: ID_Output;
+  name: String;
+  price: Int;
+}
+
+export interface MenuPromise extends Promise<Menu>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  price: () => Promise<Int>;
+  menuCategory: <T = MenuCategoryPromise>() => T;
+}
+
+export interface MenuSubscription
+  extends Promise<AsyncIterator<Menu>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  price: () => Promise<AsyncIterator<Int>>;
+  menuCategory: <T = MenuCategorySubscription>() => T;
+}
+
+export interface MenuNullablePromise
+  extends Promise<Menu | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  price: () => Promise<Int>;
+  menuCategory: <T = MenuCategoryPromise>() => T;
+}
+
+export interface UserVote {
+  id: ID_Output;
+  choice: Boolean;
+}
+
+export interface UserVotePromise extends Promise<UserVote>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  choice: () => Promise<Boolean>;
+  vote: <T = VotePromise>() => T;
+}
+
+export interface UserVoteSubscription
+  extends Promise<AsyncIterator<UserVote>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  user: <T = UserSubscription>() => T;
+  choice: () => Promise<AsyncIterator<Boolean>>;
+  vote: <T = VoteSubscription>() => T;
+}
+
+export interface UserVoteNullablePromise
+  extends Promise<UserVote | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  user: <T = UserPromise>() => T;
+  choice: () => Promise<Boolean>;
+  vote: <T = VotePromise>() => T;
+}
+
+export interface StoreCategorySubscriptionPayload {
+  mutation: MutationType;
+  node: StoreCategory;
+  updatedFields: String[];
+  previousValues: StoreCategoryPreviousValues;
+}
+
+export interface StoreCategorySubscriptionPayloadPromise
+  extends Promise<StoreCategorySubscriptionPayload>,
     Fragmentable {
   mutation: () => Promise<MutationType>;
-  node: <T = StorePromise>() => T;
+  node: <T = StoreCategoryPromise>() => T;
   updatedFields: () => Promise<String[]>;
-  previousValues: <T = StorePreviousValuesPromise>() => T;
+  previousValues: <T = StoreCategoryPreviousValuesPromise>() => T;
 }
 
-export interface StoreSubscriptionPayloadSubscription
-  extends Promise<AsyncIterator<StoreSubscriptionPayload>>,
+export interface StoreCategorySubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<StoreCategorySubscriptionPayload>>,
     Fragmentable {
   mutation: () => Promise<AsyncIterator<MutationType>>;
-  node: <T = StoreSubscription>() => T;
+  node: <T = StoreCategorySubscription>() => T;
   updatedFields: () => Promise<AsyncIterator<String[]>>;
-  previousValues: <T = StorePreviousValuesSubscription>() => T;
+  previousValues: <T = StoreCategoryPreviousValuesSubscription>() => T;
 }
 
-export interface StoreCategory {
+export interface AggregateStore {
+  count: Int;
+}
+
+export interface AggregateStorePromise
+  extends Promise<AggregateStore>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateStoreSubscription
+  extends Promise<AsyncIterator<AggregateStore>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface MenuCategoryConnection {
+  pageInfo: PageInfo;
+  edges: MenuCategoryEdge[];
+}
+
+export interface MenuCategoryConnectionPromise
+  extends Promise<MenuCategoryConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<MenuCategoryEdge>>() => T;
+  aggregate: <T = AggregateMenuCategoryPromise>() => T;
+}
+
+export interface MenuCategoryConnectionSubscription
+  extends Promise<AsyncIterator<MenuCategoryConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<MenuCategoryEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateMenuCategorySubscription>() => T;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  number: Int;
+  pwd: String;
+  score: Int;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  number: () => Promise<Int>;
+  pwd: () => Promise<String>;
+  score: () => Promise<Int>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  number: () => Promise<AsyncIterator<Int>>;
+  pwd: () => Promise<AsyncIterator<String>>;
+  score: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface MenuCategory {
   id: ID_Output;
   name: String;
 }
 
-export interface StoreCategoryPromise
-  extends Promise<StoreCategory>,
+export interface MenuCategoryPromise
+  extends Promise<MenuCategory>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  store: <T = StorePromise>() => T;
+  menuList: <T = FragmentableArray<Menu>>(args?: {
+    where?: MenuWhereInput;
+    orderBy?: MenuOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface MenuCategorySubscription
+  extends Promise<AsyncIterator<MenuCategory>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  store: <T = StoreSubscription>() => T;
+  menuList: <T = Promise<AsyncIterator<MenuSubscription>>>(args?: {
+    where?: MenuWhereInput;
+    orderBy?: MenuOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface MenuCategoryNullablePromise
+  extends Promise<MenuCategory | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  store: <T = StorePromise>() => T;
+  menuList: <T = FragmentableArray<Menu>>(args?: {
+    where?: MenuWhereInput;
+    orderBy?: MenuOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface StoreCategoryPreviousValues {
+  id: ID_Output;
+  name: String;
+}
+
+export interface StoreCategoryPreviousValuesPromise
+  extends Promise<StoreCategoryPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
   name: () => Promise<String>;
 }
 
-export interface StoreCategorySubscription
-  extends Promise<AsyncIterator<StoreCategory>>,
+export interface StoreCategoryPreviousValuesSubscription
+  extends Promise<AsyncIterator<StoreCategoryPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   name: () => Promise<AsyncIterator<String>>;
 }
 
-export interface StoreCategoryNullablePromise
-  extends Promise<StoreCategory | null>,
+export interface AggregateIndividualOrder {
+  count: Int;
+}
+
+export interface AggregateIndividualOrderPromise
+  extends Promise<AggregateIndividualOrder>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  name: () => Promise<String>;
+  count: () => Promise<Int>;
 }
 
-export interface RoomOrderPreviousValues {
-  id: ID_Output;
-  phoneNumber: String;
-  state: Boolean;
-}
-
-export interface RoomOrderPreviousValuesPromise
-  extends Promise<RoomOrderPreviousValues>,
+export interface AggregateIndividualOrderSubscription
+  extends Promise<AsyncIterator<AggregateIndividualOrder>>,
     Fragmentable {
-  id: () => Promise<ID_Output>;
-  phoneNumber: () => Promise<String>;
-  state: () => Promise<Boolean>;
-}
-
-export interface RoomOrderPreviousValuesSubscription
-  extends Promise<AsyncIterator<RoomOrderPreviousValues>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  phoneNumber: () => Promise<AsyncIterator<String>>;
-  state: () => Promise<AsyncIterator<Boolean>>;
-}
-
-export interface MenuEdge {
-  node: Menu;
-  cursor: String;
-}
-
-export interface MenuEdgePromise extends Promise<MenuEdge>, Fragmentable {
-  node: <T = MenuPromise>() => T;
-  cursor: () => Promise<String>;
-}
-
-export interface MenuEdgeSubscription
-  extends Promise<AsyncIterator<MenuEdge>>,
-    Fragmentable {
-  node: <T = MenuSubscription>() => T;
-  cursor: () => Promise<AsyncIterator<String>>;
+  count: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface RoomOrderEdge {
@@ -3864,50 +4580,42 @@ export interface RoomOrderEdgeSubscription
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface StoreCategoryEdge {
-  node: StoreCategory;
+export interface AggregateStoreCategory {
+  count: Int;
+}
+
+export interface AggregateStoreCategoryPromise
+  extends Promise<AggregateStoreCategory>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateStoreCategorySubscription
+  extends Promise<AsyncIterator<AggregateStoreCategory>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface UserVoteEdge {
+  node: UserVote;
   cursor: String;
 }
 
-export interface StoreCategoryEdgePromise
-  extends Promise<StoreCategoryEdge>,
+export interface UserVoteEdgePromise
+  extends Promise<UserVoteEdge>,
     Fragmentable {
-  node: <T = StoreCategoryPromise>() => T;
+  node: <T = UserVotePromise>() => T;
   cursor: () => Promise<String>;
 }
 
-export interface StoreCategoryEdgeSubscription
-  extends Promise<AsyncIterator<StoreCategoryEdge>>,
+export interface UserVoteEdgeSubscription
+  extends Promise<AsyncIterator<UserVoteEdge>>,
     Fragmentable {
-  node: <T = StoreCategorySubscription>() => T;
+  node: <T = UserVoteSubscription>() => T;
   cursor: () => Promise<AsyncIterator<String>>;
 }
 
-export interface IndividualOrderConnection {
-  pageInfo: PageInfo;
-  edges: IndividualOrderEdge[];
-}
-
-export interface IndividualOrderConnectionPromise
-  extends Promise<IndividualOrderConnection>,
-    Fragmentable {
-  pageInfo: <T = PageInfoPromise>() => T;
-  edges: <T = FragmentableArray<IndividualOrderEdge>>() => T;
-  aggregate: <T = AggregateIndividualOrderPromise>() => T;
-}
-
-export interface IndividualOrderConnectionSubscription
-  extends Promise<AsyncIterator<IndividualOrderConnection>>,
-    Fragmentable {
-  pageInfo: <T = PageInfoSubscription>() => T;
-  edges: <T = Promise<AsyncIterator<IndividualOrderEdgeSubscription>>>() => T;
-  aggregate: <T = AggregateIndividualOrderSubscription>() => T;
-}
-
-/*
-The `Boolean` scalar type represents `true` or `false`.
-*/
-export type Boolean = boolean;
+export type Long = string;
 
 /*
 DateTime scalar input type, allowing Date
@@ -3920,22 +4628,25 @@ DateTime scalar output type, which is always a string
 export type DateTimeOutput = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-export type Long = string;
-
-/*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
 export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
+
+/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
+
+/*
+The `Boolean` scalar type represents `true` or `false`.
+*/
+export type Boolean = boolean;
 
 /**
  * Model Metadata
@@ -3976,6 +4687,14 @@ export const models: Model[] = [
   },
   {
     name: "ChatContent",
+    embedded: false
+  },
+  {
+    name: "Vote",
+    embedded: false
+  },
+  {
+    name: "UserVote",
     embedded: false
   }
 ];
