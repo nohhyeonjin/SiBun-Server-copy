@@ -39,6 +39,14 @@ var models = [
   {
     name: "ChatContent",
     embedded: false
+  },
+  {
+    name: "Vote",
+    embedded: false
+  },
+  {
+    name: "UserVote",
+    embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
