@@ -1,0 +1,5 @@
+type Mutation{
+    enterChatRoom(
+        chatId: ID!
+    ): ChatRoom!
+}
