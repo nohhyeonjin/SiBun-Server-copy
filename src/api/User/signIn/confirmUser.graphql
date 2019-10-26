@@ -1,6 +1,0 @@
-type Mutation{
-    confirmUser(
-        number: Int!
-        pwd: String!
-    ): String!
-}
