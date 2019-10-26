@@ -1,0 +1,10 @@
+type Mutation{
+    signIn(
+        number: Int!
+        pwd: String!
+    ): String!
+}
+
+type Query{
+    something: String!
+}
