@@ -1,4 +1,5 @@
-  type Query { # get,느낌 친구
-    chatContents: [ChatContent!]!
-  }
-
+type Mutation {
+  chatContents(
+    roomId: String!
+  ): [ChatContent!]!
+}
