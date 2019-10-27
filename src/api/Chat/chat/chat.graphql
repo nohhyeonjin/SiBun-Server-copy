@@ -1,6 +1,7 @@
 
   type Mutation {
     sendChat(
+        roomId:String!
         content:String!
         ): ChatContent!
   }
