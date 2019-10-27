@@ -258,8 +258,8 @@ type ChatRoomConnection {
 
 input ChatRoomCreateInput {
   id: ID
-  boss: UserCreateOneWithoutChatListInput!
-  memberList: UserCreateManyInput
+  boss: UserCreateOneWithoutBossChatListInput!
+  memberList: UserCreateManyWithoutChatListInput
   store: StoreCreateOneWithoutChatRoomListInput!
   location: String!
   orderExpectedTime: DateTime!
@@ -270,6 +270,11 @@ input ChatRoomCreateInput {
 
 input ChatRoomCreateManyWithoutBossInput {
   create: [ChatRoomCreateWithoutBossInput!]
+  connect: [ChatRoomWhereUniqueInput!]
+}
+
+input ChatRoomCreateManyWithoutMemberListInput {
+  create: [ChatRoomCreateWithoutMemberListInput!]
   connect: [ChatRoomWhereUniqueInput!]
 }
 
@@ -295,7 +300,7 @@ input ChatRoomCreateOneWithoutRoomOrderInput {
 
 input ChatRoomCreateWithoutBossInput {
   id: ID
-  memberList: UserCreateManyInput
+  memberList: UserCreateManyWithoutChatListInput
   store: StoreCreateOneWithoutChatRoomListInput!
   location: String!
   orderExpectedTime: DateTime!
@@ -306,8 +311,8 @@ input ChatRoomCreateWithoutBossInput {
 
 input ChatRoomCreateWithoutChatContentListInput {
   id: ID
-  boss: UserCreateOneWithoutChatListInput!
-  memberList: UserCreateManyInput
+  boss: UserCreateOneWithoutBossChatListInput!
+  memberList: UserCreateManyWithoutChatListInput
   store: StoreCreateOneWithoutChatRoomListInput!
   location: String!
   orderExpectedTime: DateTime!
@@ -315,10 +320,21 @@ input ChatRoomCreateWithoutChatContentListInput {
   state: Boolean!
 }
 
+input ChatRoomCreateWithoutMemberListInput {
+  id: ID
+  boss: UserCreateOneWithoutBossChatListInput!
+  store: StoreCreateOneWithoutChatRoomListInput!
+  location: String!
+  orderExpectedTime: DateTime!
+  roomOrder: RoomOrderCreateOneWithoutChatRoomInput
+  chatContentList: ChatContentCreateManyWithoutChatRoomInput
+  state: Boolean!
+}
+
 input ChatRoomCreateWithoutRoomOrderInput {
   id: ID
-  boss: UserCreateOneWithoutChatListInput!
-  memberList: UserCreateManyInput
+  boss: UserCreateOneWithoutBossChatListInput!
+  memberList: UserCreateManyWithoutChatListInput
   store: StoreCreateOneWithoutChatRoomListInput!
   location: String!
   orderExpectedTime: DateTime!
@@ -328,8 +344,8 @@ input ChatRoomCreateWithoutRoomOrderInput {
 
 input ChatRoomCreateWithoutStoreInput {
   id: ID
-  boss: UserCreateOneWithoutChatListInput!
-  memberList: UserCreateManyInput
+  boss: UserCreateOneWithoutBossChatListInput!
+  memberList: UserCreateManyWithoutChatListInput
   location: String!
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
@@ -423,8 +439,8 @@ input ChatRoomSubscriptionWhereInput {
 }
 
 input ChatRoomUpdateDataInput {
-  boss: UserUpdateOneRequiredWithoutChatListInput
-  memberList: UserUpdateManyInput
+  boss: UserUpdateOneRequiredWithoutBossChatListInput
+  memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
   orderExpectedTime: DateTime
@@ -434,8 +450,8 @@ input ChatRoomUpdateDataInput {
 }
 
 input ChatRoomUpdateInput {
-  boss: UserUpdateOneRequiredWithoutChatListInput
-  memberList: UserUpdateManyInput
+  boss: UserUpdateOneRequiredWithoutBossChatListInput
+  memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
   orderExpectedTime: DateTime
@@ -464,6 +480,18 @@ input ChatRoomUpdateManyWithoutBossInput {
   disconnect: [ChatRoomWhereUniqueInput!]
   update: [ChatRoomUpdateWithWhereUniqueWithoutBossInput!]
   upsert: [ChatRoomUpsertWithWhereUniqueWithoutBossInput!]
+  deleteMany: [ChatRoomScalarWhereInput!]
+  updateMany: [ChatRoomUpdateManyWithWhereNestedInput!]
+}
+
+input ChatRoomUpdateManyWithoutMemberListInput {
+  create: [ChatRoomCreateWithoutMemberListInput!]
+  delete: [ChatRoomWhereUniqueInput!]
+  connect: [ChatRoomWhereUniqueInput!]
+  set: [ChatRoomWhereUniqueInput!]
+  disconnect: [ChatRoomWhereUniqueInput!]
+  update: [ChatRoomUpdateWithWhereUniqueWithoutMemberListInput!]
+  upsert: [ChatRoomUpsertWithWhereUniqueWithoutMemberListInput!]
   deleteMany: [ChatRoomScalarWhereInput!]
   updateMany: [ChatRoomUpdateManyWithWhereNestedInput!]
 }
@@ -507,7 +535,7 @@ input ChatRoomUpdateOneRequiredWithoutRoomOrderInput {
 }
 
 input ChatRoomUpdateWithoutBossDataInput {
-  memberList: UserUpdateManyInput
+  memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
   orderExpectedTime: DateTime
@@ -517,8 +545,8 @@ input ChatRoomUpdateWithoutBossDataInput {
 }
 
 input ChatRoomUpdateWithoutChatContentListDataInput {
-  boss: UserUpdateOneRequiredWithoutChatListInput
-  memberList: UserUpdateManyInput
+  boss: UserUpdateOneRequiredWithoutBossChatListInput
+  memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
   orderExpectedTime: DateTime
@@ -526,9 +554,19 @@ input ChatRoomUpdateWithoutChatContentListDataInput {
   state: Boolean
 }
 
+input ChatRoomUpdateWithoutMemberListDataInput {
+  boss: UserUpdateOneRequiredWithoutBossChatListInput
+  store: StoreUpdateOneRequiredWithoutChatRoomListInput
+  location: String
+  orderExpectedTime: DateTime
+  roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
+  chatContentList: ChatContentUpdateManyWithoutChatRoomInput
+  state: Boolean
+}
+
 input ChatRoomUpdateWithoutRoomOrderDataInput {
-  boss: UserUpdateOneRequiredWithoutChatListInput
-  memberList: UserUpdateManyInput
+  boss: UserUpdateOneRequiredWithoutBossChatListInput
+  memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
   orderExpectedTime: DateTime
@@ -537,8 +575,8 @@ input ChatRoomUpdateWithoutRoomOrderDataInput {
 }
 
 input ChatRoomUpdateWithoutStoreDataInput {
-  boss: UserUpdateOneRequiredWithoutChatListInput
-  memberList: UserUpdateManyInput
+  boss: UserUpdateOneRequiredWithoutBossChatListInput
+  memberList: UserUpdateManyWithoutChatListInput
   location: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
@@ -549,6 +587,11 @@ input ChatRoomUpdateWithoutStoreDataInput {
 input ChatRoomUpdateWithWhereUniqueWithoutBossInput {
   where: ChatRoomWhereUniqueInput!
   data: ChatRoomUpdateWithoutBossDataInput!
+}
+
+input ChatRoomUpdateWithWhereUniqueWithoutMemberListInput {
+  where: ChatRoomWhereUniqueInput!
+  data: ChatRoomUpdateWithoutMemberListDataInput!
 }
 
 input ChatRoomUpdateWithWhereUniqueWithoutStoreInput {
@@ -575,6 +618,12 @@ input ChatRoomUpsertWithWhereUniqueWithoutBossInput {
   where: ChatRoomWhereUniqueInput!
   update: ChatRoomUpdateWithoutBossDataInput!
   create: ChatRoomCreateWithoutBossInput!
+}
+
+input ChatRoomUpsertWithWhereUniqueWithoutMemberListInput {
+  where: ChatRoomWhereUniqueInput!
+  update: ChatRoomUpdateWithoutMemberListDataInput!
+  create: ChatRoomCreateWithoutMemberListInput!
 }
 
 input ChatRoomUpsertWithWhereUniqueWithoutStoreInput {
@@ -2118,6 +2167,7 @@ input StoreWhereInput {
 
 input StoreWhereUniqueInput {
   id: ID
+  name: String
 }
 
 type Subscription {
@@ -2139,6 +2189,7 @@ type User {
   number: Int!
   pwd: String!
   score: Int!
+  bossChatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
   chatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
 }
 
@@ -2153,11 +2204,12 @@ input UserCreateInput {
   number: Int!
   pwd: String!
   score: Int
-  chatList: ChatRoomCreateManyWithoutBossInput
+  bossChatList: ChatRoomCreateManyWithoutBossInput
+  chatList: ChatRoomCreateManyWithoutMemberListInput
 }
 
-input UserCreateManyInput {
-  create: [UserCreateInput!]
+input UserCreateManyWithoutChatListInput {
+  create: [UserCreateWithoutChatListInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -2166,9 +2218,17 @@ input UserCreateOneInput {
   connect: UserWhereUniqueInput
 }
 
-input UserCreateOneWithoutChatListInput {
-  create: UserCreateWithoutChatListInput
+input UserCreateOneWithoutBossChatListInput {
+  create: UserCreateWithoutBossChatListInput
   connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutBossChatListInput {
+  id: ID
+  number: Int!
+  pwd: String!
+  score: Int
+  chatList: ChatRoomCreateManyWithoutMemberListInput
 }
 
 input UserCreateWithoutChatListInput {
@@ -2176,6 +2236,7 @@ input UserCreateWithoutChatListInput {
   number: Int!
   pwd: String!
   score: Int
+  bossChatList: ChatRoomCreateManyWithoutBossInput
 }
 
 type UserEdge {
@@ -2273,14 +2334,16 @@ input UserUpdateDataInput {
   number: Int
   pwd: String
   score: Int
-  chatList: ChatRoomUpdateManyWithoutBossInput
+  bossChatList: ChatRoomUpdateManyWithoutBossInput
+  chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
 
 input UserUpdateInput {
   number: Int
   pwd: String
   score: Int
-  chatList: ChatRoomUpdateManyWithoutBossInput
+  bossChatList: ChatRoomUpdateManyWithoutBossInput
+  chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
 
 input UserUpdateManyDataInput {
@@ -2289,22 +2352,22 @@ input UserUpdateManyDataInput {
   score: Int
 }
 
-input UserUpdateManyInput {
-  create: [UserCreateInput!]
-  update: [UserUpdateWithWhereUniqueNestedInput!]
-  upsert: [UserUpsertWithWhereUniqueNestedInput!]
-  delete: [UserWhereUniqueInput!]
-  connect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  deleteMany: [UserScalarWhereInput!]
-  updateMany: [UserUpdateManyWithWhereNestedInput!]
-}
-
 input UserUpdateManyMutationInput {
   number: Int
   pwd: String
   score: Int
+}
+
+input UserUpdateManyWithoutChatListInput {
+  create: [UserCreateWithoutChatListInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutChatListInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutChatListInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
 input UserUpdateManyWithWhereNestedInput {
@@ -2319,22 +2382,30 @@ input UserUpdateOneRequiredInput {
   connect: UserWhereUniqueInput
 }
 
-input UserUpdateOneRequiredWithoutChatListInput {
-  create: UserCreateWithoutChatListInput
-  update: UserUpdateWithoutChatListDataInput
-  upsert: UserUpsertWithoutChatListInput
+input UserUpdateOneRequiredWithoutBossChatListInput {
+  create: UserCreateWithoutBossChatListInput
+  update: UserUpdateWithoutBossChatListDataInput
+  upsert: UserUpsertWithoutBossChatListInput
   connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutBossChatListDataInput {
+  number: Int
+  pwd: String
+  score: Int
+  chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
 
 input UserUpdateWithoutChatListDataInput {
   number: Int
   pwd: String
   score: Int
+  bossChatList: ChatRoomUpdateManyWithoutBossInput
 }
 
-input UserUpdateWithWhereUniqueNestedInput {
+input UserUpdateWithWhereUniqueWithoutChatListInput {
   where: UserWhereUniqueInput!
-  data: UserUpdateDataInput!
+  data: UserUpdateWithoutChatListDataInput!
 }
 
 input UserUpsertNestedInput {
@@ -2342,15 +2413,15 @@ input UserUpsertNestedInput {
   create: UserCreateInput!
 }
 
-input UserUpsertWithoutChatListInput {
-  update: UserUpdateWithoutChatListDataInput!
-  create: UserCreateWithoutChatListInput!
+input UserUpsertWithoutBossChatListInput {
+  update: UserUpdateWithoutBossChatListDataInput!
+  create: UserCreateWithoutBossChatListInput!
 }
 
-input UserUpsertWithWhereUniqueNestedInput {
+input UserUpsertWithWhereUniqueWithoutChatListInput {
   where: UserWhereUniqueInput!
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
+  update: UserUpdateWithoutChatListDataInput!
+  create: UserCreateWithoutChatListInput!
 }
 
 type UserVote {
@@ -2561,6 +2632,9 @@ input UserWhereInput {
   score_lte: Int
   score_gt: Int
   score_gte: Int
+  bossChatList_every: ChatRoomWhereInput
+  bossChatList_some: ChatRoomWhereInput
+  bossChatList_none: ChatRoomWhereInput
   chatList_every: ChatRoomWhereInput
   chatList_some: ChatRoomWhereInput
   chatList_none: ChatRoomWhereInput

@@ -698,11 +698,12 @@ export interface ChatContentWhereInput {
   NOT?: Maybe<ChatContentWhereInput[] | ChatContentWhereInput>;
 }
 
-export interface UserUpdateOneRequiredInput {
-  create?: Maybe<UserCreateInput>;
-  update?: Maybe<UserUpdateDataInput>;
-  upsert?: Maybe<UserUpsertNestedInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
+export interface UserUpdateDataInput {
+  number?: Maybe<Int>;
+  pwd?: Maybe<String>;
+  score?: Maybe<Int>;
+  bossChatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
+  chatList?: Maybe<ChatRoomUpdateManyWithoutMemberListInput>;
 }
 
 export interface StoreCreateInput {
@@ -716,33 +717,6 @@ export interface StoreCreateInput {
   deliveryFee: Int;
   image?: Maybe<String>;
   chatRoomList?: Maybe<ChatRoomCreateManyWithoutStoreInput>;
-}
-
-export interface UserUpdateDataInput {
-  number?: Maybe<Int>;
-  pwd?: Maybe<String>;
-  score?: Maybe<Int>;
-  chatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
-}
-
-export interface MenuUpdateManyInput {
-  create?: Maybe<MenuCreateInput[] | MenuCreateInput>;
-  update?: Maybe<
-    | MenuUpdateWithWhereUniqueNestedInput[]
-    | MenuUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | MenuUpsertWithWhereUniqueNestedInput[]
-    | MenuUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-  set?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-  disconnect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-  deleteMany?: Maybe<MenuScalarWhereInput[] | MenuScalarWhereInput>;
-  updateMany?: Maybe<
-    MenuUpdateManyWithWhereNestedInput[] | MenuUpdateManyWithWhereNestedInput
-  >;
 }
 
 export interface ChatRoomUpdateManyWithoutBossInput {
@@ -768,6 +742,31 @@ export interface ChatRoomUpdateManyWithoutBossInput {
   >;
 }
 
+export interface MenuUpdateManyInput {
+  create?: Maybe<MenuCreateInput[] | MenuCreateInput>;
+  update?: Maybe<
+    | MenuUpdateWithWhereUniqueNestedInput[]
+    | MenuUpdateWithWhereUniqueNestedInput
+  >;
+  upsert?: Maybe<
+    | MenuUpsertWithWhereUniqueNestedInput[]
+    | MenuUpsertWithWhereUniqueNestedInput
+  >;
+  delete?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+  set?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+  disconnect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+  deleteMany?: Maybe<MenuScalarWhereInput[] | MenuScalarWhereInput>;
+  updateMany?: Maybe<
+    MenuUpdateManyWithWhereNestedInput[] | MenuUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ChatRoomUpdateWithWhereUniqueWithoutBossInput {
+  where: ChatRoomWhereUniqueInput;
+  data: ChatRoomUpdateWithoutBossDataInput;
+}
+
 export interface UserVoteSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -783,9 +782,14 @@ export interface UserVoteSubscriptionWhereInput {
   >;
 }
 
-export interface ChatRoomUpdateWithWhereUniqueWithoutBossInput {
-  where: ChatRoomWhereUniqueInput;
-  data: ChatRoomUpdateWithoutBossDataInput;
+export interface ChatRoomUpdateWithoutBossDataInput {
+  memberList?: Maybe<UserUpdateManyWithoutChatListInput>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
+  location?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
+  state?: Maybe<Boolean>;
 }
 
 export interface MenuCategoryWhereInput {
@@ -826,14 +830,26 @@ export interface MenuCategoryWhereInput {
   NOT?: Maybe<MenuCategoryWhereInput[] | MenuCategoryWhereInput>;
 }
 
-export interface ChatRoomUpdateWithoutBossDataInput {
-  memberList?: Maybe<UserUpdateManyInput>;
-  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
-  location?: Maybe<String>;
-  orderExpectedTime?: Maybe<DateTimeInput>;
-  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
-  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+export interface UserUpdateManyWithoutChatListInput {
+  create?: Maybe<
+    UserCreateWithoutChatListInput[] | UserCreateWithoutChatListInput
+  >;
+  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  update?: Maybe<
+    | UserUpdateWithWhereUniqueWithoutChatListInput[]
+    | UserUpdateWithWhereUniqueWithoutChatListInput
+  >;
+  upsert?: Maybe<
+    | UserUpsertWithWhereUniqueWithoutChatListInput[]
+    | UserUpsertWithWhereUniqueWithoutChatListInput
+  >;
+  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  updateMany?: Maybe<
+    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
+  >;
 }
 
 export interface StoreCategoryWhereInput {
@@ -873,24 +889,9 @@ export interface StoreCategoryWhereInput {
   NOT?: Maybe<StoreCategoryWhereInput[] | StoreCategoryWhereInput>;
 }
 
-export interface UserUpdateManyInput {
-  create?: Maybe<UserCreateInput[] | UserCreateInput>;
-  update?: Maybe<
-    | UserUpdateWithWhereUniqueNestedInput[]
-    | UserUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | UserUpsertWithWhereUniqueNestedInput[]
-    | UserUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
-  updateMany?: Maybe<
-    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
-  >;
+export interface UserUpdateWithWhereUniqueWithoutChatListInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutChatListDataInput;
 }
 
 export interface StoreSubscriptionWhereInput {
@@ -904,9 +905,11 @@ export interface StoreSubscriptionWhereInput {
   NOT?: Maybe<StoreSubscriptionWhereInput[] | StoreSubscriptionWhereInput>;
 }
 
-export interface UserUpdateWithWhereUniqueNestedInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateDataInput;
+export interface UserUpdateWithoutChatListDataInput {
+  number?: Maybe<Int>;
+  pwd?: Maybe<String>;
+  score?: Maybe<Int>;
+  bossChatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
 }
 
 export interface RoomOrderSubscriptionWhereInput {
@@ -926,10 +929,10 @@ export interface RoomOrderSubscriptionWhereInput {
   >;
 }
 
-export interface UserUpsertWithWhereUniqueNestedInput {
+export interface UserUpsertWithWhereUniqueWithoutChatListInput {
   where: UserWhereUniqueInput;
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
+  update: UserUpdateWithoutChatListDataInput;
+  create: UserCreateWithoutChatListInput;
 }
 
 export interface MenuCategorySubscriptionWhereInput {
@@ -1200,8 +1203,8 @@ export interface MenuUpdateWithWhereUniqueWithoutMenuCategoryInput {
 }
 
 export interface ChatRoomUpdateDataInput {
-  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
-  memberList?: Maybe<UserUpdateManyInput>;
+  boss?: Maybe<UserUpdateOneRequiredWithoutBossChatListInput>;
+  memberList?: Maybe<UserUpdateManyWithoutChatListInput>;
   store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
   location?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
@@ -1515,8 +1518,10 @@ export interface RoomOrderWhereInput {
   NOT?: Maybe<RoomOrderWhereInput[] | RoomOrderWhereInput>;
 }
 
-export interface UserCreateManyInput {
-  create?: Maybe<UserCreateInput[] | UserCreateInput>;
+export interface UserCreateManyWithoutChatListInput {
+  create?: Maybe<
+    UserCreateWithoutChatListInput[] | UserCreateWithoutChatListInput
+  >;
   connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
 }
 
@@ -1526,16 +1531,9 @@ export interface StoreCategoryCreateInput {
   storeList?: Maybe<StoreCreateManyWithoutStoreCategoryInput>;
 }
 
-export interface StoreCreateWithoutChatRoomListInput {
-  id?: Maybe<ID_Input>;
-  storeId: String;
-  pwd: String;
-  name: String;
-  storeCategory: StoreCategoryCreateOneWithoutStoreListInput;
-  menuCategoryList?: Maybe<MenuCategoryCreateManyWithoutStoreInput>;
-  minimumPrice: Int;
-  deliveryFee: Int;
-  image?: Maybe<String>;
+export interface StoreCreateOneWithoutChatRoomListInput {
+  create?: Maybe<StoreCreateWithoutChatRoomListInput>;
+  connect?: Maybe<StoreWhereUniqueInput>;
 }
 
 export interface MenuUpdateWithWhereUniqueNestedInput {
@@ -1543,9 +1541,9 @@ export interface MenuUpdateWithWhereUniqueNestedInput {
   data: MenuUpdateDataInput;
 }
 
-export interface StoreCategoryCreateWithoutStoreListInput {
-  id?: Maybe<ID_Input>;
-  name: String;
+export interface StoreCategoryCreateOneWithoutStoreListInput {
+  create?: Maybe<StoreCategoryCreateWithoutStoreListInput>;
+  connect?: Maybe<StoreCategoryWhereUniqueInput>;
 }
 
 export interface MenuUpdateDataInput {
@@ -1554,10 +1552,13 @@ export interface MenuUpdateDataInput {
   menuCategory?: Maybe<MenuCategoryUpdateOneRequiredWithoutMenuListInput>;
 }
 
-export interface MenuCategoryCreateWithoutStoreInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  menuList?: Maybe<MenuCreateManyWithoutMenuCategoryInput>;
+export interface MenuCategoryCreateManyWithoutStoreInput {
+  create?: Maybe<
+    MenuCategoryCreateWithoutStoreInput[] | MenuCategoryCreateWithoutStoreInput
+  >;
+  connect?: Maybe<
+    MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput
+  >;
 }
 
 export interface MenuCategoryUpdateOneRequiredWithoutMenuListInput {
@@ -1567,10 +1568,11 @@ export interface MenuCategoryUpdateOneRequiredWithoutMenuListInput {
   connect?: Maybe<MenuCategoryWhereUniqueInput>;
 }
 
-export interface MenuCreateWithoutMenuCategoryInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  price: Int;
+export interface MenuCreateManyWithoutMenuCategoryInput {
+  create?: Maybe<
+    MenuCreateWithoutMenuCategoryInput[] | MenuCreateWithoutMenuCategoryInput
+  >;
+  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
 }
 
 export interface MenuCategoryUpdateWithoutMenuListDataInput {
@@ -1578,11 +1580,9 @@ export interface MenuCategoryUpdateWithoutMenuListDataInput {
   store?: Maybe<StoreUpdateOneRequiredWithoutMenuCategoryListInput>;
 }
 
-export interface RoomOrderCreateWithoutChatRoomInput {
-  id?: Maybe<ID_Input>;
-  individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
-  phoneNumber: String;
-  state: Boolean;
+export interface RoomOrderCreateOneWithoutChatRoomInput {
+  create?: Maybe<RoomOrderCreateWithoutChatRoomInput>;
+  connect?: Maybe<RoomOrderWhereUniqueInput>;
 }
 
 export interface StoreUpdateOneRequiredWithoutMenuCategoryListInput {
@@ -1592,10 +1592,14 @@ export interface StoreUpdateOneRequiredWithoutMenuCategoryListInput {
   connect?: Maybe<StoreWhereUniqueInput>;
 }
 
-export interface IndividualOrderCreateWithoutRoomOrderInput {
-  id?: Maybe<ID_Input>;
-  user: UserCreateOneInput;
-  menuList?: Maybe<MenuCreateManyInput>;
+export interface IndividualOrderCreateManyWithoutRoomOrderInput {
+  create?: Maybe<
+    | IndividualOrderCreateWithoutRoomOrderInput[]
+    | IndividualOrderCreateWithoutRoomOrderInput
+  >;
+  connect?: Maybe<
+    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
+  >;
 }
 
 export interface StoreUpdateWithoutMenuCategoryListDataInput {
@@ -1609,11 +1613,9 @@ export interface StoreUpdateWithoutMenuCategoryListDataInput {
   chatRoomList?: Maybe<ChatRoomUpdateManyWithoutStoreInput>;
 }
 
-export interface MenuCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  price: Int;
-  menuCategory: MenuCategoryCreateOneWithoutMenuListInput;
+export interface MenuCreateManyInput {
+  create?: Maybe<MenuCreateInput[] | MenuCreateInput>;
+  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
 }
 
 export interface ChatRoomUpdateManyWithoutStoreInput {
@@ -1639,10 +1641,9 @@ export interface ChatRoomUpdateManyWithoutStoreInput {
   >;
 }
 
-export interface MenuCategoryCreateWithoutMenuListInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  store: StoreCreateOneWithoutMenuCategoryListInput;
+export interface MenuCategoryCreateOneWithoutMenuListInput {
+  create?: Maybe<MenuCategoryCreateWithoutMenuListInput>;
+  connect?: Maybe<MenuCategoryWhereUniqueInput>;
 }
 
 export interface ChatRoomUpdateWithWhereUniqueWithoutStoreInput {
@@ -1650,21 +1651,14 @@ export interface ChatRoomUpdateWithWhereUniqueWithoutStoreInput {
   data: ChatRoomUpdateWithoutStoreDataInput;
 }
 
-export interface StoreCreateWithoutMenuCategoryListInput {
-  id?: Maybe<ID_Input>;
-  storeId: String;
-  pwd: String;
-  name: String;
-  storeCategory: StoreCategoryCreateOneWithoutStoreListInput;
-  minimumPrice: Int;
-  deliveryFee: Int;
-  image?: Maybe<String>;
-  chatRoomList?: Maybe<ChatRoomCreateManyWithoutStoreInput>;
+export interface StoreCreateOneWithoutMenuCategoryListInput {
+  create?: Maybe<StoreCreateWithoutMenuCategoryListInput>;
+  connect?: Maybe<StoreWhereUniqueInput>;
 }
 
 export interface ChatRoomUpdateWithoutStoreDataInput {
-  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
-  memberList?: Maybe<UserUpdateManyInput>;
+  boss?: Maybe<UserUpdateOneRequiredWithoutBossChatListInput>;
+  memberList?: Maybe<UserUpdateManyWithoutChatListInput>;
   location?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
   roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
@@ -1672,57 +1666,96 @@ export interface ChatRoomUpdateWithoutStoreDataInput {
   state?: Maybe<Boolean>;
 }
 
-export interface ChatRoomCreateWithoutStoreInput {
-  id?: Maybe<ID_Input>;
-  boss: UserCreateOneWithoutChatListInput;
-  memberList?: Maybe<UserCreateManyInput>;
-  location: String;
-  orderExpectedTime: DateTimeInput;
-  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
-  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
+export interface ChatRoomCreateManyWithoutStoreInput {
+  create?: Maybe<
+    ChatRoomCreateWithoutStoreInput[] | ChatRoomCreateWithoutStoreInput
+  >;
+  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
 }
 
-export interface UserUpdateOneRequiredWithoutChatListInput {
-  create?: Maybe<UserCreateWithoutChatListInput>;
-  update?: Maybe<UserUpdateWithoutChatListDataInput>;
-  upsert?: Maybe<UserUpsertWithoutChatListInput>;
+export interface UserUpdateOneRequiredWithoutBossChatListInput {
+  create?: Maybe<UserCreateWithoutBossChatListInput>;
+  update?: Maybe<UserUpdateWithoutBossChatListDataInput>;
+  upsert?: Maybe<UserUpsertWithoutBossChatListInput>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserCreateWithoutChatListInput {
-  id?: Maybe<ID_Input>;
-  number: Int;
-  pwd: String;
-  score?: Maybe<Int>;
+export interface UserCreateOneWithoutBossChatListInput {
+  create?: Maybe<UserCreateWithoutBossChatListInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
-export interface UserUpdateWithoutChatListDataInput {
+export interface UserUpdateWithoutBossChatListDataInput {
   number?: Maybe<Int>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
+  chatList?: Maybe<ChatRoomUpdateManyWithoutMemberListInput>;
 }
 
-export interface ChatContentCreateWithoutChatRoomInput {
-  id?: Maybe<ID_Input>;
-  user: UserCreateOneInput;
-  content: String;
+export interface ChatRoomCreateManyWithoutMemberListInput {
+  create?: Maybe<
+    | ChatRoomCreateWithoutMemberListInput[]
+    | ChatRoomCreateWithoutMemberListInput
+  >;
+  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
 }
 
-export interface UserUpsertWithoutChatListInput {
-  update: UserUpdateWithoutChatListDataInput;
-  create: UserCreateWithoutChatListInput;
+export interface ChatRoomUpdateManyWithoutMemberListInput {
+  create?: Maybe<
+    | ChatRoomCreateWithoutMemberListInput[]
+    | ChatRoomCreateWithoutMemberListInput
+  >;
+  delete?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  set?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  disconnect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+  update?: Maybe<
+    | ChatRoomUpdateWithWhereUniqueWithoutMemberListInput[]
+    | ChatRoomUpdateWithWhereUniqueWithoutMemberListInput
+  >;
+  upsert?: Maybe<
+    | ChatRoomUpsertWithWhereUniqueWithoutMemberListInput[]
+    | ChatRoomUpsertWithWhereUniqueWithoutMemberListInput
+  >;
+  deleteMany?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
+  updateMany?: Maybe<
+    | ChatRoomUpdateManyWithWhereNestedInput[]
+    | ChatRoomUpdateManyWithWhereNestedInput
+  >;
 }
 
-export interface ChatRoomCreateWithoutChatContentListInput {
-  id?: Maybe<ID_Input>;
-  boss: UserCreateOneWithoutChatListInput;
-  memberList?: Maybe<UserCreateManyInput>;
-  store: StoreCreateOneWithoutChatRoomListInput;
-  location: String;
-  orderExpectedTime: DateTimeInput;
-  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
-  state: Boolean;
+export interface ChatContentCreateManyWithoutChatRoomInput {
+  create?: Maybe<
+    | ChatContentCreateWithoutChatRoomInput[]
+    | ChatContentCreateWithoutChatRoomInput
+  >;
+  connect?: Maybe<ChatContentWhereUniqueInput[] | ChatContentWhereUniqueInput>;
+}
+
+export interface ChatRoomUpdateWithWhereUniqueWithoutMemberListInput {
+  where: ChatRoomWhereUniqueInput;
+  data: ChatRoomUpdateWithoutMemberListDataInput;
+}
+
+export interface ChatRoomCreateOneWithoutChatContentListInput {
+  create?: Maybe<ChatRoomCreateWithoutChatContentListInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput>;
+}
+
+export interface ChatRoomUpdateWithoutMemberListDataInput {
+  boss?: Maybe<UserUpdateOneRequiredWithoutBossChatListInput>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
+  location?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
+  state?: Maybe<Boolean>;
+}
+
+export interface ChatContentUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutChatContentListInput>;
+  content?: Maybe<String>;
 }
 
 export interface ChatContentUpdateManyWithoutChatRoomInput {
@@ -1988,10 +2021,10 @@ export interface UserVoteUpdateWithWhereUniqueWithoutVoteInput {
   data: UserVoteUpdateWithoutVoteDataInput;
 }
 
-export interface ChatRoomUpsertWithWhereUniqueWithoutStoreInput {
+export interface ChatRoomUpsertWithWhereUniqueWithoutMemberListInput {
   where: ChatRoomWhereUniqueInput;
-  update: ChatRoomUpdateWithoutStoreDataInput;
-  create: ChatRoomCreateWithoutStoreInput;
+  update: ChatRoomUpdateWithoutMemberListDataInput;
+  create: ChatRoomCreateWithoutMemberListInput;
 }
 
 export interface UserVoteCreateWithoutVoteInput {
@@ -2104,6 +2137,7 @@ export interface ChatRoomUpdateManyWithWhereNestedInput {
 
 export type StoreWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  name?: Maybe<String>;
 }>;
 
 export interface ChatRoomUpdateManyDataInput {
@@ -2116,9 +2150,9 @@ export type StoreCategoryWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
 
-export interface StoreUpsertWithoutMenuCategoryListInput {
-  update: StoreUpdateWithoutMenuCategoryListDataInput;
-  create: StoreCreateWithoutMenuCategoryListInput;
+export interface UserUpsertWithoutBossChatListInput {
+  update: UserUpdateWithoutBossChatListDataInput;
+  create: UserCreateWithoutBossChatListInput;
 }
 
 export interface VoteCreateWithoutVoteListInput {
@@ -2126,9 +2160,10 @@ export interface VoteCreateWithoutVoteListInput {
   chatRoom: ChatRoomCreateOneInput;
 }
 
-export interface MenuCategoryUpsertWithoutMenuListInput {
-  update: MenuCategoryUpdateWithoutMenuListDataInput;
-  create: MenuCategoryCreateWithoutMenuListInput;
+export interface ChatRoomUpsertWithWhereUniqueWithoutStoreInput {
+  where: ChatRoomWhereUniqueInput;
+  update: ChatRoomUpdateWithoutStoreDataInput;
+  create: ChatRoomCreateWithoutStoreInput;
 }
 
 export interface UserUpdateManyMutationInput {
@@ -2137,10 +2172,9 @@ export interface UserUpdateManyMutationInput {
   score?: Maybe<Int>;
 }
 
-export interface MenuUpsertWithWhereUniqueNestedInput {
-  where: MenuWhereUniqueInput;
-  update: MenuUpdateDataInput;
-  create: MenuCreateInput;
+export interface StoreUpsertWithoutMenuCategoryListInput {
+  update: StoreUpdateWithoutMenuCategoryListDataInput;
+  create: StoreCreateWithoutMenuCategoryListInput;
 }
 
 export interface UserVoteWhereInput {
@@ -2167,10 +2201,9 @@ export interface UserVoteWhereInput {
   NOT?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
 }
 
-export interface IndividualOrderUpsertWithWhereUniqueWithoutRoomOrderInput {
-  where: IndividualOrderWhereUniqueInput;
-  update: IndividualOrderUpdateWithoutRoomOrderDataInput;
-  create: IndividualOrderCreateWithoutRoomOrderInput;
+export interface MenuCategoryUpsertWithoutMenuListInput {
+  update: MenuCategoryUpdateWithoutMenuListDataInput;
+  create: MenuCategoryCreateWithoutMenuListInput;
 }
 
 export interface StoreScalarWhereInput {
@@ -2265,6 +2298,30 @@ export interface StoreScalarWhereInput {
   NOT?: Maybe<StoreScalarWhereInput[] | StoreScalarWhereInput>;
 }
 
+export interface MenuUpsertWithWhereUniqueNestedInput {
+  where: MenuWhereUniqueInput;
+  update: MenuUpdateDataInput;
+  create: MenuCreateInput;
+}
+
+export interface StoreUpdateWithWhereUniqueWithoutStoreCategoryInput {
+  where: StoreWhereUniqueInput;
+  data: StoreUpdateWithoutStoreCategoryDataInput;
+}
+
+export interface IndividualOrderUpsertWithWhereUniqueWithoutRoomOrderInput {
+  where: IndividualOrderWhereUniqueInput;
+  update: IndividualOrderUpdateWithoutRoomOrderDataInput;
+  create: IndividualOrderCreateWithoutRoomOrderInput;
+}
+
+export interface ChatContentCreateInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  chatRoom: ChatRoomCreateOneWithoutChatContentListInput;
+  content: String;
+}
+
 export interface IndividualOrderScalarWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
@@ -2291,32 +2348,9 @@ export interface IndividualOrderScalarWhereInput {
   >;
 }
 
-export interface StoreUpdateWithWhereUniqueWithoutStoreCategoryInput {
-  where: StoreWhereUniqueInput;
-  data: StoreUpdateWithoutStoreCategoryDataInput;
-}
-
-export interface RoomOrderUpsertWithoutChatRoomInput {
-  update: RoomOrderUpdateWithoutChatRoomDataInput;
-  create: RoomOrderCreateWithoutChatRoomInput;
-}
-
-export interface ChatContentCreateInput {
-  id?: Maybe<ID_Input>;
-  user: UserCreateOneInput;
-  chatRoom: ChatRoomCreateOneWithoutChatContentListInput;
-  content: String;
-}
-
-export interface ChatRoomUpsertWithWhereUniqueWithoutBossInput {
-  where: ChatRoomWhereUniqueInput;
-  update: ChatRoomUpdateWithoutBossDataInput;
-  create: ChatRoomCreateWithoutBossInput;
-}
-
 export interface ChatRoomCreateWithoutBossInput {
   id?: Maybe<ID_Input>;
-  memberList?: Maybe<UserCreateManyInput>;
+  memberList?: Maybe<UserCreateManyWithoutChatListInput>;
   store: StoreCreateOneWithoutChatRoomListInput;
   location: String;
   orderExpectedTime: DateTimeInput;
@@ -2325,14 +2359,45 @@ export interface ChatRoomCreateWithoutBossInput {
   state: Boolean;
 }
 
+export interface RoomOrderUpsertWithoutChatRoomInput {
+  update: RoomOrderUpdateWithoutChatRoomDataInput;
+  create: RoomOrderCreateWithoutChatRoomInput;
+}
+
+export interface StoreCreateWithoutChatRoomListInput {
+  id?: Maybe<ID_Input>;
+  storeId: String;
+  pwd: String;
+  name: String;
+  storeCategory: StoreCategoryCreateOneWithoutStoreListInput;
+  menuCategoryList?: Maybe<MenuCategoryCreateManyWithoutStoreInput>;
+  minimumPrice: Int;
+  deliveryFee: Int;
+  image?: Maybe<String>;
+}
+
+export interface ChatRoomUpsertWithWhereUniqueWithoutBossInput {
+  where: ChatRoomWhereUniqueInput;
+  update: ChatRoomUpdateWithoutBossDataInput;
+  create: ChatRoomCreateWithoutBossInput;
+}
+
+export interface MenuCategoryCreateWithoutStoreInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  menuList?: Maybe<MenuCreateManyWithoutMenuCategoryInput>;
+}
+
 export interface UserUpsertNestedInput {
   update: UserUpdateDataInput;
   create: UserCreateInput;
 }
 
-export interface StoreCategoryCreateOneWithoutStoreListInput {
-  create?: Maybe<StoreCategoryCreateWithoutStoreListInput>;
-  connect?: Maybe<StoreCategoryWhereUniqueInput>;
+export interface RoomOrderCreateWithoutChatRoomInput {
+  id?: Maybe<ID_Input>;
+  individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
+  phoneNumber: String;
+  state: Boolean;
 }
 
 export interface ChatRoomUpdateOneRequiredWithoutChatContentListInput {
@@ -2342,16 +2407,16 @@ export interface ChatRoomUpdateOneRequiredWithoutChatContentListInput {
   connect?: Maybe<ChatRoomWhereUniqueInput>;
 }
 
-export interface MenuCreateManyWithoutMenuCategoryInput {
-  create?: Maybe<
-    MenuCreateWithoutMenuCategoryInput[] | MenuCreateWithoutMenuCategoryInput
-  >;
-  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
+export interface MenuCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  price: Int;
+  menuCategory: MenuCategoryCreateOneWithoutMenuListInput;
 }
 
 export interface ChatRoomUpdateWithoutChatContentListDataInput {
-  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
-  memberList?: Maybe<UserUpdateManyInput>;
+  boss?: Maybe<UserUpdateOneRequiredWithoutBossChatListInput>;
+  memberList?: Maybe<UserUpdateManyWithoutChatListInput>;
   store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
   location?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
@@ -2359,14 +2424,16 @@ export interface ChatRoomUpdateWithoutChatContentListDataInput {
   state?: Maybe<Boolean>;
 }
 
-export interface IndividualOrderCreateManyWithoutRoomOrderInput {
-  create?: Maybe<
-    | IndividualOrderCreateWithoutRoomOrderInput[]
-    | IndividualOrderCreateWithoutRoomOrderInput
-  >;
-  connect?: Maybe<
-    IndividualOrderWhereUniqueInput[] | IndividualOrderWhereUniqueInput
-  >;
+export interface StoreCreateWithoutMenuCategoryListInput {
+  id?: Maybe<ID_Input>;
+  storeId: String;
+  pwd: String;
+  name: String;
+  storeCategory: StoreCategoryCreateOneWithoutStoreListInput;
+  minimumPrice: Int;
+  deliveryFee: Int;
+  image?: Maybe<String>;
+  chatRoomList?: Maybe<ChatRoomCreateManyWithoutStoreInput>;
 }
 
 export interface ChatRoomUpsertWithoutChatContentListInput {
@@ -2374,20 +2441,22 @@ export interface ChatRoomUpsertWithoutChatContentListInput {
   create: ChatRoomCreateWithoutChatContentListInput;
 }
 
-export interface MenuCategoryCreateOneWithoutMenuListInput {
-  create?: Maybe<MenuCategoryCreateWithoutMenuListInput>;
-  connect?: Maybe<MenuCategoryWhereUniqueInput>;
+export interface UserCreateWithoutBossChatListInput {
+  id?: Maybe<ID_Input>;
+  number: Int;
+  pwd: String;
+  score?: Maybe<Int>;
+  chatList?: Maybe<ChatRoomCreateManyWithoutMemberListInput>;
 }
 
 export interface ChatContentUpdateManyMutationInput {
   content?: Maybe<String>;
 }
 
-export interface ChatRoomCreateManyWithoutStoreInput {
-  create?: Maybe<
-    ChatRoomCreateWithoutStoreInput[] | ChatRoomCreateWithoutStoreInput
-  >;
-  connect?: Maybe<ChatRoomWhereUniqueInput[] | ChatRoomWhereUniqueInput>;
+export interface ChatContentCreateWithoutChatRoomInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  content: String;
 }
 
 export interface StoreUpdateManyMutationInput {
@@ -2399,12 +2468,11 @@ export interface StoreUpdateManyMutationInput {
   image?: Maybe<String>;
 }
 
-export interface ChatContentCreateManyWithoutChatRoomInput {
-  create?: Maybe<
-    | ChatContentCreateWithoutChatRoomInput[]
-    | ChatContentCreateWithoutChatRoomInput
-  >;
-  connect?: Maybe<ChatContentWhereUniqueInput[] | ChatContentWhereUniqueInput>;
+export interface UserUpdateOneRequiredInput {
+  create?: Maybe<UserCreateInput>;
+  update?: Maybe<UserUpdateDataInput>;
+  upsert?: Maybe<UserUpsertNestedInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
 }
 
 export interface StoreUpdateInput {
@@ -2417,24 +2485,6 @@ export interface StoreUpdateInput {
   deliveryFee?: Maybe<Int>;
   image?: Maybe<String>;
   chatRoomList?: Maybe<ChatRoomUpdateManyWithoutStoreInput>;
-}
-
-export interface ChatContentUpdateInput {
-  user?: Maybe<UserUpdateOneRequiredInput>;
-  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutChatContentListInput>;
-  content?: Maybe<String>;
-}
-
-export interface ChatRoomCreateInput {
-  id?: Maybe<ID_Input>;
-  boss: UserCreateOneWithoutChatListInput;
-  memberList?: Maybe<UserCreateManyInput>;
-  store: StoreCreateOneWithoutChatRoomListInput;
-  location: String;
-  orderExpectedTime: DateTimeInput;
-  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
-  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
 }
 
 export interface StoreCategorySubscriptionWhereInput {
@@ -2454,15 +2504,16 @@ export interface StoreCategorySubscriptionWhereInput {
   >;
 }
 
-export interface ChatRoomUpdateInput {
-  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
-  memberList?: Maybe<UserUpdateManyInput>;
-  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
-  location?: Maybe<String>;
-  orderExpectedTime?: Maybe<DateTimeInput>;
-  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
-  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+export interface ChatRoomCreateInput {
+  id?: Maybe<ID_Input>;
+  boss: UserCreateOneWithoutBossChatListInput;
+  memberList?: Maybe<UserCreateManyWithoutChatListInput>;
+  store: StoreCreateOneWithoutChatRoomListInput;
+  location: String;
+  orderExpectedTime: DateTimeInput;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
+  state: Boolean;
 }
 
 export interface ChatRoomSubscriptionWhereInput {
@@ -2480,15 +2531,32 @@ export interface ChatRoomSubscriptionWhereInput {
   >;
 }
 
-export interface ChatRoomUpdateManyMutationInput {
+export interface ChatRoomUpdateInput {
+  boss?: Maybe<UserUpdateOneRequiredWithoutBossChatListInput>;
+  memberList?: Maybe<UserUpdateManyWithoutChatListInput>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
   location?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
+  roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
   state?: Maybe<Boolean>;
 }
 
 export interface UserVoteUpdateWithoutVoteDataInput {
   user?: Maybe<UserUpdateOneRequiredInput>;
   choice?: Maybe<Boolean>;
+}
+
+export interface ChatRoomUpdateManyMutationInput {
+  location?: Maybe<String>;
+  orderExpectedTime?: Maybe<DateTimeInput>;
+  state?: Maybe<Boolean>;
+}
+
+export interface VoteCreateInput {
+  id?: Maybe<ID_Input>;
+  chatRoom: ChatRoomCreateOneInput;
+  voteList?: Maybe<UserVoteCreateManyWithoutVoteInput>;
 }
 
 export interface IndividualOrderCreateInput {
@@ -2498,17 +2566,6 @@ export interface IndividualOrderCreateInput {
   roomOrder?: Maybe<RoomOrderCreateOneWithoutIndividualOrderListInput>;
 }
 
-export interface VoteCreateInput {
-  id?: Maybe<ID_Input>;
-  chatRoom: ChatRoomCreateOneInput;
-  voteList?: Maybe<UserVoteCreateManyWithoutVoteInput>;
-}
-
-export interface RoomOrderCreateOneWithoutIndividualOrderListInput {
-  create?: Maybe<RoomOrderCreateWithoutIndividualOrderListInput>;
-  connect?: Maybe<RoomOrderWhereUniqueInput>;
-}
-
 export interface ChatRoomUpdateOneRequiredInput {
   create?: Maybe<ChatRoomCreateInput>;
   update?: Maybe<ChatRoomUpdateDataInput>;
@@ -2516,11 +2573,9 @@ export interface ChatRoomUpdateOneRequiredInput {
   connect?: Maybe<ChatRoomWhereUniqueInput>;
 }
 
-export interface RoomOrderCreateWithoutIndividualOrderListInput {
-  id?: Maybe<ID_Input>;
-  chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
-  phoneNumber: String;
-  state: Boolean;
+export interface RoomOrderCreateOneWithoutIndividualOrderListInput {
+  create?: Maybe<RoomOrderCreateWithoutIndividualOrderListInput>;
+  connect?: Maybe<RoomOrderWhereUniqueInput>;
 }
 
 export interface VoteCreateOneWithoutVoteListInput {
@@ -2528,9 +2583,11 @@ export interface VoteCreateOneWithoutVoteListInput {
   connect?: Maybe<VoteWhereUniqueInput>;
 }
 
-export interface ChatRoomCreateOneWithoutRoomOrderInput {
-  create?: Maybe<ChatRoomCreateWithoutRoomOrderInput>;
-  connect?: Maybe<ChatRoomWhereUniqueInput>;
+export interface RoomOrderCreateWithoutIndividualOrderListInput {
+  id?: Maybe<ID_Input>;
+  chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
+  phoneNumber: String;
+  state: Boolean;
 }
 
 export interface StoreUpdateManyDataInput {
@@ -2542,10 +2599,20 @@ export interface StoreUpdateManyDataInput {
   image?: Maybe<String>;
 }
 
+export interface ChatRoomCreateOneWithoutRoomOrderInput {
+  create?: Maybe<ChatRoomCreateWithoutRoomOrderInput>;
+  connect?: Maybe<ChatRoomWhereUniqueInput>;
+}
+
+export interface StoreCategoryUpdateInput {
+  name?: Maybe<String>;
+  storeList?: Maybe<StoreUpdateManyWithoutStoreCategoryInput>;
+}
+
 export interface ChatRoomCreateWithoutRoomOrderInput {
   id?: Maybe<ID_Input>;
-  boss: UserCreateOneWithoutChatListInput;
-  memberList?: Maybe<UserCreateManyInput>;
+  boss: UserCreateOneWithoutBossChatListInput;
+  memberList?: Maybe<UserCreateManyWithoutChatListInput>;
   store: StoreCreateOneWithoutChatRoomListInput;
   location: String;
   orderExpectedTime: DateTimeInput;
@@ -2553,9 +2620,12 @@ export interface ChatRoomCreateWithoutRoomOrderInput {
   state: Boolean;
 }
 
-export interface StoreCategoryUpdateInput {
-  name?: Maybe<String>;
-  storeList?: Maybe<StoreUpdateManyWithoutStoreCategoryInput>;
+export interface UserCreateWithoutChatListInput {
+  id?: Maybe<ID_Input>;
+  number: Int;
+  pwd: String;
+  score?: Maybe<Int>;
+  bossChatList?: Maybe<ChatRoomCreateManyWithoutBossInput>;
 }
 
 export interface IndividualOrderUpdateInput {
@@ -2564,9 +2634,10 @@ export interface IndividualOrderUpdateInput {
   roomOrder?: Maybe<RoomOrderUpdateOneWithoutIndividualOrderListInput>;
 }
 
-export interface StoreCreateOneWithoutChatRoomListInput {
-  create?: Maybe<StoreCreateWithoutChatRoomListInput>;
-  connect?: Maybe<StoreWhereUniqueInput>;
+export interface MenuCreateWithoutMenuCategoryInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  price: Int;
 }
 
 export interface RoomOrderUpdateOneWithoutIndividualOrderListInput {
@@ -2578,9 +2649,10 @@ export interface RoomOrderUpdateOneWithoutIndividualOrderListInput {
   connect?: Maybe<RoomOrderWhereUniqueInput>;
 }
 
-export interface RoomOrderCreateOneWithoutChatRoomInput {
-  create?: Maybe<RoomOrderCreateWithoutChatRoomInput>;
-  connect?: Maybe<RoomOrderWhereUniqueInput>;
+export interface MenuCategoryCreateWithoutMenuListInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  store: StoreCreateOneWithoutMenuCategoryListInput;
 }
 
 export interface RoomOrderUpdateWithoutIndividualOrderListDataInput {
@@ -2589,9 +2661,15 @@ export interface RoomOrderUpdateWithoutIndividualOrderListDataInput {
   state?: Maybe<Boolean>;
 }
 
-export interface StoreCreateOneWithoutMenuCategoryListInput {
-  create?: Maybe<StoreCreateWithoutMenuCategoryListInput>;
-  connect?: Maybe<StoreWhereUniqueInput>;
+export interface ChatRoomCreateWithoutMemberListInput {
+  id?: Maybe<ID_Input>;
+  boss: UserCreateOneWithoutBossChatListInput;
+  store: StoreCreateOneWithoutChatRoomListInput;
+  location: String;
+  orderExpectedTime: DateTimeInput;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
+  state: Boolean;
 }
 
 export interface ChatRoomUpdateOneRequiredWithoutRoomOrderInput {
@@ -2601,19 +2679,170 @@ export interface ChatRoomUpdateOneRequiredWithoutRoomOrderInput {
   connect?: Maybe<ChatRoomWhereUniqueInput>;
 }
 
-export interface ChatRoomCreateOneWithoutChatContentListInput {
-  create?: Maybe<ChatRoomCreateWithoutChatContentListInput>;
-  connect?: Maybe<ChatRoomWhereUniqueInput>;
+export interface MenuWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  price?: Maybe<Int>;
+  price_not?: Maybe<Int>;
+  price_in?: Maybe<Int[] | Int>;
+  price_not_in?: Maybe<Int[] | Int>;
+  price_lt?: Maybe<Int>;
+  price_lte?: Maybe<Int>;
+  price_gt?: Maybe<Int>;
+  price_gte?: Maybe<Int>;
+  menuCategory?: Maybe<MenuCategoryWhereInput>;
+  AND?: Maybe<MenuWhereInput[] | MenuWhereInput>;
+  OR?: Maybe<MenuWhereInput[] | MenuWhereInput>;
+  NOT?: Maybe<MenuWhereInput[] | MenuWhereInput>;
 }
 
 export interface ChatRoomUpdateWithoutRoomOrderDataInput {
-  boss?: Maybe<UserUpdateOneRequiredWithoutChatListInput>;
-  memberList?: Maybe<UserUpdateManyInput>;
+  boss?: Maybe<UserUpdateOneRequiredWithoutBossChatListInput>;
+  memberList?: Maybe<UserUpdateManyWithoutChatListInput>;
   store?: Maybe<StoreUpdateOneRequiredWithoutChatRoomListInput>;
   location?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
   state?: Maybe<Boolean>;
+}
+
+export interface UserVoteUpdateManyWithWhereNestedInput {
+  where: UserVoteScalarWhereInput;
+  data: UserVoteUpdateManyDataInput;
+}
+
+export interface ChatRoomUpsertWithoutRoomOrderInput {
+  update: ChatRoomUpdateWithoutRoomOrderDataInput;
+  create: ChatRoomCreateWithoutRoomOrderInput;
+}
+
+export interface VoteUpsertWithoutVoteListInput {
+  update: VoteUpdateWithoutVoteListDataInput;
+  create: VoteCreateWithoutVoteListInput;
+}
+
+export interface RoomOrderUpsertWithoutIndividualOrderListInput {
+  update: RoomOrderUpdateWithoutIndividualOrderListDataInput;
+  create: RoomOrderCreateWithoutIndividualOrderListInput;
+}
+
+export interface UserUpdateInput {
+  number?: Maybe<Int>;
+  pwd?: Maybe<String>;
+  score?: Maybe<Int>;
+  bossChatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
+  chatList?: Maybe<ChatRoomUpdateManyWithoutMemberListInput>;
+}
+
+export interface MenuUpdateInput {
+  name?: Maybe<String>;
+  price?: Maybe<Int>;
+  menuCategory?: Maybe<MenuCategoryUpdateOneRequiredWithoutMenuListInput>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  number: Int;
+  pwd: String;
+  score?: Maybe<Int>;
+  bossChatList?: Maybe<ChatRoomCreateManyWithoutBossInput>;
+  chatList?: Maybe<ChatRoomCreateManyWithoutMemberListInput>;
+}
+
+export interface MenuUpdateManyMutationInput {
+  name?: Maybe<String>;
+  price?: Maybe<Int>;
+}
+
+export interface IndividualOrderCreateWithoutRoomOrderInput {
+  id?: Maybe<ID_Input>;
+  user: UserCreateOneInput;
+  menuList?: Maybe<MenuCreateManyInput>;
+}
+
+export interface MenuCategoryCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  store: StoreCreateOneWithoutMenuCategoryListInput;
+  menuList?: Maybe<MenuCreateManyWithoutMenuCategoryInput>;
+}
+
+export interface ChatRoomCreateWithoutChatContentListInput {
+  id?: Maybe<ID_Input>;
+  boss: UserCreateOneWithoutBossChatListInput;
+  memberList?: Maybe<UserCreateManyWithoutChatListInput>;
+  store: StoreCreateOneWithoutChatRoomListInput;
+  location: String;
+  orderExpectedTime: DateTimeInput;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
+  state: Boolean;
+}
+
+export interface MenuCategoryUpdateInput {
+  name?: Maybe<String>;
+  store?: Maybe<StoreUpdateOneRequiredWithoutMenuCategoryListInput>;
+  menuList?: Maybe<MenuUpdateManyWithoutMenuCategoryInput>;
+}
+
+export interface VoteUpdateInput {
+  chatRoom?: Maybe<ChatRoomUpdateOneRequiredInput>;
+  voteList?: Maybe<UserVoteUpdateManyWithoutVoteInput>;
+}
+
+export interface RoomOrderUpdateManyMutationInput {
+  phoneNumber?: Maybe<String>;
+  state?: Maybe<Boolean>;
+}
+
+export interface RoomOrderUpdateInput {
+  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutRoomOrderInput>;
+  individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutRoomOrderInput>;
+  phoneNumber?: Maybe<String>;
+  state?: Maybe<Boolean>;
+}
+
+export interface RoomOrderCreateInput {
+  id?: Maybe<ID_Input>;
+  chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
+  individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
+  phoneNumber: String;
+  state: Boolean;
+}
+
+export interface MenuCategoryUpdateManyMutationInput {
+  name?: Maybe<String>;
+}
+
+export interface UserVoteUpdateInput {
+  user?: Maybe<UserUpdateOneRequiredInput>;
+  choice?: Maybe<Boolean>;
+  vote?: Maybe<VoteUpdateOneRequiredWithoutVoteListInput>;
 }
 
 export interface UserWhereInput {
@@ -2661,6 +2890,9 @@ export interface UserWhereInput {
   score_lte?: Maybe<Int>;
   score_gt?: Maybe<Int>;
   score_gte?: Maybe<Int>;
+  bossChatList_every?: Maybe<ChatRoomWhereInput>;
+  bossChatList_some?: Maybe<ChatRoomWhereInput>;
+  bossChatList_none?: Maybe<ChatRoomWhereInput>;
   chatList_every?: Maybe<ChatRoomWhereInput>;
   chatList_some?: Maybe<ChatRoomWhereInput>;
   chatList_none?: Maybe<ChatRoomWhereInput>;
@@ -2669,165 +2901,25 @@ export interface UserWhereInput {
   NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
 }
 
-export interface ChatRoomUpsertWithoutRoomOrderInput {
-  update: ChatRoomUpdateWithoutRoomOrderDataInput;
-  create: ChatRoomCreateWithoutRoomOrderInput;
+export interface ChatRoomCreateWithoutStoreInput {
+  id?: Maybe<ID_Input>;
+  boss: UserCreateOneWithoutBossChatListInput;
+  memberList?: Maybe<UserCreateManyWithoutChatListInput>;
+  location: String;
+  orderExpectedTime: DateTimeInput;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
+  state: Boolean;
 }
 
-export interface VoteUpdateInput {
-  chatRoom?: Maybe<ChatRoomUpdateOneRequiredInput>;
-  voteList?: Maybe<UserVoteUpdateManyWithoutVoteInput>;
-}
-
-export interface RoomOrderUpsertWithoutIndividualOrderListInput {
-  update: RoomOrderUpdateWithoutIndividualOrderListDataInput;
-  create: RoomOrderCreateWithoutIndividualOrderListInput;
-}
-
-export interface UserVoteUpdateInput {
-  user?: Maybe<UserUpdateOneRequiredInput>;
-  choice?: Maybe<Boolean>;
-  vote?: Maybe<VoteUpdateOneRequiredWithoutVoteListInput>;
-}
-
-export interface MenuUpdateInput {
-  name?: Maybe<String>;
-  price?: Maybe<Int>;
-  menuCategory?: Maybe<MenuCategoryUpdateOneRequiredWithoutMenuListInput>;
+export interface StoreCategoryCreateWithoutStoreListInput {
+  id?: Maybe<ID_Input>;
+  name: String;
 }
 
 export type VoteWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
 }>;
-
-export interface MenuUpdateManyMutationInput {
-  name?: Maybe<String>;
-  price?: Maybe<Int>;
-}
-
-export interface MenuCategoryCreateManyWithoutStoreInput {
-  create?: Maybe<
-    MenuCategoryCreateWithoutStoreInput[] | MenuCategoryCreateWithoutStoreInput
-  >;
-  connect?: Maybe<
-    MenuCategoryWhereUniqueInput[] | MenuCategoryWhereUniqueInput
-  >;
-}
-
-export interface MenuCategoryCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  store: StoreCreateOneWithoutMenuCategoryListInput;
-  menuList?: Maybe<MenuCreateManyWithoutMenuCategoryInput>;
-}
-
-export interface UserCreateOneWithoutChatListInput {
-  create?: Maybe<UserCreateWithoutChatListInput>;
-  connect?: Maybe<UserWhereUniqueInput>;
-}
-
-export interface MenuCategoryUpdateInput {
-  name?: Maybe<String>;
-  store?: Maybe<StoreUpdateOneRequiredWithoutMenuCategoryListInput>;
-  menuList?: Maybe<MenuUpdateManyWithoutMenuCategoryInput>;
-}
-
-export interface UserVoteUpdateManyWithWhereNestedInput {
-  where: UserVoteScalarWhereInput;
-  data: UserVoteUpdateManyDataInput;
-}
-
-export interface RoomOrderUpdateManyMutationInput {
-  phoneNumber?: Maybe<String>;
-  state?: Maybe<Boolean>;
-}
-
-export interface RoomOrderUpdateInput {
-  chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutRoomOrderInput>;
-  individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutRoomOrderInput>;
-  phoneNumber?: Maybe<String>;
-  state?: Maybe<Boolean>;
-}
-
-export interface RoomOrderCreateInput {
-  id?: Maybe<ID_Input>;
-  chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
-  individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
-  phoneNumber: String;
-  state: Boolean;
-}
-
-export interface MenuCategoryUpdateManyMutationInput {
-  name?: Maybe<String>;
-}
-
-export interface VoteUpsertWithoutVoteListInput {
-  update: VoteUpdateWithoutVoteListDataInput;
-  create: VoteCreateWithoutVoteListInput;
-}
-
-export interface MenuWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  name?: Maybe<String>;
-  name_not?: Maybe<String>;
-  name_in?: Maybe<String[] | String>;
-  name_not_in?: Maybe<String[] | String>;
-  name_lt?: Maybe<String>;
-  name_lte?: Maybe<String>;
-  name_gt?: Maybe<String>;
-  name_gte?: Maybe<String>;
-  name_contains?: Maybe<String>;
-  name_not_contains?: Maybe<String>;
-  name_starts_with?: Maybe<String>;
-  name_not_starts_with?: Maybe<String>;
-  name_ends_with?: Maybe<String>;
-  name_not_ends_with?: Maybe<String>;
-  price?: Maybe<Int>;
-  price_not?: Maybe<Int>;
-  price_in?: Maybe<Int[] | Int>;
-  price_not_in?: Maybe<Int[] | Int>;
-  price_lt?: Maybe<Int>;
-  price_lte?: Maybe<Int>;
-  price_gt?: Maybe<Int>;
-  price_gte?: Maybe<Int>;
-  menuCategory?: Maybe<MenuCategoryWhereInput>;
-  AND?: Maybe<MenuWhereInput[] | MenuWhereInput>;
-  OR?: Maybe<MenuWhereInput[] | MenuWhereInput>;
-  NOT?: Maybe<MenuWhereInput[] | MenuWhereInput>;
-}
-
-export interface MenuCreateManyInput {
-  create?: Maybe<MenuCreateInput[] | MenuCreateInput>;
-  connect?: Maybe<MenuWhereUniqueInput[] | MenuWhereUniqueInput>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  number: Int;
-  pwd: String;
-  score?: Maybe<Int>;
-  chatList?: Maybe<ChatRoomCreateManyWithoutBossInput>;
-}
-
-export interface UserUpdateInput {
-  number?: Maybe<Int>;
-  pwd?: Maybe<String>;
-  score?: Maybe<Int>;
-  chatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
-}
 
 export interface NodeNode {
   id: ID_Output;
@@ -3798,6 +3890,15 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   number: () => Promise<Int>;
   pwd: () => Promise<String>;
   score: () => Promise<Int>;
+  bossChatList: <T = FragmentableArray<ChatRoom>>(args?: {
+    where?: ChatRoomWhereInput;
+    orderBy?: ChatRoomOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   chatList: <T = FragmentableArray<ChatRoom>>(args?: {
     where?: ChatRoomWhereInput;
     orderBy?: ChatRoomOrderByInput;
@@ -3816,6 +3917,15 @@ export interface UserSubscription
   number: () => Promise<AsyncIterator<Int>>;
   pwd: () => Promise<AsyncIterator<String>>;
   score: () => Promise<AsyncIterator<Int>>;
+  bossChatList: <T = Promise<AsyncIterator<ChatRoomSubscription>>>(args?: {
+    where?: ChatRoomWhereInput;
+    orderBy?: ChatRoomOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   chatList: <T = Promise<AsyncIterator<ChatRoomSubscription>>>(args?: {
     where?: ChatRoomWhereInput;
     orderBy?: ChatRoomOrderByInput;
@@ -3834,6 +3944,15 @@ export interface UserNullablePromise
   number: () => Promise<Int>;
   pwd: () => Promise<String>;
   score: () => Promise<Int>;
+  bossChatList: <T = FragmentableArray<ChatRoom>>(args?: {
+    where?: ChatRoomWhereInput;
+    orderBy?: ChatRoomOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   chatList: <T = FragmentableArray<ChatRoom>>(args?: {
     where?: ChatRoomWhereInput;
     orderBy?: ChatRoomOrderByInput;
