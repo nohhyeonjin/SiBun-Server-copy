@@ -10,6 +10,7 @@
     "@babel/core": "^7.6.4",
     "@babel/node": "^7.6.1",
     "@babel/preset-env": "^7.6.0",
+    "@google/maps": "^1.0.2",
     "dotenv": "^8.1.0",
     "graphql-subscriptions": "^1.1.0",
     "graphql-tools": "^4.0.5",
