@@ -1,0 +1,5 @@
+type Mutation {
+  getRoomOrder(
+    roomId: String!
+  ): RoomOrder!
+}
