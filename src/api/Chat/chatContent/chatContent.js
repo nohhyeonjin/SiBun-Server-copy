@@ -3,6 +3,6 @@ import { prisma } from "../../../../generated/prisma-client";
 
   export default{
     Query: {
-        chatContent: () => prisma.chatContent()
+        chatContents: () => prisma.chatContents() // s붙여야지 배열 반환
     }
 }

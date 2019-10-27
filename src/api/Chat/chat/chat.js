@@ -25,4 +25,3 @@ import { prisma } from "../../../../generated/prisma-client";
           prisma.createChatContent({content})
       } //chat
   }
-

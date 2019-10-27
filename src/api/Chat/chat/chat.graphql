@@ -1,19 +1,15 @@
 
-
   type Mutation {
     sendChat(
+        user: String!
         text:String!
         ): ChatContent!
   }
 
-  type Mutation{
-      ChatContent(
-           id: String!
-           user: String!
-           chatRoom: String!
-           content: String!
-      ): String!
-  }
-
-
-
+# type Mutation{}
+# #   type Mutation{
+# #       ChatContent(
+# #            user: String!
+# #            content: String!
+# #       ): String!
+# #   }
