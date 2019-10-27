@@ -2186,10 +2186,9 @@ type Subscription {
 
 type User {
   id: ID!
-  number: Int!
+  number: String!
   pwd: String!
   score: Int!
-  test: Int!
   bossChatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
   chatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
 }
@@ -2202,10 +2201,9 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  number: Int!
+  number: String!
   pwd: String!
   score: Int
-  test: Int
   bossChatList: ChatRoomCreateManyWithoutBossInput
   chatList: ChatRoomCreateManyWithoutMemberListInput
 }
@@ -2227,19 +2225,17 @@ input UserCreateOneWithoutBossChatListInput {
 
 input UserCreateWithoutBossChatListInput {
   id: ID
-  number: Int!
+  number: String!
   pwd: String!
   score: Int
-  test: Int
   chatList: ChatRoomCreateManyWithoutMemberListInput
 }
 
 input UserCreateWithoutChatListInput {
   id: ID
-  number: Int!
+  number: String!
   pwd: String!
   score: Int
-  test: Int
   bossChatList: ChatRoomCreateManyWithoutBossInput
 }
 
@@ -2257,16 +2253,13 @@ enum UserOrderByInput {
   pwd_DESC
   score_ASC
   score_DESC
-  test_ASC
-  test_DESC
 }
 
 type UserPreviousValues {
   id: ID!
-  number: Int!
+  number: String!
   pwd: String!
   score: Int!
-  test: Int!
 }
 
 input UserScalarWhereInput {
@@ -2284,14 +2277,20 @@ input UserScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  number: Int
-  number_not: Int
-  number_in: [Int!]
-  number_not_in: [Int!]
-  number_lt: Int
-  number_lte: Int
-  number_gt: Int
-  number_gte: Int
+  number: String
+  number_not: String
+  number_in: [String!]
+  number_not_in: [String!]
+  number_lt: String
+  number_lte: String
+  number_gt: String
+  number_gte: String
+  number_contains: String
+  number_not_contains: String
+  number_starts_with: String
+  number_not_starts_with: String
+  number_ends_with: String
+  number_not_ends_with: String
   pwd: String
   pwd_not: String
   pwd_in: [String!]
@@ -2314,14 +2313,6 @@ input UserScalarWhereInput {
   score_lte: Int
   score_gt: Int
   score_gte: Int
-  test: Int
-  test_not: Int
-  test_in: [Int!]
-  test_not_in: [Int!]
-  test_lt: Int
-  test_lte: Int
-  test_gt: Int
-  test_gte: Int
   AND: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
   NOT: [UserScalarWhereInput!]
@@ -2346,35 +2337,31 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateDataInput {
-  number: Int
+  number: String
   pwd: String
   score: Int
-  test: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
   chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
 
 input UserUpdateInput {
-  number: Int
+  number: String
   pwd: String
   score: Int
-  test: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
   chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
 
 input UserUpdateManyDataInput {
-  number: Int
+  number: String
   pwd: String
   score: Int
-  test: Int
 }
 
 input UserUpdateManyMutationInput {
-  number: Int
+  number: String
   pwd: String
   score: Int
-  test: Int
 }
 
 input UserUpdateManyWithoutChatListInput {
@@ -2409,18 +2396,16 @@ input UserUpdateOneRequiredWithoutBossChatListInput {
 }
 
 input UserUpdateWithoutBossChatListDataInput {
-  number: Int
+  number: String
   pwd: String
   score: Int
-  test: Int
   chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
 
 input UserUpdateWithoutChatListDataInput {
-  number: Int
+  number: String
   pwd: String
   score: Int
-  test: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
 }
 
@@ -2623,14 +2608,20 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  number: Int
-  number_not: Int
-  number_in: [Int!]
-  number_not_in: [Int!]
-  number_lt: Int
-  number_lte: Int
-  number_gt: Int
-  number_gte: Int
+  number: String
+  number_not: String
+  number_in: [String!]
+  number_not_in: [String!]
+  number_lt: String
+  number_lte: String
+  number_gt: String
+  number_gte: String
+  number_contains: String
+  number_not_contains: String
+  number_starts_with: String
+  number_not_starts_with: String
+  number_ends_with: String
+  number_not_ends_with: String
   pwd: String
   pwd_not: String
   pwd_in: [String!]
@@ -2653,14 +2644,6 @@ input UserWhereInput {
   score_lte: Int
   score_gt: Int
   score_gte: Int
-  test: Int
-  test_not: Int
-  test_in: [Int!]
-  test_not_in: [Int!]
-  test_lt: Int
-  test_lte: Int
-  test_gt: Int
-  test_gte: Int
   bossChatList_every: ChatRoomWhereInput
   bossChatList_some: ChatRoomWhereInput
   bossChatList_none: ChatRoomWhereInput
@@ -2674,7 +2657,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  number: Int
+  number: String
 }
 
 type Vote {

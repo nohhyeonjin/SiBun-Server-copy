@@ -535,9 +535,7 @@ export type UserOrderByInput =
   | "pwd_ASC"
   | "pwd_DESC"
   | "score_ASC"
-  | "score_DESC"
-  | "test_ASC"
-  | "test_DESC";
+  | "score_DESC";
 
 export type StoreOrderByInput =
   | "id_ASC"
@@ -701,10 +699,9 @@ export interface ChatContentWhereInput {
 }
 
 export interface UserUpdateDataInput {
-  number?: Maybe<Int>;
+  number?: Maybe<String>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
-  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
   chatList?: Maybe<ChatRoomUpdateManyWithoutMemberListInput>;
 }
@@ -909,10 +906,9 @@ export interface StoreSubscriptionWhereInput {
 }
 
 export interface UserUpdateWithoutChatListDataInput {
-  number?: Maybe<Int>;
+  number?: Maybe<String>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
-  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
 }
 
@@ -971,14 +967,20 @@ export interface UserScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  number?: Maybe<Int>;
-  number_not?: Maybe<Int>;
-  number_in?: Maybe<Int[] | Int>;
-  number_not_in?: Maybe<Int[] | Int>;
-  number_lt?: Maybe<Int>;
-  number_lte?: Maybe<Int>;
-  number_gt?: Maybe<Int>;
-  number_gte?: Maybe<Int>;
+  number?: Maybe<String>;
+  number_not?: Maybe<String>;
+  number_in?: Maybe<String[] | String>;
+  number_not_in?: Maybe<String[] | String>;
+  number_lt?: Maybe<String>;
+  number_lte?: Maybe<String>;
+  number_gt?: Maybe<String>;
+  number_gte?: Maybe<String>;
+  number_contains?: Maybe<String>;
+  number_not_contains?: Maybe<String>;
+  number_starts_with?: Maybe<String>;
+  number_not_starts_with?: Maybe<String>;
+  number_ends_with?: Maybe<String>;
+  number_not_ends_with?: Maybe<String>;
   pwd?: Maybe<String>;
   pwd_not?: Maybe<String>;
   pwd_in?: Maybe<String[] | String>;
@@ -1001,14 +1003,6 @@ export interface UserScalarWhereInput {
   score_lte?: Maybe<Int>;
   score_gt?: Maybe<Int>;
   score_gte?: Maybe<Int>;
-  test?: Maybe<Int>;
-  test_not?: Maybe<Int>;
-  test_in?: Maybe<Int[] | Int>;
-  test_not_in?: Maybe<Int[] | Int>;
-  test_lt?: Maybe<Int>;
-  test_lte?: Maybe<Int>;
-  test_gt?: Maybe<Int>;
-  test_gte?: Maybe<Int>;
   AND?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
   OR?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
   NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
@@ -1044,10 +1038,9 @@ export type ChatRoomWhereUniqueInput = AtLeastOne<{
 }>;
 
 export interface UserUpdateManyDataInput {
-  number?: Maybe<Int>;
+  number?: Maybe<String>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
-  test?: Maybe<Int>;
 }
 
 export interface UserVoteUpdateManyDataInput {
@@ -1302,7 +1295,7 @@ export interface MenuUpdateManyWithWhereNestedInput {
 
 export type UserWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
-  number?: Maybe<Int>;
+  number?: Maybe<String>;
 }>;
 
 export interface MenuUpdateManyDataInput {
@@ -1699,10 +1692,9 @@ export interface UserCreateOneWithoutBossChatListInput {
 }
 
 export interface UserUpdateWithoutBossChatListDataInput {
-  number?: Maybe<Int>;
+  number?: Maybe<String>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
-  test?: Maybe<Int>;
   chatList?: Maybe<ChatRoomUpdateManyWithoutMemberListInput>;
 }
 
@@ -2181,10 +2173,9 @@ export interface ChatRoomUpsertWithWhereUniqueWithoutStoreInput {
 }
 
 export interface UserUpdateManyMutationInput {
-  number?: Maybe<Int>;
+  number?: Maybe<String>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
-  test?: Maybe<Int>;
 }
 
 export interface StoreUpsertWithoutMenuCategoryListInput {
@@ -2458,10 +2449,9 @@ export interface ChatRoomUpsertWithoutChatContentListInput {
 
 export interface UserCreateWithoutBossChatListInput {
   id?: Maybe<ID_Input>;
-  number: Int;
+  number: String;
   pwd: String;
   score?: Maybe<Int>;
-  test?: Maybe<Int>;
   chatList?: Maybe<ChatRoomCreateManyWithoutMemberListInput>;
 }
 
@@ -2638,10 +2628,9 @@ export interface ChatRoomCreateWithoutRoomOrderInput {
 
 export interface UserCreateWithoutChatListInput {
   id?: Maybe<ID_Input>;
-  number: Int;
+  number: String;
   pwd: String;
   score?: Maybe<Int>;
-  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomCreateManyWithoutBossInput>;
 }
 
@@ -2770,10 +2759,9 @@ export interface RoomOrderUpsertWithoutIndividualOrderListInput {
 }
 
 export interface UserUpdateInput {
-  number?: Maybe<Int>;
+  number?: Maybe<String>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
-  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
   chatList?: Maybe<ChatRoomUpdateManyWithoutMemberListInput>;
 }
@@ -2786,10 +2774,9 @@ export interface MenuUpdateInput {
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
-  number: Int;
+  number: String;
   pwd: String;
   score?: Maybe<Int>;
-  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomCreateManyWithoutBossInput>;
   chatList?: Maybe<ChatRoomCreateManyWithoutMemberListInput>;
 }
@@ -2879,14 +2866,20 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  number?: Maybe<Int>;
-  number_not?: Maybe<Int>;
-  number_in?: Maybe<Int[] | Int>;
-  number_not_in?: Maybe<Int[] | Int>;
-  number_lt?: Maybe<Int>;
-  number_lte?: Maybe<Int>;
-  number_gt?: Maybe<Int>;
-  number_gte?: Maybe<Int>;
+  number?: Maybe<String>;
+  number_not?: Maybe<String>;
+  number_in?: Maybe<String[] | String>;
+  number_not_in?: Maybe<String[] | String>;
+  number_lt?: Maybe<String>;
+  number_lte?: Maybe<String>;
+  number_gt?: Maybe<String>;
+  number_gte?: Maybe<String>;
+  number_contains?: Maybe<String>;
+  number_not_contains?: Maybe<String>;
+  number_starts_with?: Maybe<String>;
+  number_not_starts_with?: Maybe<String>;
+  number_ends_with?: Maybe<String>;
+  number_not_ends_with?: Maybe<String>;
   pwd?: Maybe<String>;
   pwd_not?: Maybe<String>;
   pwd_in?: Maybe<String[] | String>;
@@ -2909,14 +2902,6 @@ export interface UserWhereInput {
   score_lte?: Maybe<Int>;
   score_gt?: Maybe<Int>;
   score_gte?: Maybe<Int>;
-  test?: Maybe<Int>;
-  test_not?: Maybe<Int>;
-  test_in?: Maybe<Int[] | Int>;
-  test_not_in?: Maybe<Int[] | Int>;
-  test_lt?: Maybe<Int>;
-  test_lte?: Maybe<Int>;
-  test_gt?: Maybe<Int>;
-  test_gte?: Maybe<Int>;
   bossChatList_every?: Maybe<ChatRoomWhereInput>;
   bossChatList_some?: Maybe<ChatRoomWhereInput>;
   bossChatList_none?: Maybe<ChatRoomWhereInput>;
@@ -3907,18 +3892,16 @@ export interface MenuCategorySubscriptionPayloadSubscription
 
 export interface User {
   id: ID_Output;
-  number: Int;
+  number: String;
   pwd: String;
   score: Int;
-  test: Int;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
-  number: () => Promise<Int>;
+  number: () => Promise<String>;
   pwd: () => Promise<String>;
   score: () => Promise<Int>;
-  test: () => Promise<Int>;
   bossChatList: <T = FragmentableArray<ChatRoom>>(args?: {
     where?: ChatRoomWhereInput;
     orderBy?: ChatRoomOrderByInput;
@@ -3943,10 +3926,9 @@ export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  number: () => Promise<AsyncIterator<Int>>;
+  number: () => Promise<AsyncIterator<String>>;
   pwd: () => Promise<AsyncIterator<String>>;
   score: () => Promise<AsyncIterator<Int>>;
-  test: () => Promise<AsyncIterator<Int>>;
   bossChatList: <T = Promise<AsyncIterator<ChatRoomSubscription>>>(args?: {
     where?: ChatRoomWhereInput;
     orderBy?: ChatRoomOrderByInput;
@@ -3971,10 +3953,9 @@ export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  number: () => Promise<Int>;
+  number: () => Promise<String>;
   pwd: () => Promise<String>;
   score: () => Promise<Int>;
-  test: () => Promise<Int>;
   bossChatList: <T = FragmentableArray<ChatRoom>>(args?: {
     where?: ChatRoomWhereInput;
     orderBy?: ChatRoomOrderByInput;
@@ -4572,30 +4553,27 @@ export interface MenuCategoryConnectionSubscription
 
 export interface UserPreviousValues {
   id: ID_Output;
-  number: Int;
+  number: String;
   pwd: String;
   score: Int;
-  test: Int;
 }
 
 export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  number: () => Promise<Int>;
+  number: () => Promise<String>;
   pwd: () => Promise<String>;
   score: () => Promise<Int>;
-  test: () => Promise<Int>;
 }
 
 export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  number: () => Promise<AsyncIterator<Int>>;
+  number: () => Promise<AsyncIterator<String>>;
   pwd: () => Promise<AsyncIterator<String>>;
   score: () => Promise<AsyncIterator<Int>>;
-  test: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserSubscriptionPayload {
@@ -4787,14 +4765,14 @@ export type ID_Input = string | number;
 export type ID_Output = string;
 
 /*
-The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
-*/
-export type Int = number;
-
-/*
 The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
 */
 export type String = string;
+
+/*
+The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1.
+*/
+export type Int = number;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.
