@@ -1,14 +1,7 @@
 type Mutation{
-    createChatRoom( 
-        boss: String!
-        memberList: String!
-        store: String!
-        location: String!
-        orderExpectedTime: String!
-        state: Boolean!
-    ): String!
+    createChatRoom(
+        storeName : String!,
+        location : String!,
+        time : String!
+    ): ChatRoom!
 }
-
-# type Query{
-#     result: String!
-# }

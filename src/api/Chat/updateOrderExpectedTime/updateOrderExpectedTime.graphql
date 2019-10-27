@@ -1,0 +1,6 @@
+type Mutation{
+    updateOrderExpectedTime(
+        roomId: String!,
+        time: String!
+    ):ChatRoom!
+}

@@ -7,7 +7,7 @@
   }
 
   type Mutation{
-      chatContent(
+      ChatContent(
            id: String!
            user: String!
            chatRoom: String!
