@@ -12,7 +12,7 @@ type MenuCategory {
   id : ID! @id
   name : String!
   store : Store! @relation(name : "StoreMenuCategoryRelation")
-  menuList: [Menu] @relation(name : "MenuMenuCategoryRelation")
+  menuList : [Menu] @relation(name : "MenuMenuCategoryRelation")
 }
 
 
