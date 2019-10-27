@@ -1,24 +1,21 @@
 import { prisma } from "../../../../generated/prisma-client";
+import { isAuthenticated } from "../../../middlewares";
 
 //새로운 chat 보내는 친구
   export default{
     Mutation:{
-        sendChat: (_, { content }) =>
-          prisma.createChatContent({content})
+        sendChat: (_,args ,{ request }) =>{
+          isAuthenticated(request);
+          const { roomId , content } = args;
+          const { user } = request;
+          
+          const sc = prisma.createChatContent({
+            user: user,
+            chatRoom: roomId,
+            content: content
+          })
+          return "sendChat success"
+        }
       } //chat
   }
-
-//시간 바꾸는 거 참고하기1!
-//   export default{
-//     Mutation: {
-//         updateOrderExpectedTime:async(_,args,{request})=>{
-//             const { roomId, time } = args;
-            
-//             const chatRoom = await prisma.updateChatRoom({
-//                 data : { orderExpectedTime : time },
-//                 where : { id : roomId }
-//             })
-//             return chatRoom;
-//         }
-//     }
-// }
+  
