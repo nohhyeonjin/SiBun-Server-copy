@@ -5,11 +5,3 @@
         text:String!
         ): ChatContent!
   }
-
-# type Mutation{}
-# #   type Mutation{
-# #       ChatContent(
-# #            user: String!
-# #            content: String!
-# #       ): String!
-# #   }
