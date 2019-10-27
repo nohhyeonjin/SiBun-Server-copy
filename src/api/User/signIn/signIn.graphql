@@ -1,10 +1,6 @@
 type Mutation{
     signIn(
-        number: String!
+        number: Int!
         pwd: String!
     ): String!
-}
-
-type Query{
-    something: String!
 }

@@ -1,6 +1,6 @@
 type User {
   id : ID!
-  number : String!
+  number : Int!
   pwd : String!
   score : Int!
   bossChatList : [ChatRoom!]
