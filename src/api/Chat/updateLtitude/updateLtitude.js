@@ -13,7 +13,7 @@ export default{
             await Axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
                 params:{
                     address : address,
-                    key:'AIzaSyAu5_gGqUTAXcQzVQduOmTnNjpAn5rrG8E'
+                    key: process.env.GEOCODING_API_KEY
                 }
             })
             .then(function(response){
