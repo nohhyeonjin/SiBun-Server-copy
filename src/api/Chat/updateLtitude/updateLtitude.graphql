@@ -1,0 +1,6 @@
+type Mutation{
+    updateLtitude(
+        chatRoomId: ID!,
+        address:String!
+    ):ChatRoom!
+}
