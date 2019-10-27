@@ -50,6 +50,8 @@ type ChatRoom {
   memberList : [User!] @relation(name : "MemberChatRelation")
   store : Store! @relation(name : "StoreChatRoomRelation")
   location : String!
+  latitude : String!
+  longtitude : String!
   orderExpectedTime : DateTime!
   roomOrder : RoomOrder @relation(name : "ChatRoomOrderRelation")
   chatContentList : [ChatContent] @relation(name : "ChatRoomChatContentRelation")
