@@ -535,7 +535,9 @@ export type UserOrderByInput =
   | "pwd_ASC"
   | "pwd_DESC"
   | "score_ASC"
-  | "score_DESC";
+  | "score_DESC"
+  | "test_ASC"
+  | "test_DESC";
 
 export type StoreOrderByInput =
   | "id_ASC"
@@ -702,6 +704,7 @@ export interface UserUpdateDataInput {
   number?: Maybe<Int>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
+  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
   chatList?: Maybe<ChatRoomUpdateManyWithoutMemberListInput>;
 }
@@ -909,6 +912,7 @@ export interface UserUpdateWithoutChatListDataInput {
   number?: Maybe<Int>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
+  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
 }
 
@@ -997,6 +1001,14 @@ export interface UserScalarWhereInput {
   score_lte?: Maybe<Int>;
   score_gt?: Maybe<Int>;
   score_gte?: Maybe<Int>;
+  test?: Maybe<Int>;
+  test_not?: Maybe<Int>;
+  test_in?: Maybe<Int[] | Int>;
+  test_not_in?: Maybe<Int[] | Int>;
+  test_lt?: Maybe<Int>;
+  test_lte?: Maybe<Int>;
+  test_gt?: Maybe<Int>;
+  test_gte?: Maybe<Int>;
   AND?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
   OR?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
   NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
@@ -1035,6 +1047,7 @@ export interface UserUpdateManyDataInput {
   number?: Maybe<Int>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
+  test?: Maybe<Int>;
 }
 
 export interface UserVoteUpdateManyDataInput {
@@ -1689,6 +1702,7 @@ export interface UserUpdateWithoutBossChatListDataInput {
   number?: Maybe<Int>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
+  test?: Maybe<Int>;
   chatList?: Maybe<ChatRoomUpdateManyWithoutMemberListInput>;
 }
 
@@ -2170,6 +2184,7 @@ export interface UserUpdateManyMutationInput {
   number?: Maybe<Int>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
+  test?: Maybe<Int>;
 }
 
 export interface StoreUpsertWithoutMenuCategoryListInput {
@@ -2446,6 +2461,7 @@ export interface UserCreateWithoutBossChatListInput {
   number: Int;
   pwd: String;
   score?: Maybe<Int>;
+  test?: Maybe<Int>;
   chatList?: Maybe<ChatRoomCreateManyWithoutMemberListInput>;
 }
 
@@ -2625,6 +2641,7 @@ export interface UserCreateWithoutChatListInput {
   number: Int;
   pwd: String;
   score?: Maybe<Int>;
+  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomCreateManyWithoutBossInput>;
 }
 
@@ -2756,6 +2773,7 @@ export interface UserUpdateInput {
   number?: Maybe<Int>;
   pwd?: Maybe<String>;
   score?: Maybe<Int>;
+  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomUpdateManyWithoutBossInput>;
   chatList?: Maybe<ChatRoomUpdateManyWithoutMemberListInput>;
 }
@@ -2771,6 +2789,7 @@ export interface UserCreateInput {
   number: Int;
   pwd: String;
   score?: Maybe<Int>;
+  test?: Maybe<Int>;
   bossChatList?: Maybe<ChatRoomCreateManyWithoutBossInput>;
   chatList?: Maybe<ChatRoomCreateManyWithoutMemberListInput>;
 }
@@ -2890,6 +2909,14 @@ export interface UserWhereInput {
   score_lte?: Maybe<Int>;
   score_gt?: Maybe<Int>;
   score_gte?: Maybe<Int>;
+  test?: Maybe<Int>;
+  test_not?: Maybe<Int>;
+  test_in?: Maybe<Int[] | Int>;
+  test_not_in?: Maybe<Int[] | Int>;
+  test_lt?: Maybe<Int>;
+  test_lte?: Maybe<Int>;
+  test_gt?: Maybe<Int>;
+  test_gte?: Maybe<Int>;
   bossChatList_every?: Maybe<ChatRoomWhereInput>;
   bossChatList_some?: Maybe<ChatRoomWhereInput>;
   bossChatList_none?: Maybe<ChatRoomWhereInput>;
@@ -3883,6 +3910,7 @@ export interface User {
   number: Int;
   pwd: String;
   score: Int;
+  test: Int;
 }
 
 export interface UserPromise extends Promise<User>, Fragmentable {
@@ -3890,6 +3918,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   number: () => Promise<Int>;
   pwd: () => Promise<String>;
   score: () => Promise<Int>;
+  test: () => Promise<Int>;
   bossChatList: <T = FragmentableArray<ChatRoom>>(args?: {
     where?: ChatRoomWhereInput;
     orderBy?: ChatRoomOrderByInput;
@@ -3917,6 +3946,7 @@ export interface UserSubscription
   number: () => Promise<AsyncIterator<Int>>;
   pwd: () => Promise<AsyncIterator<String>>;
   score: () => Promise<AsyncIterator<Int>>;
+  test: () => Promise<AsyncIterator<Int>>;
   bossChatList: <T = Promise<AsyncIterator<ChatRoomSubscription>>>(args?: {
     where?: ChatRoomWhereInput;
     orderBy?: ChatRoomOrderByInput;
@@ -3944,6 +3974,7 @@ export interface UserNullablePromise
   number: () => Promise<Int>;
   pwd: () => Promise<String>;
   score: () => Promise<Int>;
+  test: () => Promise<Int>;
   bossChatList: <T = FragmentableArray<ChatRoom>>(args?: {
     where?: ChatRoomWhereInput;
     orderBy?: ChatRoomOrderByInput;
@@ -4544,6 +4575,7 @@ export interface UserPreviousValues {
   number: Int;
   pwd: String;
   score: Int;
+  test: Int;
 }
 
 export interface UserPreviousValuesPromise
@@ -4553,6 +4585,7 @@ export interface UserPreviousValuesPromise
   number: () => Promise<Int>;
   pwd: () => Promise<String>;
   score: () => Promise<Int>;
+  test: () => Promise<Int>;
 }
 
 export interface UserPreviousValuesSubscription
@@ -4562,6 +4595,7 @@ export interface UserPreviousValuesSubscription
   number: () => Promise<AsyncIterator<Int>>;
   pwd: () => Promise<AsyncIterator<String>>;
   score: () => Promise<AsyncIterator<Int>>;
+  test: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface UserSubscriptionPayload {

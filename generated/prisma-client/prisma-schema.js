@@ -2189,6 +2189,7 @@ type User {
   number: Int!
   pwd: String!
   score: Int!
+  test: Int!
   bossChatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
   chatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
 }
@@ -2204,6 +2205,7 @@ input UserCreateInput {
   number: Int!
   pwd: String!
   score: Int
+  test: Int
   bossChatList: ChatRoomCreateManyWithoutBossInput
   chatList: ChatRoomCreateManyWithoutMemberListInput
 }
@@ -2228,6 +2230,7 @@ input UserCreateWithoutBossChatListInput {
   number: Int!
   pwd: String!
   score: Int
+  test: Int
   chatList: ChatRoomCreateManyWithoutMemberListInput
 }
 
@@ -2236,6 +2239,7 @@ input UserCreateWithoutChatListInput {
   number: Int!
   pwd: String!
   score: Int
+  test: Int
   bossChatList: ChatRoomCreateManyWithoutBossInput
 }
 
@@ -2253,6 +2257,8 @@ enum UserOrderByInput {
   pwd_DESC
   score_ASC
   score_DESC
+  test_ASC
+  test_DESC
 }
 
 type UserPreviousValues {
@@ -2260,6 +2266,7 @@ type UserPreviousValues {
   number: Int!
   pwd: String!
   score: Int!
+  test: Int!
 }
 
 input UserScalarWhereInput {
@@ -2307,6 +2314,14 @@ input UserScalarWhereInput {
   score_lte: Int
   score_gt: Int
   score_gte: Int
+  test: Int
+  test_not: Int
+  test_in: [Int!]
+  test_not_in: [Int!]
+  test_lt: Int
+  test_lte: Int
+  test_gt: Int
+  test_gte: Int
   AND: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
   NOT: [UserScalarWhereInput!]
@@ -2334,6 +2349,7 @@ input UserUpdateDataInput {
   number: Int
   pwd: String
   score: Int
+  test: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
   chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
@@ -2342,6 +2358,7 @@ input UserUpdateInput {
   number: Int
   pwd: String
   score: Int
+  test: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
   chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
@@ -2350,12 +2367,14 @@ input UserUpdateManyDataInput {
   number: Int
   pwd: String
   score: Int
+  test: Int
 }
 
 input UserUpdateManyMutationInput {
   number: Int
   pwd: String
   score: Int
+  test: Int
 }
 
 input UserUpdateManyWithoutChatListInput {
@@ -2393,6 +2412,7 @@ input UserUpdateWithoutBossChatListDataInput {
   number: Int
   pwd: String
   score: Int
+  test: Int
   chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
 
@@ -2400,6 +2420,7 @@ input UserUpdateWithoutChatListDataInput {
   number: Int
   pwd: String
   score: Int
+  test: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
 }
 
@@ -2632,6 +2653,14 @@ input UserWhereInput {
   score_lte: Int
   score_gt: Int
   score_gte: Int
+  test: Int
+  test_not: Int
+  test_in: [Int!]
+  test_not_in: [Int!]
+  test_lt: Int
+  test_lte: Int
+  test_gt: Int
+  test_gte: Int
   bossChatList_every: ChatRoomWhereInput
   bossChatList_some: ChatRoomWhereInput
   bossChatList_none: ChatRoomWhereInput
