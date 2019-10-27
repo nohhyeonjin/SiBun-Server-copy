@@ -244,6 +244,8 @@ type ChatRoom {
   memberList(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   store: Store!
   location: String!
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrder
   chatContentList(where: ChatContentWhereInput, orderBy: ChatContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatContent!]
@@ -262,6 +264,8 @@ input ChatRoomCreateInput {
   memberList: UserCreateManyWithoutChatListInput
   store: StoreCreateOneWithoutChatRoomListInput!
   location: String!
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
@@ -303,6 +307,8 @@ input ChatRoomCreateWithoutBossInput {
   memberList: UserCreateManyWithoutChatListInput
   store: StoreCreateOneWithoutChatRoomListInput!
   location: String!
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
@@ -315,6 +321,8 @@ input ChatRoomCreateWithoutChatContentListInput {
   memberList: UserCreateManyWithoutChatListInput
   store: StoreCreateOneWithoutChatRoomListInput!
   location: String!
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   state: Boolean!
@@ -325,6 +333,8 @@ input ChatRoomCreateWithoutMemberListInput {
   boss: UserCreateOneWithoutBossChatListInput!
   store: StoreCreateOneWithoutChatRoomListInput!
   location: String!
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
@@ -337,6 +347,8 @@ input ChatRoomCreateWithoutRoomOrderInput {
   memberList: UserCreateManyWithoutChatListInput
   store: StoreCreateOneWithoutChatRoomListInput!
   location: String!
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime!
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
   state: Boolean!
@@ -347,6 +359,8 @@ input ChatRoomCreateWithoutStoreInput {
   boss: UserCreateOneWithoutBossChatListInput!
   memberList: UserCreateManyWithoutChatListInput
   location: String!
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
@@ -363,6 +377,10 @@ enum ChatRoomOrderByInput {
   id_DESC
   location_ASC
   location_DESC
+  latitude_ASC
+  latitude_DESC
+  longtitude_ASC
+  longtitude_DESC
   orderExpectedTime_ASC
   orderExpectedTime_DESC
   state_ASC
@@ -372,6 +390,8 @@ enum ChatRoomOrderByInput {
 type ChatRoomPreviousValues {
   id: ID!
   location: String!
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime!
   state: Boolean!
 }
@@ -405,6 +425,34 @@ input ChatRoomScalarWhereInput {
   location_not_starts_with: String
   location_ends_with: String
   location_not_ends_with: String
+  latitude: String
+  latitude_not: String
+  latitude_in: [String!]
+  latitude_not_in: [String!]
+  latitude_lt: String
+  latitude_lte: String
+  latitude_gt: String
+  latitude_gte: String
+  latitude_contains: String
+  latitude_not_contains: String
+  latitude_starts_with: String
+  latitude_not_starts_with: String
+  latitude_ends_with: String
+  latitude_not_ends_with: String
+  longtitude: String
+  longtitude_not: String
+  longtitude_in: [String!]
+  longtitude_not_in: [String!]
+  longtitude_lt: String
+  longtitude_lte: String
+  longtitude_gt: String
+  longtitude_gte: String
+  longtitude_contains: String
+  longtitude_not_contains: String
+  longtitude_starts_with: String
+  longtitude_not_starts_with: String
+  longtitude_ends_with: String
+  longtitude_not_ends_with: String
   orderExpectedTime: DateTime
   orderExpectedTime_not: DateTime
   orderExpectedTime_in: [DateTime!]
@@ -443,6 +491,8 @@ input ChatRoomUpdateDataInput {
   memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
@@ -454,6 +504,8 @@ input ChatRoomUpdateInput {
   memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
@@ -462,12 +514,16 @@ input ChatRoomUpdateInput {
 
 input ChatRoomUpdateManyDataInput {
   location: String
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime
   state: Boolean
 }
 
 input ChatRoomUpdateManyMutationInput {
   location: String
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime
   state: Boolean
 }
@@ -538,6 +594,8 @@ input ChatRoomUpdateWithoutBossDataInput {
   memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
@@ -549,6 +607,8 @@ input ChatRoomUpdateWithoutChatContentListDataInput {
   memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   state: Boolean
@@ -558,6 +618,8 @@ input ChatRoomUpdateWithoutMemberListDataInput {
   boss: UserUpdateOneRequiredWithoutBossChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
@@ -569,6 +631,8 @@ input ChatRoomUpdateWithoutRoomOrderDataInput {
   memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
   state: Boolean
@@ -578,6 +642,8 @@ input ChatRoomUpdateWithoutStoreDataInput {
   boss: UserUpdateOneRequiredWithoutBossChatListInput
   memberList: UserUpdateManyWithoutChatListInput
   location: String
+  latitude: String
+  longtitude: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
@@ -666,6 +732,34 @@ input ChatRoomWhereInput {
   location_not_starts_with: String
   location_ends_with: String
   location_not_ends_with: String
+  latitude: String
+  latitude_not: String
+  latitude_in: [String!]
+  latitude_not_in: [String!]
+  latitude_lt: String
+  latitude_lte: String
+  latitude_gt: String
+  latitude_gte: String
+  latitude_contains: String
+  latitude_not_contains: String
+  latitude_starts_with: String
+  latitude_not_starts_with: String
+  latitude_ends_with: String
+  latitude_not_ends_with: String
+  longtitude: String
+  longtitude_not: String
+  longtitude_in: [String!]
+  longtitude_not_in: [String!]
+  longtitude_lt: String
+  longtitude_lte: String
+  longtitude_gt: String
+  longtitude_gte: String
+  longtitude_contains: String
+  longtitude_not_contains: String
+  longtitude_starts_with: String
+  longtitude_not_starts_with: String
+  longtitude_ends_with: String
+  longtitude_not_ends_with: String
   orderExpectedTime: DateTime
   orderExpectedTime_not: DateTime
   orderExpectedTime_in: [DateTime!]
@@ -2186,7 +2280,7 @@ type Subscription {
 
 type User {
   id: ID!
-  number: String!
+  number: Int!
   pwd: String!
   score: Int!
   bossChatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
@@ -2201,7 +2295,7 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
-  number: String!
+  number: Int!
   pwd: String!
   score: Int
   bossChatList: ChatRoomCreateManyWithoutBossInput
@@ -2225,7 +2319,7 @@ input UserCreateOneWithoutBossChatListInput {
 
 input UserCreateWithoutBossChatListInput {
   id: ID
-  number: String!
+  number: Int!
   pwd: String!
   score: Int
   chatList: ChatRoomCreateManyWithoutMemberListInput
@@ -2233,7 +2327,7 @@ input UserCreateWithoutBossChatListInput {
 
 input UserCreateWithoutChatListInput {
   id: ID
-  number: String!
+  number: Int!
   pwd: String!
   score: Int
   bossChatList: ChatRoomCreateManyWithoutBossInput
@@ -2257,7 +2351,7 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
-  number: String!
+  number: Int!
   pwd: String!
   score: Int!
 }
@@ -2277,20 +2371,14 @@ input UserScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  number: String
-  number_not: String
-  number_in: [String!]
-  number_not_in: [String!]
-  number_lt: String
-  number_lte: String
-  number_gt: String
-  number_gte: String
-  number_contains: String
-  number_not_contains: String
-  number_starts_with: String
-  number_not_starts_with: String
-  number_ends_with: String
-  number_not_ends_with: String
+  number: Int
+  number_not: Int
+  number_in: [Int!]
+  number_not_in: [Int!]
+  number_lt: Int
+  number_lte: Int
+  number_gt: Int
+  number_gte: Int
   pwd: String
   pwd_not: String
   pwd_in: [String!]
@@ -2337,7 +2425,7 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateDataInput {
-  number: String
+  number: Int
   pwd: String
   score: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
@@ -2345,7 +2433,7 @@ input UserUpdateDataInput {
 }
 
 input UserUpdateInput {
-  number: String
+  number: Int
   pwd: String
   score: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
@@ -2353,13 +2441,13 @@ input UserUpdateInput {
 }
 
 input UserUpdateManyDataInput {
-  number: String
+  number: Int
   pwd: String
   score: Int
 }
 
 input UserUpdateManyMutationInput {
-  number: String
+  number: Int
   pwd: String
   score: Int
 }
@@ -2396,14 +2484,14 @@ input UserUpdateOneRequiredWithoutBossChatListInput {
 }
 
 input UserUpdateWithoutBossChatListDataInput {
-  number: String
+  number: Int
   pwd: String
   score: Int
   chatList: ChatRoomUpdateManyWithoutMemberListInput
 }
 
 input UserUpdateWithoutChatListDataInput {
-  number: String
+  number: Int
   pwd: String
   score: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
@@ -2608,20 +2696,14 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  number: String
-  number_not: String
-  number_in: [String!]
-  number_not_in: [String!]
-  number_lt: String
-  number_lte: String
-  number_gt: String
-  number_gte: String
-  number_contains: String
-  number_not_contains: String
-  number_starts_with: String
-  number_not_starts_with: String
-  number_ends_with: String
-  number_not_ends_with: String
+  number: Int
+  number_not: Int
+  number_in: [Int!]
+  number_not_in: [Int!]
+  number_lt: Int
+  number_lte: Int
+  number_gt: Int
+  number_gte: Int
   pwd: String
   pwd_not: String
   pwd_in: [String!]
@@ -2657,7 +2739,7 @@ input UserWhereInput {
 
 input UserWhereUniqueInput {
   id: ID
-  number: String
+  number: Int
 }
 
 type Vote {
