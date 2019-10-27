@@ -3,7 +3,8 @@ type User {
   number : Int! @unique
   pwd : String!
   score : Int! @default(value: 0)
-  chatList : [ChatRoom] @relation(name : "BossChatRelation")
+  bossChatList : [ChatRoom] @relation(name : "BossChatRelation")
+  chatList : [ChatRoom] @relation(name : "MemberChatRelation")
 }
 
 

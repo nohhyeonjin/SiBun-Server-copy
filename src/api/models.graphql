@@ -1,12 +1,9 @@
-type Query{
-  id: ID
-}
-
 type User {
   id : ID!
   number : Int!
   pwd : String!
   score : Int! 
+  bossChatList : [ChatRoom]
   chatList : [ChatRoom]
 }
 
