@@ -1,0 +1,5 @@
+type Mutation{
+    updateScore(
+        score: Int!
+    ): User!
+}
