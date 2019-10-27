@@ -1,7 +1,7 @@
 import { prisma } from "../../../../generated/prisma-client";
 import { isAuthenticated } from "../../../middlewares";
 
-//ìƒˆë¡œìš´ chat ë³´ë‚´ëŠ” ì¹œêµ¬
+//»õ·Î¿î chat º¸³»´Â Ä£±¸
   export default{
     Mutation:{
         sendChat: (_,args ,{ request }) =>{
