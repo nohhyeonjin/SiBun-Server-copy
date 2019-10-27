@@ -1,24 +1,21 @@
 import { prisma } from "../../../../generated/prisma-client";
+import { isAuthenticated } from "../../../middlewares";
 
-//ìƒˆë¡œìš´ chat ë³´ë‚´ëŠ” ì¹œêµ¬
+//»õ·Î¿î chat º¸³»´Â Ä£±¸
   export default{
     Mutation:{
-        sendChat: (_, { content }) =>
-          prisma.createChatContent({content})
+        sendChat: (_,args ,{ request }) =>{
+          isAuthenticated(request);
+          const { roomId , content } = args;
+          const { user } = request;
+          
+          const sc = prisma.createChatContent({
+            user: user,
+            chatRoom: roomId,
+            content: content
+          })
+          return "sendChat success"
+        }
       } //chat
   }
-
-//ì‹œê°„ ë°”ê¾¸ëŠ” ê±° ì°¸ê³ í•˜ê¸°1!
-//   export default{
-//     Mutation: {
-//         updateOrderExpectedTime:async(_,args,{request})=>{
-//             const { roomId, time } = args;
-            
-//             const chatRoom = await prisma.updateChatRoom({
-//                 data : { orderExpectedTime : time },
-//                 where : { id : roomId }
-//             })
-//             return chatRoom;
-//         }
-//     }
-// }
+  
