@@ -50,8 +50,8 @@ type ChatRoom {
   memberList : [User!]
   store : Store!
   location : String!
-  latitude : String!
-  longtitude : String!
+  latitude : String
+  longtitude : String
   orderExpectedTime : String!
   roomOrder : RoomOrder
   chatContentList : [ChatContent] 
