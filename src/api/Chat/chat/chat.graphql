@@ -1,7 +1,6 @@
 
   type Mutation {
     sendChat(
-        user: String!
         content:String!
         ): ChatContent!
   }
