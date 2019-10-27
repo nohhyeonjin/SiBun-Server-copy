@@ -26,7 +26,7 @@ type Store {
   id : ID! @id
   storeId : String!
   pwd : String!
-  name : String!
+  name : String! @unique
   storeCategory : StoreCategory! @relation(name : "StoreStoreCategoryRelation")
   menuCategoryList : [MenuCategory] @relation(name : "StoreMenuCategoryRelation")
   minimumPrice : Int!
@@ -46,7 +46,7 @@ type Menu {
 type ChatRoom {
   id : ID! @id
   boss : User!  @relation(name : "BossChatRelation")
-  memberList : [User]! @relation(name : "MemberChatRelation")
+  memberList : [User!] @relation(name : "MemberChatRelation")
   store : Store! @relation(name : "StoreChatRoomRelation")
   location : String!
   orderExpectedTime : DateTime!
