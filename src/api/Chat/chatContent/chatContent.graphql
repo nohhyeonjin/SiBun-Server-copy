@@ -1,0 +1,4 @@
+  type Query { # get,느낌 친구
+    ChatContent: [ChatContent!]!
+  }
+

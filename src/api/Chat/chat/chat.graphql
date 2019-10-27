@@ -1,0 +1,19 @@
+
+
+  type Mutation {
+    sendChat(
+        text:String!
+        ): ChatContent!
+  }
+
+  type Mutation{
+      chatContent(
+           id: String!
+           user: String!
+           chatRoom: String!
+           content: String!
+      ): String!
+  }
+
+
+
