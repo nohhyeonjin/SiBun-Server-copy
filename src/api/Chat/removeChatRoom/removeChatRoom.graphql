@@ -1,0 +1,5 @@
+type Mutation{
+    removeChatRoom(
+        roomId: String!
+    ): ChatRoom!
+}
