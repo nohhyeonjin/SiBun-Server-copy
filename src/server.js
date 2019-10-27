@@ -3,16 +3,18 @@ import { GraphQLServer } from "graphql-yoga";
 import { prisma } from "../generated/prisma-client";
 import logger from "morgan";
 import schema from "./schema";
-import utils from "./utils";    //utils.jsÆÄÀÏ import
-import "./passport";    //passport.jsÆÄÀÏ import
+import utils from "./utils";    //utils.jsï¿½ï¿½ï¿½ï¿½ import
+import "./passport";    //passport.jsï¿½ï¿½ï¿½ï¿½ import
 import { authenticateJwt } from "./passport";
 
 const PORT = process.env.PORT || 4000;
 
 const server = new GraphQLServer({ 
     schema, 
-    context: ({request})=>({request})   //context´Â resolver »çÀÌ¿¡¼­ Á¤º¸ °øÀ¯ ½Ã »ç¿ëÇÔ
+    context: ({request})=>({request})   //contextï¿½ï¿½ resolver ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 });  
+
+
 server.express.use(logger("dev"));
 server.express.use(authenticateJwt);
 server.start({port: PORT}, () => console.log(`Server running on http://localhost:${PORT}`) );

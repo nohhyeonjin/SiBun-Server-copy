@@ -1,0 +1,14 @@
+type Mutation{
+    createChatRoom( 
+        boss: String!
+        memberList: String!
+        store: String!
+        location: String!
+        orderExpectedTime: String!
+        state: Boolean!
+    ): String!
+}
+
+# type Query{
+#     result: String!
+# }
