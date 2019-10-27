@@ -50,7 +50,7 @@ type Menu {
 type ChatRoom {
   id : ID!
   boss : User!
-  memberList : [User]!
+  memberList : [User!]
   store : Store!
   location : String!
   orderExpectedTime : String!
