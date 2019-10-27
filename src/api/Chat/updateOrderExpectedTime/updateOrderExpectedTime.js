@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-=======
+import { isAuthenticated } from "../../../middlewares";
 import { prisma } from "../../../../generated/prisma-client";
 
 export default{
@@ -15,4 +14,3 @@ export default{
         }
     }
 }
->>>>>>> 7736b08654f416e099a804dc17e1d8026372a6e8
