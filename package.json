@@ -28,5 +28,6 @@
     "deploy": "prisma deploy",
     "generate": "prisma generate",
     "prisma": "yarn run deploy && yarn run generate"
-  }
+  },
+  "devDependencies": {}
 }
