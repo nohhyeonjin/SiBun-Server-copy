@@ -1,16 +1,12 @@
 import "./env";
-import { GraphQLServer } from "graphql-yoga";
+import { GraphQLServer, PubSub } from "graphql-yoga";
 import { prisma } from "../generated/prisma-client";
 import logger from "morgan";
 import schema from "./schema";
 import utils from "./utils";    //utils.js���� import
 import "./passport";    //passport.js���� import
 import { authenticateJwt } from "./passport";
-// import PubSub from 'pubsub-js';
 
-// const pubsub = new PubSub();
-
-// const NEW_CHAT = "NEW_CHAT";
 
 const PORT = process.env.PORT || 4000;
 

@@ -1,10 +1,8 @@
 import { prisma } from "../../../../generated/prisma-client";
 import { isAuthenticated } from "../../../middlewares";
-// import PubSub from 'pubsub-js';
+// import { GraphQLServer, PubSub } from "graphql-yoga";
 
-// const pubsub = new PubSub();
-// const NEW_CHAT = "NEW_CHAT";
-
+// const pubSub = new PubSub();
 
   export default{
     Mutation:{
@@ -21,6 +19,7 @@ import { isAuthenticated } from "../../../middlewares";
 
           return "sendChat success"
         }
+        
         
       } //chat
   }
