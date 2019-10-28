@@ -1,7 +1,7 @@
 import { prisma } from "../../../../generated/prisma-client";
 
 export default {
-  Mutation: {
+  Query: {
     getRoomOrder: async (_, args) => {
       const { roomId } = args;
 

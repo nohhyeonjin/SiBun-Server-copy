@@ -2,7 +2,7 @@ import { prisma } from "../../../../generated/prisma-client";
 
 //전체 chat 친구
 export default{
-  Mutation: {
+  Query: {
       chatContents: async(_,args) => {
         const { roomId } = args;
         const contents = await prisma.chatContents({
