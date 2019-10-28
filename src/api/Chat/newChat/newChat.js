@@ -7,10 +7,12 @@ import { prisma } from "../../../../generated/prisma-client";
 export default{
 Subscription: {
     newChat: {
-      subscribe: () => prisma.$subscribe.chatContent({mutation_in: ['CREATED']}).node(),
+      subscribe: (_, { roomId }) => prisma.$subscribe.chatContent({
+        mutation_in: ['CREATED'],
+        node: { chatRoom: {id: roomId} }
+      }).node(),
       resolve: payload => payload
 
     }
   }
 }
-
