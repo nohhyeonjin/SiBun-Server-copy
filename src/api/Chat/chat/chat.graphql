@@ -1,7 +1,7 @@
 
   type Mutation {
     sendChat(
-        roomId:String!
+        roomId:String!,
         content:String!
-        ): ChatContent!
+       ): String!
   }

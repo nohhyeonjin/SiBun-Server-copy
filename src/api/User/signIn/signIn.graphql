@@ -1,6 +1,6 @@
 type Mutation{
     signIn(
-        number: Int!
+        number: Int!,
         pwd: String!
     ): String!
 }
