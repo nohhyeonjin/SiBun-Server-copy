@@ -4,24 +4,25 @@ import {generateToken} from "../../../utils";
 export default{
     Mutation:{
         signIn:async(_,args,{request})=>{
-            const { number, pwd, score=1 }=args;   //args¿¡¼­ ÇÐ¹ø°ú ºñ¹Ð¹øÈ£ °¡Á®¿È
+            const { number, pwd, score=1 }=args;   //argsï¿½ï¿½ï¿½ï¿½ ï¿½Ð¹ï¿½ï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             const isExistUser = await prisma.$exists.user({number});
-            if(isExistUser==true){  //ÀÌ¹Ì °¡ÀÔµÇ¾îÀÖÀ¸¸é
-                const user = await prisma.user({number});   //prisma.userÇÔ¼ö¿¡ ÇÐ¹øÀ» ÀÎÀÚ·Î ÀÔ·ÂÇØ¼­ »ç¿ëÀÚ °¡Á®¿À±â
-                if(user.pwd===pwd){ //¸¸¾à user.pwd°¡ pwd¿Í °°´Ù¸é jwt ÅäÅ« ¸®ÅÏ
-                    //JWT ÅäÅ« »ý¼º
-                    const token = generateToken(user.id);   //jwt°¡ id¸¦ ¾ÏÈ£È­ÇØ¼­ ÅäÅ«À» ¸¸µé¾îÁÜ
+            if(isExistUser==true){  //ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ÔµÇ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                const user = await prisma.user({number});   //prisma.userï¿½Ô¼ï¿½ï¿½ï¿½ ï¿½Ð¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ú·ï¿½ ï¿½Ô·ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+                if(user.pwd===pwd){ //ï¿½ï¿½ï¿½ï¿½ user.pwdï¿½ï¿½ pwdï¿½ï¿½ ï¿½ï¿½ï¿½Ù¸ï¿½ jwt ï¿½ï¿½Å« ï¿½ï¿½ï¿½ï¿½
+                    //JWT ï¿½ï¿½Å« ï¿½ï¿½ï¿½ï¿½
+                    const token = generateToken(user.id);   //jwtï¿½ï¿½ idï¿½ï¿½ ï¿½ï¿½È£È­ï¿½Ø¼ï¿½ ï¿½ï¿½Å«ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                     return token;  
                 } else{
                     throw Error("Wrong pwd")
                 }    
-            }else{  //°¡ÀÔµÇ¾î ÀÖÁö ¾ÊÀ¸¸é
+            }else{  //ï¿½ï¿½ï¿½ÔµÇ¾ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 const user = await prisma.createUser({
                     number,
                     pwd,
                     score
                 });
-                return "register success";
+                const token = generateToken(user.id);
+                return token;
             }
         }
     }
