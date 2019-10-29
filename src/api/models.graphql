@@ -5,6 +5,7 @@ type User {
   score : Int!
   bossChatList : [ChatRoom!]
   chatList : [ChatRoom!]
+  isMe: Boolean!
 }
 
 
