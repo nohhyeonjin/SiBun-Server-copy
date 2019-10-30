@@ -1,3 +1,7 @@
+input MenuInput{
+  id : ID!
+}
+
 type User {
   id : ID! @id
   number : Int! @unique
@@ -61,9 +65,9 @@ type ChatRoom {
 
 type RoomOrder {
   id : ID! @id
-  chatRoom : ChatRoom! @relation(name : "ChatRoomOrderRelation", link: INLINE)
-  individualOrderList : [IndividualOrder!]! @relation(name : "RoomOrderIndividualOrderRelation")
-  phoneNumber : String!
+  chatRoom : ChatRoom! @unique @relation(name : "ChatRoomOrderRelation", link: INLINE)
+  individualOrderList : [IndividualOrder!] @relation(name : "RoomOrderIndividualOrderRelation")
+  phoneNumber : String
   state: Boolean!
 }
 

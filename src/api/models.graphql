@@ -1,3 +1,7 @@
+input MenuInput{
+  id : ID!
+}
+
 type User {
   id : ID!
   number : Int!
