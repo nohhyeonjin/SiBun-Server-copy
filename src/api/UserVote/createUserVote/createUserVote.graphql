@@ -1,0 +1,6 @@
+type Mutation{
+    createUserVote(
+        choice : Boolean!
+        voteId : String!
+    ):UserVote!
+}
