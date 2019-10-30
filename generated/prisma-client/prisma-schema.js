@@ -1515,7 +1515,7 @@ type RoomOrder {
   id: ID!
   chatRoom: ChatRoom!
   individualOrderList(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IndividualOrder!]
-  phoneNumber: String!
+  phoneNumber: String
   state: Boolean!
 }
 
@@ -1529,7 +1529,7 @@ input RoomOrderCreateInput {
   id: ID
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput!
   individualOrderList: IndividualOrderCreateManyWithoutRoomOrderInput
-  phoneNumber: String!
+  phoneNumber: String
   state: Boolean!
 }
 
@@ -1546,14 +1546,14 @@ input RoomOrderCreateOneWithoutIndividualOrderListInput {
 input RoomOrderCreateWithoutChatRoomInput {
   id: ID
   individualOrderList: IndividualOrderCreateManyWithoutRoomOrderInput
-  phoneNumber: String!
+  phoneNumber: String
   state: Boolean!
 }
 
 input RoomOrderCreateWithoutIndividualOrderListInput {
   id: ID
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput!
-  phoneNumber: String!
+  phoneNumber: String
   state: Boolean!
 }
 
@@ -1573,7 +1573,7 @@ enum RoomOrderOrderByInput {
 
 type RoomOrderPreviousValues {
   id: ID!
-  phoneNumber: String!
+  phoneNumber: String
   state: Boolean!
 }
 

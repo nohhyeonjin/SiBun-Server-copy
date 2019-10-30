@@ -2468,7 +2468,7 @@ export interface UserUpsertNestedInput {
 export interface RoomOrderCreateWithoutChatRoomInput {
   id?: Maybe<ID_Input>;
   individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
-  phoneNumber: String;
+  phoneNumber?: Maybe<String>;
   state: Boolean;
 }
 
@@ -2666,7 +2666,7 @@ export interface VoteCreateOneWithoutVoteListInput {
 export interface RoomOrderCreateWithoutIndividualOrderListInput {
   id?: Maybe<ID_Input>;
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
-  phoneNumber: String;
+  phoneNumber?: Maybe<String>;
   state: Boolean;
 }
 
@@ -2919,7 +2919,7 @@ export interface RoomOrderCreateInput {
   id?: Maybe<ID_Input>;
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
   individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
-  phoneNumber: String;
+  phoneNumber?: Maybe<String>;
   state: Boolean;
 }
 
@@ -4310,7 +4310,7 @@ export interface StoreCategoryConnectionSubscription
 
 export interface RoomOrderPreviousValues {
   id: ID_Output;
-  phoneNumber: String;
+  phoneNumber?: String;
   state: Boolean;
 }
 
@@ -4353,7 +4353,7 @@ export interface StoreConnectionSubscription
 
 export interface RoomOrder {
   id: ID_Output;
-  phoneNumber: String;
+  phoneNumber?: String;
   state: Boolean;
 }
 
