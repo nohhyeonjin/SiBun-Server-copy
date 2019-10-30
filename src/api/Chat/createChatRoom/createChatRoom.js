@@ -38,6 +38,12 @@ export default{
                 orderExpectedTime : time,   //timeÇü½Ä ex) "2019-10-27T16:34:10"
                 state : false
             });
+
+            const RoomOrder = await prisma.createRoomOrder({
+                chatRoom: {connect : {id : chatRoom.id}},
+                state: false
+            });
+
             return chatRoom;
         }
     }
