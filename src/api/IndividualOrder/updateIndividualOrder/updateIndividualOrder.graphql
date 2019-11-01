@@ -1,0 +1,7 @@
+type Mutation{
+    updateIndividualOrder(
+        roomId : ID!,
+        orderId : ID!,
+        menuList : [MenuInput]
+    ):IndividualOrder!
+}
