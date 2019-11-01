@@ -2285,6 +2285,7 @@ type User {
   score: Int!
   bossChatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
   chatList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
+  hardshipState: Boolean!
 }
 
 type UserConnection {
@@ -2300,6 +2301,7 @@ input UserCreateInput {
   score: Int
   bossChatList: ChatRoomCreateManyWithoutBossInput
   chatList: ChatRoomCreateManyWithoutMemberListInput
+  hardshipState: Boolean!
 }
 
 input UserCreateManyWithoutChatListInput {
@@ -2323,6 +2325,7 @@ input UserCreateWithoutBossChatListInput {
   pwd: String!
   score: Int
   chatList: ChatRoomCreateManyWithoutMemberListInput
+  hardshipState: Boolean!
 }
 
 input UserCreateWithoutChatListInput {
@@ -2331,6 +2334,7 @@ input UserCreateWithoutChatListInput {
   pwd: String!
   score: Int
   bossChatList: ChatRoomCreateManyWithoutBossInput
+  hardshipState: Boolean!
 }
 
 type UserEdge {
@@ -2347,6 +2351,8 @@ enum UserOrderByInput {
   pwd_DESC
   score_ASC
   score_DESC
+  hardshipState_ASC
+  hardshipState_DESC
 }
 
 type UserPreviousValues {
@@ -2354,6 +2360,7 @@ type UserPreviousValues {
   number: Int!
   pwd: String!
   score: Int!
+  hardshipState: Boolean!
 }
 
 input UserScalarWhereInput {
@@ -2401,6 +2408,8 @@ input UserScalarWhereInput {
   score_lte: Int
   score_gt: Int
   score_gte: Int
+  hardshipState: Boolean
+  hardshipState_not: Boolean
   AND: [UserScalarWhereInput!]
   OR: [UserScalarWhereInput!]
   NOT: [UserScalarWhereInput!]
@@ -2430,6 +2439,7 @@ input UserUpdateDataInput {
   score: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
   chatList: ChatRoomUpdateManyWithoutMemberListInput
+  hardshipState: Boolean
 }
 
 input UserUpdateInput {
@@ -2438,18 +2448,21 @@ input UserUpdateInput {
   score: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
   chatList: ChatRoomUpdateManyWithoutMemberListInput
+  hardshipState: Boolean
 }
 
 input UserUpdateManyDataInput {
   number: Int
   pwd: String
   score: Int
+  hardshipState: Boolean
 }
 
 input UserUpdateManyMutationInput {
   number: Int
   pwd: String
   score: Int
+  hardshipState: Boolean
 }
 
 input UserUpdateManyWithoutChatListInput {
@@ -2488,6 +2501,7 @@ input UserUpdateWithoutBossChatListDataInput {
   pwd: String
   score: Int
   chatList: ChatRoomUpdateManyWithoutMemberListInput
+  hardshipState: Boolean
 }
 
 input UserUpdateWithoutChatListDataInput {
@@ -2495,6 +2509,7 @@ input UserUpdateWithoutChatListDataInput {
   pwd: String
   score: Int
   bossChatList: ChatRoomUpdateManyWithoutBossInput
+  hardshipState: Boolean
 }
 
 input UserUpdateWithWhereUniqueWithoutChatListInput {
@@ -2732,6 +2747,8 @@ input UserWhereInput {
   chatList_every: ChatRoomWhereInput
   chatList_some: ChatRoomWhereInput
   chatList_none: ChatRoomWhereInput
+  hardshipState: Boolean
+  hardshipState_not: Boolean
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
   NOT: [UserWhereInput!]
