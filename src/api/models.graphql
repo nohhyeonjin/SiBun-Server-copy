@@ -10,6 +10,7 @@ type User {
   bossChatList : [ChatRoom!]
   chatList : [ChatRoom!]
   isMe: Boolean!
+  hardshipState : Boolean!
 }
 
 

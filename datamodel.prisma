@@ -9,6 +9,7 @@ type User {
   score : Int! @default(value: 0)
   bossChatList : [ChatRoom!] @relation(name : "BossChatRelation")
   chatList : [ChatRoom!] @relation(name : "MemberChatRelation")
+  hardshipState : Boolean!
 }
 
 
