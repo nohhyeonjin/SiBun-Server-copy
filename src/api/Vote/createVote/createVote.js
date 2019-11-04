@@ -14,7 +14,7 @@ export default{
              const userVote = await prisma.createUserVote({
                     user : { connect : memberList[i]},
                     choice : false,
-                    vote : {connect : { id : vote.id }}
+                    vote : { connect : { id : vote.id }}
                 });
             }
 
