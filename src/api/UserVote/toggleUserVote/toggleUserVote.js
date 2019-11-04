@@ -4,7 +4,7 @@ export default{
     Mutation:{
         toggleUserVote:async(_,args)=>{
             isAuthenticated(request);
-            const { choice , userVoteId } = args;
+            const { userVoteId, choice } = args;
 
             const userVote = await prisma.updateUserVote({
                 data : { choice : choice},

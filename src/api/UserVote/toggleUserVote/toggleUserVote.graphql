@@ -1,6 +1,6 @@
 type Mutation{
     toggleUserVote(
-        choice : Boolean!
         userVoteId : String!
+        choice : Boolean!
     ):UserVote!
 }
