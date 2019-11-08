@@ -35,7 +35,7 @@ export default{
                 location : location,
                 latitude : latitude,
                 longtitude : longtitude,               
-                orderExpectedTime : time,   //timeÇü½Ä ex) "2019-10-27T16:34:10"
+                orderExpectedTime : time,   //timeï¿½ï¿½ï¿½ï¿½ ex) "2019-10-27T16:34:10"
                 state : false
             });
 
