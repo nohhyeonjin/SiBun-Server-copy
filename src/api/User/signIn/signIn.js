@@ -4,7 +4,7 @@ import {generateToken} from "../../../utils";
 export default{
     Mutation:{
         signIn:async(_,args,{request})=>{
-            const { number, pwd, score=1, hardshipState = false }=args;   //args���� �й��� ��й��? ������
+            const { number, pwd, score=1}=args;   //args���� �й��� ��й��? ������
             const isExistUser = await prisma.$exists.user({number});
             if(isExistUser==true){  //�̹� ���ԵǾ�������
                 const user = await prisma.user({number});   //prisma.user�Լ��� �й��� ���ڷ� �Է��ؼ� �����? ��������
@@ -19,8 +19,7 @@ export default{
                 const user = await prisma.createUser({
                     number,
                     pwd,
-                    score,
-                    hardshipState
+                    score
                 });
                 const token = generateToken(user.id);
                 return token;
