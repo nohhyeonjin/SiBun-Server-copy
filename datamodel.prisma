@@ -9,7 +9,6 @@ type User {
   score : Int! @default(value: 0)
   bossChatList : [ChatRoom!] @relation(name : "BossChatRelation")
   chatList : [ChatRoom!] @relation(name : "MemberChatRelation")
-  hardshipState : Boolean!
 }
 
 
@@ -55,8 +54,8 @@ type ChatRoom {
   memberList : [User!] @relation(name : "MemberChatRelation")
   store : Store! @relation(name : "StoreChatRoomRelation")
   location : String!
-  latitude : String
-  longtitude : String
+  latitude : Float
+  longitude : Float
   orderExpectedTime : DateTime!
   roomOrder : RoomOrder @relation(name : "ChatRoomOrderRelation")
   chatContentList : [ChatContent] @relation(name : "ChatRoomChatContentRelation")
