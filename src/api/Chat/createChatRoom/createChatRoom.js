@@ -11,7 +11,7 @@ export default{
             const store = await prisma.store({name:storeName});
 
             var latitude = "latitude test";
-            var longtitude = "longtitude test";
+            var longitude = "longitude test";
 
             //const address = '22 Main st Boston MA';
             await Axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
@@ -21,8 +21,8 @@ export default{
                 }
             })
             .then(function(response){
-                latitude = String(response.data.results[0].geometry.location.lat);
-                longtitude = String(response.data.results[0].geometry.location.lng);    
+                latitude = response.data.results[0].geometry.location.lat;
+                longitude = response.data.results[0].geometry.location.lng;    
             })
             .catch(function(error){
                 console.log(error);
@@ -34,7 +34,7 @@ export default{
                 store : { connect : { id : store.id }},
                 location : location,
                 latitude : latitude,
-                longtitude : longtitude,               
+                longitude : longitude,               
                 orderExpectedTime : time,   //time���� ex) "2019-10-27T16:34:10"
                 state : false
             });
