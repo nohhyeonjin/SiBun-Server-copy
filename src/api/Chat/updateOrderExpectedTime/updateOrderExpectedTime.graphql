@@ -1,6 +1,8 @@
+scalar DateTime
+
 type Mutation{
     updateOrderExpectedTime(
         roomId: String!,
-        time: String!
+        time: DateTime!
     ):ChatRoom!
 }

@@ -56,7 +56,7 @@ type ChatRoom {
   location : String!
   latitude : Float
   longitude : Float
-  orderExpectedTime : String!
+  orderExpectedTime : DateTime!
   roomOrder : RoomOrder
   chatContentList : [ChatContent] 
   state: Boolean!
