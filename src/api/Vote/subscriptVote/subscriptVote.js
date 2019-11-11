@@ -5,11 +5,10 @@ export default{
     Subscription: {
         subscriptVote: {
           subscribe: (_, { voteId }) => prisma.$subscribe.userVote({
-            mutation_in: ['UPDATE'],
+            mutation_in: ['UPDATED'],
             node: { vote: {id: voteId} }
           }).node(),
           resolve: payload => payload
-    
         }
       }
     }
