@@ -1,6 +1,6 @@
 type Mutation{
     hardship(
-        userId: ID!,
+        userId: String!,
         content: String!
     ): Boolean
 }
