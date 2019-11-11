@@ -246,10 +246,12 @@ type ChatRoom {
   location: String!
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrder
   chatContentList(where: ChatContentWhereInput, orderBy: ChatContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatContent!]
   state: Boolean!
+  vote: Vote
 }
 
 type ChatRoomConnection {
@@ -266,10 +268,12 @@ input ChatRoomCreateInput {
   location: String!
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
   state: Boolean!
+  vote: VoteCreateOneWithoutChatRoomInput
 }
 
 input ChatRoomCreateManyWithoutBossInput {
@@ -287,11 +291,6 @@ input ChatRoomCreateManyWithoutStoreInput {
   connect: [ChatRoomWhereUniqueInput!]
 }
 
-input ChatRoomCreateOneInput {
-  create: ChatRoomCreateInput
-  connect: ChatRoomWhereUniqueInput
-}
-
 input ChatRoomCreateOneWithoutChatContentListInput {
   create: ChatRoomCreateWithoutChatContentListInput
   connect: ChatRoomWhereUniqueInput
@@ -302,6 +301,11 @@ input ChatRoomCreateOneWithoutRoomOrderInput {
   connect: ChatRoomWhereUniqueInput
 }
 
+input ChatRoomCreateOneWithoutVoteInput {
+  create: ChatRoomCreateWithoutVoteInput
+  connect: ChatRoomWhereUniqueInput
+}
+
 input ChatRoomCreateWithoutBossInput {
   id: ID
   memberList: UserCreateManyWithoutChatListInput
@@ -309,10 +313,12 @@ input ChatRoomCreateWithoutBossInput {
   location: String!
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
   state: Boolean!
+  vote: VoteCreateOneWithoutChatRoomInput
 }
 
 input ChatRoomCreateWithoutChatContentListInput {
@@ -323,9 +329,11 @@ input ChatRoomCreateWithoutChatContentListInput {
   location: String!
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   state: Boolean!
+  vote: VoteCreateOneWithoutChatRoomInput
 }
 
 input ChatRoomCreateWithoutMemberListInput {
@@ -335,10 +343,12 @@ input ChatRoomCreateWithoutMemberListInput {
   location: String!
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
   state: Boolean!
+  vote: VoteCreateOneWithoutChatRoomInput
 }
 
 input ChatRoomCreateWithoutRoomOrderInput {
@@ -349,9 +359,11 @@ input ChatRoomCreateWithoutRoomOrderInput {
   location: String!
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime!
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
   state: Boolean!
+  vote: VoteCreateOneWithoutChatRoomInput
 }
 
 input ChatRoomCreateWithoutStoreInput {
@@ -361,6 +373,23 @@ input ChatRoomCreateWithoutStoreInput {
   location: String!
   latitude: Float
   longitude: Float
+  additionalLocation: String
+  orderExpectedTime: DateTime!
+  roomOrder: RoomOrderCreateOneWithoutChatRoomInput
+  chatContentList: ChatContentCreateManyWithoutChatRoomInput
+  state: Boolean!
+  vote: VoteCreateOneWithoutChatRoomInput
+}
+
+input ChatRoomCreateWithoutVoteInput {
+  id: ID
+  boss: UserCreateOneWithoutBossChatListInput!
+  memberList: UserCreateManyWithoutChatListInput
+  store: StoreCreateOneWithoutChatRoomListInput!
+  location: String!
+  latitude: Float
+  longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
@@ -381,6 +410,8 @@ enum ChatRoomOrderByInput {
   latitude_DESC
   longitude_ASC
   longitude_DESC
+  additionalLocation_ASC
+  additionalLocation_DESC
   orderExpectedTime_ASC
   orderExpectedTime_DESC
   state_ASC
@@ -392,6 +423,7 @@ type ChatRoomPreviousValues {
   location: String!
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime!
   state: Boolean!
 }
@@ -441,6 +473,20 @@ input ChatRoomScalarWhereInput {
   longitude_lte: Float
   longitude_gt: Float
   longitude_gte: Float
+  additionalLocation: String
+  additionalLocation_not: String
+  additionalLocation_in: [String!]
+  additionalLocation_not_in: [String!]
+  additionalLocation_lt: String
+  additionalLocation_lte: String
+  additionalLocation_gt: String
+  additionalLocation_gte: String
+  additionalLocation_contains: String
+  additionalLocation_not_contains: String
+  additionalLocation_starts_with: String
+  additionalLocation_not_starts_with: String
+  additionalLocation_ends_with: String
+  additionalLocation_not_ends_with: String
   orderExpectedTime: DateTime
   orderExpectedTime_not: DateTime
   orderExpectedTime_in: [DateTime!]
@@ -474,19 +520,6 @@ input ChatRoomSubscriptionWhereInput {
   NOT: [ChatRoomSubscriptionWhereInput!]
 }
 
-input ChatRoomUpdateDataInput {
-  boss: UserUpdateOneRequiredWithoutBossChatListInput
-  memberList: UserUpdateManyWithoutChatListInput
-  store: StoreUpdateOneRequiredWithoutChatRoomListInput
-  location: String
-  latitude: Float
-  longitude: Float
-  orderExpectedTime: DateTime
-  roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
-  chatContentList: ChatContentUpdateManyWithoutChatRoomInput
-  state: Boolean
-}
-
 input ChatRoomUpdateInput {
   boss: UserUpdateOneRequiredWithoutBossChatListInput
   memberList: UserUpdateManyWithoutChatListInput
@@ -494,16 +527,19 @@ input ChatRoomUpdateInput {
   location: String
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
   state: Boolean
+  vote: VoteUpdateOneWithoutChatRoomInput
 }
 
 input ChatRoomUpdateManyDataInput {
   location: String
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime
   state: Boolean
 }
@@ -512,6 +548,7 @@ input ChatRoomUpdateManyMutationInput {
   location: String
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime
   state: Boolean
 }
@@ -557,13 +594,6 @@ input ChatRoomUpdateManyWithWhereNestedInput {
   data: ChatRoomUpdateManyDataInput!
 }
 
-input ChatRoomUpdateOneRequiredInput {
-  create: ChatRoomCreateInput
-  update: ChatRoomUpdateDataInput
-  upsert: ChatRoomUpsertNestedInput
-  connect: ChatRoomWhereUniqueInput
-}
-
 input ChatRoomUpdateOneRequiredWithoutChatContentListInput {
   create: ChatRoomCreateWithoutChatContentListInput
   update: ChatRoomUpdateWithoutChatContentListDataInput
@@ -578,16 +608,25 @@ input ChatRoomUpdateOneRequiredWithoutRoomOrderInput {
   connect: ChatRoomWhereUniqueInput
 }
 
+input ChatRoomUpdateOneRequiredWithoutVoteInput {
+  create: ChatRoomCreateWithoutVoteInput
+  update: ChatRoomUpdateWithoutVoteDataInput
+  upsert: ChatRoomUpsertWithoutVoteInput
+  connect: ChatRoomWhereUniqueInput
+}
+
 input ChatRoomUpdateWithoutBossDataInput {
   memberList: UserUpdateManyWithoutChatListInput
   store: StoreUpdateOneRequiredWithoutChatRoomListInput
   location: String
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
   state: Boolean
+  vote: VoteUpdateOneWithoutChatRoomInput
 }
 
 input ChatRoomUpdateWithoutChatContentListDataInput {
@@ -597,9 +636,11 @@ input ChatRoomUpdateWithoutChatContentListDataInput {
   location: String
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   state: Boolean
+  vote: VoteUpdateOneWithoutChatRoomInput
 }
 
 input ChatRoomUpdateWithoutMemberListDataInput {
@@ -608,10 +649,12 @@ input ChatRoomUpdateWithoutMemberListDataInput {
   location: String
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
   state: Boolean
+  vote: VoteUpdateOneWithoutChatRoomInput
 }
 
 input ChatRoomUpdateWithoutRoomOrderDataInput {
@@ -621,9 +664,11 @@ input ChatRoomUpdateWithoutRoomOrderDataInput {
   location: String
   latitude: Float
   longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
   state: Boolean
+  vote: VoteUpdateOneWithoutChatRoomInput
 }
 
 input ChatRoomUpdateWithoutStoreDataInput {
@@ -632,6 +677,22 @@ input ChatRoomUpdateWithoutStoreDataInput {
   location: String
   latitude: Float
   longitude: Float
+  additionalLocation: String
+  orderExpectedTime: DateTime
+  roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
+  chatContentList: ChatContentUpdateManyWithoutChatRoomInput
+  state: Boolean
+  vote: VoteUpdateOneWithoutChatRoomInput
+}
+
+input ChatRoomUpdateWithoutVoteDataInput {
+  boss: UserUpdateOneRequiredWithoutBossChatListInput
+  memberList: UserUpdateManyWithoutChatListInput
+  store: StoreUpdateOneRequiredWithoutChatRoomListInput
+  location: String
+  latitude: Float
+  longitude: Float
+  additionalLocation: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
@@ -653,11 +714,6 @@ input ChatRoomUpdateWithWhereUniqueWithoutStoreInput {
   data: ChatRoomUpdateWithoutStoreDataInput!
 }
 
-input ChatRoomUpsertNestedInput {
-  update: ChatRoomUpdateDataInput!
-  create: ChatRoomCreateInput!
-}
-
 input ChatRoomUpsertWithoutChatContentListInput {
   update: ChatRoomUpdateWithoutChatContentListDataInput!
   create: ChatRoomCreateWithoutChatContentListInput!
@@ -666,6 +722,11 @@ input ChatRoomUpsertWithoutChatContentListInput {
 input ChatRoomUpsertWithoutRoomOrderInput {
   update: ChatRoomUpdateWithoutRoomOrderDataInput!
   create: ChatRoomCreateWithoutRoomOrderInput!
+}
+
+input ChatRoomUpsertWithoutVoteInput {
+  update: ChatRoomUpdateWithoutVoteDataInput!
+  create: ChatRoomCreateWithoutVoteInput!
 }
 
 input ChatRoomUpsertWithWhereUniqueWithoutBossInput {
@@ -736,6 +797,20 @@ input ChatRoomWhereInput {
   longitude_lte: Float
   longitude_gt: Float
   longitude_gte: Float
+  additionalLocation: String
+  additionalLocation_not: String
+  additionalLocation_in: [String!]
+  additionalLocation_not_in: [String!]
+  additionalLocation_lt: String
+  additionalLocation_lte: String
+  additionalLocation_gt: String
+  additionalLocation_gte: String
+  additionalLocation_contains: String
+  additionalLocation_not_contains: String
+  additionalLocation_starts_with: String
+  additionalLocation_not_starts_with: String
+  additionalLocation_ends_with: String
+  additionalLocation_not_ends_with: String
   orderExpectedTime: DateTime
   orderExpectedTime_not: DateTime
   orderExpectedTime_in: [DateTime!]
@@ -750,6 +825,7 @@ input ChatRoomWhereInput {
   chatContentList_none: ChatContentWhereInput
   state: Boolean
   state_not: Boolean
+  vote: VoteWhereInput
   AND: [ChatRoomWhereInput!]
   OR: [ChatRoomWhereInput!]
   NOT: [ChatRoomWhereInput!]
@@ -2691,8 +2767,13 @@ type VoteConnection {
 
 input VoteCreateInput {
   id: ID
-  chatRoom: ChatRoomCreateOneInput!
+  chatRoom: ChatRoomCreateOneWithoutVoteInput!
   voteList: UserVoteCreateManyWithoutVoteInput
+}
+
+input VoteCreateOneWithoutChatRoomInput {
+  create: VoteCreateWithoutChatRoomInput
+  connect: VoteWhereUniqueInput
 }
 
 input VoteCreateOneWithoutVoteListInput {
@@ -2700,9 +2781,14 @@ input VoteCreateOneWithoutVoteListInput {
   connect: VoteWhereUniqueInput
 }
 
+input VoteCreateWithoutChatRoomInput {
+  id: ID
+  voteList: UserVoteCreateManyWithoutVoteInput
+}
+
 input VoteCreateWithoutVoteListInput {
   id: ID
-  chatRoom: ChatRoomCreateOneInput!
+  chatRoom: ChatRoomCreateOneWithoutVoteInput!
 }
 
 type VoteEdge {
@@ -2738,7 +2824,7 @@ input VoteSubscriptionWhereInput {
 }
 
 input VoteUpdateInput {
-  chatRoom: ChatRoomUpdateOneRequiredInput
+  chatRoom: ChatRoomUpdateOneRequiredWithoutVoteInput
   voteList: UserVoteUpdateManyWithoutVoteInput
 }
 
@@ -2749,8 +2835,26 @@ input VoteUpdateOneRequiredWithoutVoteListInput {
   connect: VoteWhereUniqueInput
 }
 
+input VoteUpdateOneWithoutChatRoomInput {
+  create: VoteCreateWithoutChatRoomInput
+  update: VoteUpdateWithoutChatRoomDataInput
+  upsert: VoteUpsertWithoutChatRoomInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: VoteWhereUniqueInput
+}
+
+input VoteUpdateWithoutChatRoomDataInput {
+  voteList: UserVoteUpdateManyWithoutVoteInput
+}
+
 input VoteUpdateWithoutVoteListDataInput {
-  chatRoom: ChatRoomUpdateOneRequiredInput
+  chatRoom: ChatRoomUpdateOneRequiredWithoutVoteInput
+}
+
+input VoteUpsertWithoutChatRoomInput {
+  update: VoteUpdateWithoutChatRoomDataInput!
+  create: VoteCreateWithoutChatRoomInput!
 }
 
 input VoteUpsertWithoutVoteListInput {

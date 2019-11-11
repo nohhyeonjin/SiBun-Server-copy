@@ -55,6 +55,7 @@ type ChatRoom {
   location : String!
   latitude : Float
   longitude : Float
+  additionalLocation : String
   orderExpectedTime : DateTime!
   roomOrder : RoomOrder @relation(name : "ChatRoomOrderRelation")
   chatContentList : [ChatContent] @relation(name : "ChatRoomChatContentRelation")
@@ -89,7 +90,7 @@ type ChatContent {
 
 type Vote {
   id : ID! @id
-  chatRoom : ChatRoom! @relation(name : "ChatRoomVoteRelation")
+  chatRoom : ChatRoom! @relation(name : "ChatRoomVoteRelation", link: INLINE)
   voteList : [UserVote!]! @relation(name : "VoteUserVoteRelation")
 }
 
