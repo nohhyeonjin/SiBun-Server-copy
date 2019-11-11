@@ -5,7 +5,6 @@ input MenuInput{
 type User {
   id : ID! @id
   number : Int! @unique
-  pwd : String!
   score : Int! @default(value: 0)
   bossChatList : [ChatRoom!] @relation(name : "BossChatRelation")
   chatList : [ChatRoom!] @relation(name : "MemberChatRelation")
