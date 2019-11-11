@@ -59,6 +59,7 @@ type ChatRoom {
   roomOrder : RoomOrder @relation(name : "ChatRoomOrderRelation")
   chatContentList : [ChatContent] @relation(name : "ChatRoomChatContentRelation")
   state : Boolean!
+  vote: Vote @relation(name : "ChatRoomVoteRelation")
 }
 
 
@@ -88,7 +89,7 @@ type ChatContent {
 
 type Vote {
   id : ID! @id
-  chatRoom : ChatRoom!
+  chatRoom : ChatRoom! @relation(name : "ChatRoomVoteRelation")
   voteList : [UserVote!]! @relation(name : "VoteUserVoteRelation")
 }
 

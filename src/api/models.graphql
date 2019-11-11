@@ -60,6 +60,7 @@ type ChatRoom {
   roomOrder : RoomOrder
   chatContentList : [ChatContent] 
   state: Boolean!
+  vote: Vote
 }
 
 
