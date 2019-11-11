@@ -3,8 +3,8 @@ import { prisma } from "../../../../generated/prisma-client";
 export default {
   Query: {
     getStoreList:async(_, args) => {
-        const { storeCategoryId } = args;
-        const storeList = await prisma.stores({where : {storeCategory : {id : storeCategoryId}}});
+        const { storeCategoryName } = args;
+        const storeList = await prisma.stores({where : {storeCategory : {name : storeCategoryName}}});
         return storeList;
     }
   }
