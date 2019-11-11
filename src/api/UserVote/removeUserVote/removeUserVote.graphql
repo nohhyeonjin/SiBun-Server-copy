@@ -1,5 +1,0 @@
-type Mutation{
-    removeUserVote(
-        userVoteId: String!
-    ): UserVote!
-}
