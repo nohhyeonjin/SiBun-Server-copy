@@ -12,7 +12,7 @@ export default{
 
             for(var i = 0; i < memberList.length; i++){
              const userVote = await prisma.createUserVote({
-                    user : { connect : memberList[i]},
+                    user : { connect : { id : memberList[i].id}},
                     choice : false,
                     vote : { connect : { id : vote.id }}
                 });
