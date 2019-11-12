@@ -5,7 +5,7 @@ export default {
     getRoomOrder: async (_, args) => {
       const { roomId } = args;
 
-      const roomOrder = await prisma.roomOrder({ id: roomId });
+      const roomOrder = await prisma.chatRoom({ id: roomId }).roomOrder();
 
       return roomOrder;
     }
