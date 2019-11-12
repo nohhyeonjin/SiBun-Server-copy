@@ -33,7 +33,7 @@
     "subscriptions-transport-ws": "^0.9.16"
   },
   "scripts": {
-    "start": "pm2 start src/server.js",
+    "start": "nodemon --exec babel-node src/server.js",
     "deploy": "prisma deploy",
     "generate": "prisma generate",
     "prisma": "yarn run deploy && yarn run generate"
