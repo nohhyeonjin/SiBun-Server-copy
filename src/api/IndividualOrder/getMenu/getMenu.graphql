@@ -1,0 +1,7 @@
+type Query{
+    getMenu(
+        storeName : String!,
+        menuCategoryName : String!
+        menuName : String!
+    ):Menu
+}
