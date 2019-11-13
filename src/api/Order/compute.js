@@ -9,5 +9,9 @@ export default {
     user: ({ id }) => prisma.individualOrder({ id }).user(),
     menuList: ({ id }) => prisma.individualOrder({ id }).menuList(),
     roomOrder: ({ id }) => prisma.individualOrder({ id }).roomOrder()
+  },
+  DetailIndividualOrder: {
+    menu: ({ id }) => prisma.detailIndividualOrder({ id }).menu(),
+    IndividualOrder: ({ id }) => prisma.detailIndividualOrder({ id }).IndividualOrder()
   }
 }
