@@ -1,6 +1,6 @@
 type Mutation{
     addIndividualOrder(
         roomId : String!,
-        menuList : [MenuInput]
+        menuList : [DetailIndividualOrder]
     ):IndividualOrder!
 }
