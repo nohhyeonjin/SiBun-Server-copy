@@ -1,5 +1,6 @@
 input MenuInput{
   id : ID!
+  quantity: Int!
 }
 
 type DetailIndividualOrder {

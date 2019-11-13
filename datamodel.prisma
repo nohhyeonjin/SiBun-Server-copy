@@ -1,5 +1,6 @@
 input MenuInput{
   id : ID!
+  quantity: Int!
 }
 
 type DetailIndividualOrder {
@@ -8,6 +9,13 @@ type DetailIndividualOrder {
  quantity: Int! @default(value: 0)
  totalPrice : Int
  IndividualOrder: IndividualOrder @relation(name : "DetailIndividualOrderRelation")
+}
+
+type IndividualOrder {
+ id : ID! @id
+ user : User!
+ menuList : [DetailIndividualOrder!]! @relation(name : "DetailIndividualOrderRelation")
+ roomOrder : RoomOrder @relation(name : "RoomOrderIndividualOrderRelation")
 }
 
 type User {
@@ -78,13 +86,6 @@ type RoomOrder {
   individualOrderList : [IndividualOrder!] @relation(name : "RoomOrderIndividualOrderRelation")
   phoneNumber : String
   state: Boolean!
-}
-
-type IndividualOrder {
- id : ID! @id
- user : User!
- menuList : [DetailIndividualOrder!]! @relation(name : "DetailIndividualOrderRelation")
- roomOrder : RoomOrder @relation(name : "RoomOrderIndividualOrderRelation")
 }
 
 type ChatContent {
