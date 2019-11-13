@@ -2,6 +2,14 @@ input MenuInput{
   id : ID!
 }
 
+type DetailIndividualOrder {
+ id : ID! @id
+ menu : Menu!
+ quantity: Int! @default(value: 0)
+ totalPrice : Int
+ IndividualOrder: IndividualOrder @relation(name : "DetailIndividualOrderRelation")
+}
+
 type User {
   id : ID! @id
   number : Int! @unique
@@ -72,14 +80,12 @@ type RoomOrder {
   state: Boolean!
 }
 
-
 type IndividualOrder {
-  id : ID! @id
-  user : User!
-  menuList : [Menu!]!
-  roomOrder : RoomOrder @relation(name : "RoomOrderIndividualOrderRelation")
+ id : ID! @id
+ user : User!
+ menuList : [DetailIndividualOrder!]! @relation(name : "DetailIndividualOrderRelation")
+ roomOrder : RoomOrder @relation(name : "RoomOrderIndividualOrderRelation")
 }
-
 
 type ChatContent {
   id : ID! @id

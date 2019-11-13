@@ -11,6 +11,10 @@ type AggregateChatRoom {
   count: Int!
 }
 
+type AggregateDetailIndividualOrder {
+  count: Int!
+}
+
 type AggregateIndividualOrder {
   count: Int!
 }
@@ -837,10 +841,211 @@ input ChatRoomWhereUniqueInput {
 
 scalar DateTime
 
+type DetailIndividualOrder {
+  id: ID!
+  menu: Menu!
+  quantity: Int!
+  totalPrice: Int
+  IndividualOrder: IndividualOrder
+}
+
+type DetailIndividualOrderConnection {
+  pageInfo: PageInfo!
+  edges: [DetailIndividualOrderEdge]!
+  aggregate: AggregateDetailIndividualOrder!
+}
+
+input DetailIndividualOrderCreateInput {
+  id: ID
+  menu: MenuCreateOneInput!
+  quantity: Int
+  totalPrice: Int
+  IndividualOrder: IndividualOrderCreateOneWithoutMenuListInput
+}
+
+input DetailIndividualOrderCreateManyWithoutIndividualOrderInput {
+  create: [DetailIndividualOrderCreateWithoutIndividualOrderInput!]
+  connect: [DetailIndividualOrderWhereUniqueInput!]
+}
+
+input DetailIndividualOrderCreateWithoutIndividualOrderInput {
+  id: ID
+  menu: MenuCreateOneInput!
+  quantity: Int
+  totalPrice: Int
+}
+
+type DetailIndividualOrderEdge {
+  node: DetailIndividualOrder!
+  cursor: String!
+}
+
+enum DetailIndividualOrderOrderByInput {
+  id_ASC
+  id_DESC
+  quantity_ASC
+  quantity_DESC
+  totalPrice_ASC
+  totalPrice_DESC
+}
+
+type DetailIndividualOrderPreviousValues {
+  id: ID!
+  quantity: Int!
+  totalPrice: Int
+}
+
+input DetailIndividualOrderScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  quantity: Int
+  quantity_not: Int
+  quantity_in: [Int!]
+  quantity_not_in: [Int!]
+  quantity_lt: Int
+  quantity_lte: Int
+  quantity_gt: Int
+  quantity_gte: Int
+  totalPrice: Int
+  totalPrice_not: Int
+  totalPrice_in: [Int!]
+  totalPrice_not_in: [Int!]
+  totalPrice_lt: Int
+  totalPrice_lte: Int
+  totalPrice_gt: Int
+  totalPrice_gte: Int
+  AND: [DetailIndividualOrderScalarWhereInput!]
+  OR: [DetailIndividualOrderScalarWhereInput!]
+  NOT: [DetailIndividualOrderScalarWhereInput!]
+}
+
+type DetailIndividualOrderSubscriptionPayload {
+  mutation: MutationType!
+  node: DetailIndividualOrder
+  updatedFields: [String!]
+  previousValues: DetailIndividualOrderPreviousValues
+}
+
+input DetailIndividualOrderSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: DetailIndividualOrderWhereInput
+  AND: [DetailIndividualOrderSubscriptionWhereInput!]
+  OR: [DetailIndividualOrderSubscriptionWhereInput!]
+  NOT: [DetailIndividualOrderSubscriptionWhereInput!]
+}
+
+input DetailIndividualOrderUpdateInput {
+  menu: MenuUpdateOneRequiredInput
+  quantity: Int
+  totalPrice: Int
+  IndividualOrder: IndividualOrderUpdateOneWithoutMenuListInput
+}
+
+input DetailIndividualOrderUpdateManyDataInput {
+  quantity: Int
+  totalPrice: Int
+}
+
+input DetailIndividualOrderUpdateManyMutationInput {
+  quantity: Int
+  totalPrice: Int
+}
+
+input DetailIndividualOrderUpdateManyWithoutIndividualOrderInput {
+  create: [DetailIndividualOrderCreateWithoutIndividualOrderInput!]
+  delete: [DetailIndividualOrderWhereUniqueInput!]
+  connect: [DetailIndividualOrderWhereUniqueInput!]
+  set: [DetailIndividualOrderWhereUniqueInput!]
+  disconnect: [DetailIndividualOrderWhereUniqueInput!]
+  update: [DetailIndividualOrderUpdateWithWhereUniqueWithoutIndividualOrderInput!]
+  upsert: [DetailIndividualOrderUpsertWithWhereUniqueWithoutIndividualOrderInput!]
+  deleteMany: [DetailIndividualOrderScalarWhereInput!]
+  updateMany: [DetailIndividualOrderUpdateManyWithWhereNestedInput!]
+}
+
+input DetailIndividualOrderUpdateManyWithWhereNestedInput {
+  where: DetailIndividualOrderScalarWhereInput!
+  data: DetailIndividualOrderUpdateManyDataInput!
+}
+
+input DetailIndividualOrderUpdateWithoutIndividualOrderDataInput {
+  menu: MenuUpdateOneRequiredInput
+  quantity: Int
+  totalPrice: Int
+}
+
+input DetailIndividualOrderUpdateWithWhereUniqueWithoutIndividualOrderInput {
+  where: DetailIndividualOrderWhereUniqueInput!
+  data: DetailIndividualOrderUpdateWithoutIndividualOrderDataInput!
+}
+
+input DetailIndividualOrderUpsertWithWhereUniqueWithoutIndividualOrderInput {
+  where: DetailIndividualOrderWhereUniqueInput!
+  update: DetailIndividualOrderUpdateWithoutIndividualOrderDataInput!
+  create: DetailIndividualOrderCreateWithoutIndividualOrderInput!
+}
+
+input DetailIndividualOrderWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  menu: MenuWhereInput
+  quantity: Int
+  quantity_not: Int
+  quantity_in: [Int!]
+  quantity_not_in: [Int!]
+  quantity_lt: Int
+  quantity_lte: Int
+  quantity_gt: Int
+  quantity_gte: Int
+  totalPrice: Int
+  totalPrice_not: Int
+  totalPrice_in: [Int!]
+  totalPrice_not_in: [Int!]
+  totalPrice_lt: Int
+  totalPrice_lte: Int
+  totalPrice_gt: Int
+  totalPrice_gte: Int
+  IndividualOrder: IndividualOrderWhereInput
+  AND: [DetailIndividualOrderWhereInput!]
+  OR: [DetailIndividualOrderWhereInput!]
+  NOT: [DetailIndividualOrderWhereInput!]
+}
+
+input DetailIndividualOrderWhereUniqueInput {
+  id: ID
+}
+
 type IndividualOrder {
   id: ID!
   user: User!
-  menuList(where: MenuWhereInput, orderBy: MenuOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Menu!]
+  menuList(where: DetailIndividualOrderWhereInput, orderBy: DetailIndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DetailIndividualOrder!]
   roomOrder: RoomOrder
 }
 
@@ -853,7 +1058,7 @@ type IndividualOrderConnection {
 input IndividualOrderCreateInput {
   id: ID
   user: UserCreateOneInput!
-  menuList: MenuCreateManyInput
+  menuList: DetailIndividualOrderCreateManyWithoutIndividualOrderInput
   roomOrder: RoomOrderCreateOneWithoutIndividualOrderListInput
 }
 
@@ -862,10 +1067,21 @@ input IndividualOrderCreateManyWithoutRoomOrderInput {
   connect: [IndividualOrderWhereUniqueInput!]
 }
 
+input IndividualOrderCreateOneWithoutMenuListInput {
+  create: IndividualOrderCreateWithoutMenuListInput
+  connect: IndividualOrderWhereUniqueInput
+}
+
+input IndividualOrderCreateWithoutMenuListInput {
+  id: ID
+  user: UserCreateOneInput!
+  roomOrder: RoomOrderCreateOneWithoutIndividualOrderListInput
+}
+
 input IndividualOrderCreateWithoutRoomOrderInput {
   id: ID
   user: UserCreateOneInput!
-  menuList: MenuCreateManyInput
+  menuList: DetailIndividualOrderCreateManyWithoutIndividualOrderInput
 }
 
 type IndividualOrderEdge {
@@ -922,7 +1138,7 @@ input IndividualOrderSubscriptionWhereInput {
 
 input IndividualOrderUpdateInput {
   user: UserUpdateOneRequiredInput
-  menuList: MenuUpdateManyInput
+  menuList: DetailIndividualOrderUpdateManyWithoutIndividualOrderInput
   roomOrder: RoomOrderUpdateOneWithoutIndividualOrderListInput
 }
 
@@ -937,14 +1153,33 @@ input IndividualOrderUpdateManyWithoutRoomOrderInput {
   deleteMany: [IndividualOrderScalarWhereInput!]
 }
 
+input IndividualOrderUpdateOneWithoutMenuListInput {
+  create: IndividualOrderCreateWithoutMenuListInput
+  update: IndividualOrderUpdateWithoutMenuListDataInput
+  upsert: IndividualOrderUpsertWithoutMenuListInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: IndividualOrderWhereUniqueInput
+}
+
+input IndividualOrderUpdateWithoutMenuListDataInput {
+  user: UserUpdateOneRequiredInput
+  roomOrder: RoomOrderUpdateOneWithoutIndividualOrderListInput
+}
+
 input IndividualOrderUpdateWithoutRoomOrderDataInput {
   user: UserUpdateOneRequiredInput
-  menuList: MenuUpdateManyInput
+  menuList: DetailIndividualOrderUpdateManyWithoutIndividualOrderInput
 }
 
 input IndividualOrderUpdateWithWhereUniqueWithoutRoomOrderInput {
   where: IndividualOrderWhereUniqueInput!
   data: IndividualOrderUpdateWithoutRoomOrderDataInput!
+}
+
+input IndividualOrderUpsertWithoutMenuListInput {
+  update: IndividualOrderUpdateWithoutMenuListDataInput!
+  create: IndividualOrderCreateWithoutMenuListInput!
 }
 
 input IndividualOrderUpsertWithWhereUniqueWithoutRoomOrderInput {
@@ -969,9 +1204,9 @@ input IndividualOrderWhereInput {
   id_ends_with: ID
   id_not_ends_with: ID
   user: UserWhereInput
-  menuList_every: MenuWhereInput
-  menuList_some: MenuWhereInput
-  menuList_none: MenuWhereInput
+  menuList_every: DetailIndividualOrderWhereInput
+  menuList_some: DetailIndividualOrderWhereInput
+  menuList_none: DetailIndividualOrderWhereInput
   roomOrder: RoomOrderWhereInput
   AND: [IndividualOrderWhereInput!]
   OR: [IndividualOrderWhereInput!]
@@ -1221,14 +1456,14 @@ input MenuCreateInput {
   menuCategory: MenuCategoryCreateOneWithoutMenuListInput!
 }
 
-input MenuCreateManyInput {
-  create: [MenuCreateInput!]
-  connect: [MenuWhereUniqueInput!]
-}
-
 input MenuCreateManyWithoutMenuCategoryInput {
   create: [MenuCreateWithoutMenuCategoryInput!]
   connect: [MenuWhereUniqueInput!]
+}
+
+input MenuCreateOneInput {
+  create: MenuCreateInput
+  connect: MenuWhereUniqueInput
 }
 
 input MenuCreateWithoutMenuCategoryInput {
@@ -1334,18 +1569,6 @@ input MenuUpdateManyDataInput {
   price: Int
 }
 
-input MenuUpdateManyInput {
-  create: [MenuCreateInput!]
-  update: [MenuUpdateWithWhereUniqueNestedInput!]
-  upsert: [MenuUpsertWithWhereUniqueNestedInput!]
-  delete: [MenuWhereUniqueInput!]
-  connect: [MenuWhereUniqueInput!]
-  set: [MenuWhereUniqueInput!]
-  disconnect: [MenuWhereUniqueInput!]
-  deleteMany: [MenuScalarWhereInput!]
-  updateMany: [MenuUpdateManyWithWhereNestedInput!]
-}
-
 input MenuUpdateManyMutationInput {
   name: String
   price: Int
@@ -1368,14 +1591,16 @@ input MenuUpdateManyWithWhereNestedInput {
   data: MenuUpdateManyDataInput!
 }
 
+input MenuUpdateOneRequiredInput {
+  create: MenuCreateInput
+  update: MenuUpdateDataInput
+  upsert: MenuUpsertNestedInput
+  connect: MenuWhereUniqueInput
+}
+
 input MenuUpdateWithoutMenuCategoryDataInput {
   name: String
   price: Int
-}
-
-input MenuUpdateWithWhereUniqueNestedInput {
-  where: MenuWhereUniqueInput!
-  data: MenuUpdateDataInput!
 }
 
 input MenuUpdateWithWhereUniqueWithoutMenuCategoryInput {
@@ -1383,8 +1608,7 @@ input MenuUpdateWithWhereUniqueWithoutMenuCategoryInput {
   data: MenuUpdateWithoutMenuCategoryDataInput!
 }
 
-input MenuUpsertWithWhereUniqueNestedInput {
-  where: MenuWhereUniqueInput!
+input MenuUpsertNestedInput {
   update: MenuUpdateDataInput!
   create: MenuCreateInput!
 }
@@ -1455,6 +1679,12 @@ type Mutation {
   upsertChatRoom(where: ChatRoomWhereUniqueInput!, create: ChatRoomCreateInput!, update: ChatRoomUpdateInput!): ChatRoom!
   deleteChatRoom(where: ChatRoomWhereUniqueInput!): ChatRoom
   deleteManyChatRooms(where: ChatRoomWhereInput): BatchPayload!
+  createDetailIndividualOrder(data: DetailIndividualOrderCreateInput!): DetailIndividualOrder!
+  updateDetailIndividualOrder(data: DetailIndividualOrderUpdateInput!, where: DetailIndividualOrderWhereUniqueInput!): DetailIndividualOrder
+  updateManyDetailIndividualOrders(data: DetailIndividualOrderUpdateManyMutationInput!, where: DetailIndividualOrderWhereInput): BatchPayload!
+  upsertDetailIndividualOrder(where: DetailIndividualOrderWhereUniqueInput!, create: DetailIndividualOrderCreateInput!, update: DetailIndividualOrderUpdateInput!): DetailIndividualOrder!
+  deleteDetailIndividualOrder(where: DetailIndividualOrderWhereUniqueInput!): DetailIndividualOrder
+  deleteManyDetailIndividualOrders(where: DetailIndividualOrderWhereInput): BatchPayload!
   createIndividualOrder(data: IndividualOrderCreateInput!): IndividualOrder!
   updateIndividualOrder(data: IndividualOrderUpdateInput!, where: IndividualOrderWhereUniqueInput!): IndividualOrder
   upsertIndividualOrder(where: IndividualOrderWhereUniqueInput!, create: IndividualOrderCreateInput!, update: IndividualOrderUpdateInput!): IndividualOrder!
@@ -1533,6 +1763,9 @@ type Query {
   chatRoom(where: ChatRoomWhereUniqueInput!): ChatRoom
   chatRooms(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom]!
   chatRoomsConnection(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ChatRoomConnection!
+  detailIndividualOrder(where: DetailIndividualOrderWhereUniqueInput!): DetailIndividualOrder
+  detailIndividualOrders(where: DetailIndividualOrderWhereInput, orderBy: DetailIndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [DetailIndividualOrder]!
+  detailIndividualOrdersConnection(where: DetailIndividualOrderWhereInput, orderBy: DetailIndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DetailIndividualOrderConnection!
   individualOrder(where: IndividualOrderWhereUniqueInput!): IndividualOrder
   individualOrders(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IndividualOrder]!
   individualOrdersConnection(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): IndividualOrderConnection!
@@ -2319,6 +2552,7 @@ input StoreWhereUniqueInput {
 type Subscription {
   chatContent(where: ChatContentSubscriptionWhereInput): ChatContentSubscriptionPayload
   chatRoom(where: ChatRoomSubscriptionWhereInput): ChatRoomSubscriptionPayload
+  detailIndividualOrder(where: DetailIndividualOrderSubscriptionWhereInput): DetailIndividualOrderSubscriptionPayload
   individualOrder(where: IndividualOrderSubscriptionWhereInput): IndividualOrderSubscriptionPayload
   menu(where: MenuSubscriptionWhereInput): MenuSubscriptionPayload
   menuCategory(where: MenuCategorySubscriptionWhereInput): MenuCategorySubscriptionPayload
