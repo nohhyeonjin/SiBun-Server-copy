@@ -16,10 +16,16 @@ export default{
                 });
                 totalDetailIndividualOrder[i]=DetailIndividualOrder;
             }
+            var totalDetailIndividualOrderId = new Array();
+            for(var i=0;i<totalDetailIndividualOrder.length;i++){
+                totalDetailIndividualOrderId[i]={ id : totalDetailIndividualOrder[i].id};
+            }
+            console.log(totalDetailIndividualOrderId);
+
             const roomOrder = await prisma.roomOrders({where : {chatRoom:{id:roomId}}});
             const individualOrder = await prisma.createIndividualOrder({
                 user : {connect : {id: user.id}},
-                menuList : {connect : totalDetailIndividualOrder.id },
+                menuList : {connect : totalDetailIndividualOrderId},
                 roomOrder : { connect : {id : roomOrder[0].id}}
             });
             
