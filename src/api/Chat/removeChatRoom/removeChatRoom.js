@@ -4,7 +4,7 @@ export default{
     Mutation:{
         removeChatRoom:async(_,args,{request})=>{
             const { roomId } = args;
-            
+            const findChatRoom = await prisma.chatRoom({ id: roomId });
             const chatContentList = await prisma.chatContents({where : {chatRoom : {id : roomId}}});
             if(chatContentList.length > 0)
             {
@@ -42,7 +42,7 @@ export default{
             const chatRoom = await prisma.deleteChatRoom({
                 id : roomId
             });
-            return "remove ChatRoom success";
+            return findChatRoom;
         }
     }
 }
