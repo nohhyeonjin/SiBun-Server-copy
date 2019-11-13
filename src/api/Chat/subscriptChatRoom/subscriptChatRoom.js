@@ -4,7 +4,7 @@ export default{
 Subscription: {
     subscriptChatRoom: {
       subscribe: () => prisma.$subscribe.chatRoom({
-        mutation_in: ['CREATED']
+        mutation_in: ['CREATED', 'DELETED', 'UPDATED']
       }).node(),
       resolve: payload => payload
     }
