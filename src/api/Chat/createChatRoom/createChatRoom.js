@@ -6,7 +6,7 @@ export default{
     Mutation:{
         createChatRoom:async(_,args,{request})=>{
             isAuthenticated(request);
-            const { storeName, location, time } = args;
+            const { storeName, location, additionalLocation, time } = args;
             const { user } = request;
             const store = await prisma.store({name:storeName});
 
@@ -33,6 +33,7 @@ export default{
                 memberList : { connect : { id : user.id }},
                 store : { connect : { id : store.id }},
                 location : location,
+                additionalLocation : additionalLocation,
                 latitude : latitude,
                 longitude : longitude,               
                 orderExpectedTime : time,   //time���� ex) "2019-10-27T16:34:10"

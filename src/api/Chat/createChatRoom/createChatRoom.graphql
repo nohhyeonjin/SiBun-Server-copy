@@ -4,6 +4,7 @@ type Mutation{
     createChatRoom(
         storeName : String!,
         location : String!,
+        additionalLocation : String!
         time : DateTime!
     ): ChatRoom!
 }
