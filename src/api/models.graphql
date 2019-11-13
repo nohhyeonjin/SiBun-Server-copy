@@ -2,6 +2,14 @@ input MenuInput{
   id : ID!
 }
 
+type DetailIndividualOrder {
+ id : ID!
+ menu : Menu!
+ quantity: Int!
+ totalPrice : Int
+ IndividualOrder: IndividualOrder
+}
+
 type User {
   id : ID!
   number : Int!
@@ -73,14 +81,12 @@ type RoomOrder {
   state: Boolean!
 }
 
-
 type IndividualOrder {
-  id : ID!
-  user : User!
-  menuList : [Menu!]!
-  roomOrder : RoomOrder
+ id : ID!
+ user : User!
+ menuList : [DetailIndividualOrder!]!
+ roomOrder : RoomOrder
 }
-
 
 type ChatContent{
   id : ID!
