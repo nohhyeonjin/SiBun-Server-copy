@@ -69,7 +69,7 @@ type ChatRoom {
   orderExpectedTime : DateTime!
   roomOrder : RoomOrder
   chatContentList : [ChatContent] 
-  state: Boolean!
+  state: Int!
   vote: Vote
 }
 
@@ -80,6 +80,7 @@ type RoomOrder {
   individualOrderList : [IndividualOrder!]!
   phoneNumber : String!
   state: Boolean!
+  deliveryTime: Int!
 }
 
 type IndividualOrder {

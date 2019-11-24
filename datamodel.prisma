@@ -85,7 +85,8 @@ type RoomOrder {
   chatRoom : ChatRoom! @unique @relation(name : "ChatRoomOrderRelation", link: INLINE)
   individualOrderList : [IndividualOrder!] @relation(name : "RoomOrderIndividualOrderRelation")
   phoneNumber : String
-  state: Boolean!
+  state: Int! @default(value: 1)
+  deliveryTime: Int! @default(value: 0)
 }
 
 type ChatContent {
