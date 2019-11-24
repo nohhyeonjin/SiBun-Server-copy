@@ -9,6 +9,10 @@ var models = [
     embedded: false
   },
   {
+    name: "IndividualOrder",
+    embedded: false
+  },
+  {
     name: "User",
     embedded: false
   },
@@ -34,10 +38,6 @@ var models = [
   },
   {
     name: "RoomOrder",
-    embedded: false
-  },
-  {
-    name: "IndividualOrder",
     embedded: false
   },
   {
