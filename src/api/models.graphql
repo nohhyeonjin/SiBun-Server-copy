@@ -87,7 +87,7 @@ type StoreOrder {
   id: ID!
   store : Store!
   address : String!
-  menuList : [TotalDetaioIndividual!]!
+  menuList : [TotalDetailIndividual!]!
   totalPrice : Int!
 }
 
