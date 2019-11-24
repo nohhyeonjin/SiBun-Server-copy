@@ -1,0 +1,6 @@
+type Mutation{
+    storeSignIn(
+        storeId: String!
+        pwd: String!
+    ): String!
+}
