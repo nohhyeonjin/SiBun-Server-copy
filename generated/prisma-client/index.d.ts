@@ -2551,6 +2551,7 @@ export interface VoteUpsertWithoutChatRoomInput {
 
 export type StoreWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
+  storeId?: Maybe<String>;
   name?: Maybe<String>;
 }>;
 

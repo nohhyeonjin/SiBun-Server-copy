@@ -44,7 +44,7 @@ type StoreCategory {
 
 type Store {
   id : ID! @id
-  storeId : String!
+  storeId : String! @unique
   pwd : String!
   name : String! @unique
   storeCategory : StoreCategory! @relation(name : "StoreStoreCategoryRelation")

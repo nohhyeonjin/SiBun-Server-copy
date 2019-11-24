@@ -2571,6 +2571,7 @@ input StoreWhereInput {
 
 input StoreWhereUniqueInput {
   id: ID
+  storeId: String
   name: String
 }
 
