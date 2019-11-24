@@ -42,7 +42,7 @@ export default{
 
             const RoomOrder = await prisma.createRoomOrder({
                 chatRoom: {connect : {id : chatRoom.id}},
-                state: false
+                state: 1
             });
 
             return chatRoom;

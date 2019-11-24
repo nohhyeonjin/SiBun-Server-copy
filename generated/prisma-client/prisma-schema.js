@@ -1801,7 +1801,8 @@ type RoomOrder {
   chatRoom: ChatRoom!
   individualOrderList(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IndividualOrder!]
   phoneNumber: String
-  state: Boolean!
+  state: Int!
+  deliveryTime: Int!
 }
 
 type RoomOrderConnection {
@@ -1815,7 +1816,8 @@ input RoomOrderCreateInput {
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput!
   individualOrderList: IndividualOrderCreateManyWithoutRoomOrderInput
   phoneNumber: String
-  state: Boolean!
+  state: Int
+  deliveryTime: Int
 }
 
 input RoomOrderCreateOneWithoutChatRoomInput {
@@ -1832,14 +1834,16 @@ input RoomOrderCreateWithoutChatRoomInput {
   id: ID
   individualOrderList: IndividualOrderCreateManyWithoutRoomOrderInput
   phoneNumber: String
-  state: Boolean!
+  state: Int
+  deliveryTime: Int
 }
 
 input RoomOrderCreateWithoutIndividualOrderListInput {
   id: ID
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput!
   phoneNumber: String
-  state: Boolean!
+  state: Int
+  deliveryTime: Int
 }
 
 type RoomOrderEdge {
@@ -1854,12 +1858,15 @@ enum RoomOrderOrderByInput {
   phoneNumber_DESC
   state_ASC
   state_DESC
+  deliveryTime_ASC
+  deliveryTime_DESC
 }
 
 type RoomOrderPreviousValues {
   id: ID!
   phoneNumber: String
-  state: Boolean!
+  state: Int!
+  deliveryTime: Int!
 }
 
 type RoomOrderSubscriptionPayload {
@@ -1884,12 +1891,14 @@ input RoomOrderUpdateInput {
   chatRoom: ChatRoomUpdateOneRequiredWithoutRoomOrderInput
   individualOrderList: IndividualOrderUpdateManyWithoutRoomOrderInput
   phoneNumber: String
-  state: Boolean
+  state: Int
+  deliveryTime: Int
 }
 
 input RoomOrderUpdateManyMutationInput {
   phoneNumber: String
-  state: Boolean
+  state: Int
+  deliveryTime: Int
 }
 
 input RoomOrderUpdateOneWithoutChatRoomInput {
@@ -1913,13 +1922,15 @@ input RoomOrderUpdateOneWithoutIndividualOrderListInput {
 input RoomOrderUpdateWithoutChatRoomDataInput {
   individualOrderList: IndividualOrderUpdateManyWithoutRoomOrderInput
   phoneNumber: String
-  state: Boolean
+  state: Int
+  deliveryTime: Int
 }
 
 input RoomOrderUpdateWithoutIndividualOrderListDataInput {
   chatRoom: ChatRoomUpdateOneRequiredWithoutRoomOrderInput
   phoneNumber: String
-  state: Boolean
+  state: Int
+  deliveryTime: Int
 }
 
 input RoomOrderUpsertWithoutChatRoomInput {
@@ -1965,8 +1976,22 @@ input RoomOrderWhereInput {
   phoneNumber_not_starts_with: String
   phoneNumber_ends_with: String
   phoneNumber_not_ends_with: String
-  state: Boolean
-  state_not: Boolean
+  state: Int
+  state_not: Int
+  state_in: [Int!]
+  state_not_in: [Int!]
+  state_lt: Int
+  state_lte: Int
+  state_gt: Int
+  state_gte: Int
+  deliveryTime: Int
+  deliveryTime_not: Int
+  deliveryTime_in: [Int!]
+  deliveryTime_not_in: [Int!]
+  deliveryTime_lt: Int
+  deliveryTime_lte: Int
+  deliveryTime_gt: Int
+  deliveryTime_gte: Int
   AND: [RoomOrderWhereInput!]
   OR: [RoomOrderWhereInput!]
   NOT: [RoomOrderWhereInput!]
