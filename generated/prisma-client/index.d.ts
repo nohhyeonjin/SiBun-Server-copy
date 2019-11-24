@@ -1638,10 +1638,12 @@ export interface StoreOrderUpdateWithWhereUniqueWithoutStoreInput {
   data: StoreOrderUpdateWithoutStoreDataInput;
 }
 
-export interface StoreOrderUpdateOneRequiredWithoutMenuListInput {
+export interface StoreOrderUpdateOneWithoutMenuListInput {
   create?: Maybe<StoreOrderCreateWithoutMenuListInput>;
   update?: Maybe<StoreOrderUpdateWithoutMenuListDataInput>;
   upsert?: Maybe<StoreOrderUpsertWithoutMenuListInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
   connect?: Maybe<StoreOrderWhereUniqueInput>;
 }
 
@@ -3474,7 +3476,7 @@ export interface TotalDetailIndividualUpdateInput {
   menu?: Maybe<MenuUpdateOneRequiredInput>;
   quantity?: Maybe<Int>;
   totalPrice?: Maybe<Int>;
-  storeOrder?: Maybe<StoreOrderUpdateOneRequiredWithoutMenuListInput>;
+  storeOrder?: Maybe<StoreOrderUpdateOneWithoutMenuListInput>;
 }
 
 export interface IndividualOrderCreateOneWithoutMenuListInput {
@@ -3760,7 +3762,7 @@ export interface TotalDetailIndividualCreateInput {
   menu: MenuCreateOneInput;
   quantity: Int;
   totalPrice: Int;
-  storeOrder: StoreOrderCreateOneWithoutMenuListInput;
+  storeOrder?: Maybe<StoreOrderCreateOneWithoutMenuListInput>;
 }
 
 export interface MenuUpdateInput {

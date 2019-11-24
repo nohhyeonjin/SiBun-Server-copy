@@ -103,7 +103,7 @@ type TotalDetailIndividual {
   menu : Menu!
   quantity: Int!
   totalPrice : Int!
-  storeOrder : StoreOrder! @relation(name : "TotalDetailIndividual")
+  storeOrder : StoreOrder @relation(name : "TotalDetailIndividual")
 }
 
 type ChatContent {

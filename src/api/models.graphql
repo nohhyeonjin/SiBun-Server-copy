@@ -96,7 +96,7 @@ type TotalDetailIndividual {
   menu : Menu!
   quantity: Int!
   totalPrice : Int!
-  storeOrder : StoreOrder!
+  storeOrder : StoreOrder
 }
 
 type IndividualOrder {

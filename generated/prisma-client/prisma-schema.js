@@ -2444,10 +2444,12 @@ input StoreOrderUpdateManyWithWhereNestedInput {
   data: StoreOrderUpdateManyDataInput!
 }
 
-input StoreOrderUpdateOneRequiredWithoutMenuListInput {
+input StoreOrderUpdateOneWithoutMenuListInput {
   create: StoreOrderCreateWithoutMenuListInput
   update: StoreOrderUpdateWithoutMenuListDataInput
   upsert: StoreOrderUpsertWithoutMenuListInput
+  delete: Boolean
+  disconnect: Boolean
   connect: StoreOrderWhereUniqueInput
 }
 
@@ -2922,7 +2924,7 @@ type TotalDetailIndividual {
   menu: Menu!
   quantity: Int!
   totalPrice: Int!
-  storeOrder: StoreOrder!
+  storeOrder: StoreOrder
 }
 
 type TotalDetailIndividualConnection {
@@ -2936,7 +2938,7 @@ input TotalDetailIndividualCreateInput {
   menu: MenuCreateOneInput!
   quantity: Int!
   totalPrice: Int!
-  storeOrder: StoreOrderCreateOneWithoutMenuListInput!
+  storeOrder: StoreOrderCreateOneWithoutMenuListInput
 }
 
 input TotalDetailIndividualCreateManyWithoutStoreOrderInput {
@@ -3029,7 +3031,7 @@ input TotalDetailIndividualUpdateInput {
   menu: MenuUpdateOneRequiredInput
   quantity: Int
   totalPrice: Int
-  storeOrder: StoreOrderUpdateOneRequiredWithoutMenuListInput
+  storeOrder: StoreOrderUpdateOneWithoutMenuListInput
 }
 
 input TotalDetailIndividualUpdateManyDataInput {
