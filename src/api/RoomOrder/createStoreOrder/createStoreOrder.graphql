@@ -1,0 +1,6 @@
+type Mutation{
+    createStoreOrder(
+        roomId: String!
+        storeId: String!
+    ):StoreOrder
+}
