@@ -1,0 +1,5 @@
+type Mutation{
+    updateChatRoomState(
+        roomId: String!
+    ):ChatRoom!
+}

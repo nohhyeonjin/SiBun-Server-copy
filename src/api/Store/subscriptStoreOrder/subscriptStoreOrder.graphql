@@ -1,0 +1,3 @@
+  type Subscription{
+    subscriptStoreOrder(storeId: String!): ChatRoom!
+  }
