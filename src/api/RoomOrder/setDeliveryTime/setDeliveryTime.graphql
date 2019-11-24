@@ -1,0 +1,6 @@
+type Mutation{
+    setDeliveryTime(
+        roomOrderId : String!,
+        deliveryTime : Int!
+    ):RoomOrder!
+}
