@@ -53,6 +53,7 @@ type Store {
   deliveryFee : Int!
   image : String
   chatRoomList : [ChatRoom] @relation(name : "StoreChatRoomRelation")
+  storeOrderList : [StoreOrder] @relation(name : "StoreOrderRelation")
 }
 
 type Menu {
@@ -87,6 +88,22 @@ type RoomOrder {
   phoneNumber : String
   state: Int! @default(value: 1)
   deliveryTime: Int! @default(value: 0)
+}
+
+type StoreOrder {
+  id: ID! @id
+  store : Store! @relation(name : "StoreOrderRelation")
+  address : String!
+  menuList : [TotalDetailIndividual!]! @relation(name : "TotalDetailIndividual")
+  totalPrice : Int!
+}
+
+type TotalDetailIndividual {
+  id: ID! @id
+  menu : Menu!
+  quantity: Int!
+  totalPrice : Int!
+  storeOrder : StoreOrder! @relation(name : "TotalDetailIndividual")
 }
 
 type ChatContent {

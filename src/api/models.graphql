@@ -83,6 +83,22 @@ type RoomOrder {
   deliveryTime: Int!
 }
 
+type StoreOrder {
+  id: ID!
+  store : Store!
+  address : String!
+  menuList : [TotalDetaioIndividual!]!
+  totalPrice : Int!
+}
+
+type TotalDetailIndividual {
+  id: ID!
+  menu : Menu!
+  quantity: Int!
+  totalPrice : Int!
+  storeOrder : StoreOrder!
+}
+
 type IndividualOrder {
  id : ID!
  user : User!

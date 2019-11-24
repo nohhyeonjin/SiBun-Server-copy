@@ -41,6 +41,14 @@ var models = [
     embedded: false
   },
   {
+    name: "StoreOrder",
+    embedded: false
+  },
+  {
+    name: "TotalDetailIndividual",
+    embedded: false
+  },
+  {
     name: "ChatContent",
     embedded: false
   },

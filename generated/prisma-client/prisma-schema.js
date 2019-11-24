@@ -39,6 +39,14 @@ type AggregateStoreCategory {
   count: Int!
 }
 
+type AggregateStoreOrder {
+  count: Int!
+}
+
+type AggregateTotalDetailIndividual {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
@@ -1720,6 +1728,18 @@ type Mutation {
   upsertStoreCategory(where: StoreCategoryWhereUniqueInput!, create: StoreCategoryCreateInput!, update: StoreCategoryUpdateInput!): StoreCategory!
   deleteStoreCategory(where: StoreCategoryWhereUniqueInput!): StoreCategory
   deleteManyStoreCategories(where: StoreCategoryWhereInput): BatchPayload!
+  createStoreOrder(data: StoreOrderCreateInput!): StoreOrder!
+  updateStoreOrder(data: StoreOrderUpdateInput!, where: StoreOrderWhereUniqueInput!): StoreOrder
+  updateManyStoreOrders(data: StoreOrderUpdateManyMutationInput!, where: StoreOrderWhereInput): BatchPayload!
+  upsertStoreOrder(where: StoreOrderWhereUniqueInput!, create: StoreOrderCreateInput!, update: StoreOrderUpdateInput!): StoreOrder!
+  deleteStoreOrder(where: StoreOrderWhereUniqueInput!): StoreOrder
+  deleteManyStoreOrders(where: StoreOrderWhereInput): BatchPayload!
+  createTotalDetailIndividual(data: TotalDetailIndividualCreateInput!): TotalDetailIndividual!
+  updateTotalDetailIndividual(data: TotalDetailIndividualUpdateInput!, where: TotalDetailIndividualWhereUniqueInput!): TotalDetailIndividual
+  updateManyTotalDetailIndividuals(data: TotalDetailIndividualUpdateManyMutationInput!, where: TotalDetailIndividualWhereInput): BatchPayload!
+  upsertTotalDetailIndividual(where: TotalDetailIndividualWhereUniqueInput!, create: TotalDetailIndividualCreateInput!, update: TotalDetailIndividualUpdateInput!): TotalDetailIndividual!
+  deleteTotalDetailIndividual(where: TotalDetailIndividualWhereUniqueInput!): TotalDetailIndividual
+  deleteManyTotalDetailIndividuals(where: TotalDetailIndividualWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
@@ -1784,6 +1804,12 @@ type Query {
   storeCategory(where: StoreCategoryWhereUniqueInput!): StoreCategory
   storeCategories(where: StoreCategoryWhereInput, orderBy: StoreCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StoreCategory]!
   storeCategoriesConnection(where: StoreCategoryWhereInput, orderBy: StoreCategoryOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoreCategoryConnection!
+  storeOrder(where: StoreOrderWhereUniqueInput!): StoreOrder
+  storeOrders(where: StoreOrderWhereInput, orderBy: StoreOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StoreOrder]!
+  storeOrdersConnection(where: StoreOrderWhereInput, orderBy: StoreOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoreOrderConnection!
+  totalDetailIndividual(where: TotalDetailIndividualWhereUniqueInput!): TotalDetailIndividual
+  totalDetailIndividuals(where: TotalDetailIndividualWhereInput, orderBy: TotalDetailIndividualOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TotalDetailIndividual]!
+  totalDetailIndividualsConnection(where: TotalDetailIndividualWhereInput, orderBy: TotalDetailIndividualOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TotalDetailIndividualConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
@@ -2012,6 +2038,7 @@ type Store {
   deliveryFee: Int!
   image: String
   chatRoomList(where: ChatRoomWhereInput, orderBy: ChatRoomOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatRoom!]
+  storeOrderList(where: StoreOrderWhereInput, orderBy: StoreOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [StoreOrder!]
 }
 
 type StoreCategory {
@@ -2160,6 +2187,7 @@ input StoreCreateInput {
   deliveryFee: Int!
   image: String
   chatRoomList: ChatRoomCreateManyWithoutStoreInput
+  storeOrderList: StoreOrderCreateManyWithoutStoreInput
 }
 
 input StoreCreateManyWithoutStoreCategoryInput {
@@ -2177,6 +2205,11 @@ input StoreCreateOneWithoutMenuCategoryListInput {
   connect: StoreWhereUniqueInput
 }
 
+input StoreCreateOneWithoutStoreOrderListInput {
+  create: StoreCreateWithoutStoreOrderListInput
+  connect: StoreWhereUniqueInput
+}
+
 input StoreCreateWithoutChatRoomListInput {
   id: ID
   storeId: String!
@@ -2187,6 +2220,7 @@ input StoreCreateWithoutChatRoomListInput {
   minimumPrice: Int!
   deliveryFee: Int!
   image: String
+  storeOrderList: StoreOrderCreateManyWithoutStoreInput
 }
 
 input StoreCreateWithoutMenuCategoryListInput {
@@ -2199,6 +2233,7 @@ input StoreCreateWithoutMenuCategoryListInput {
   deliveryFee: Int!
   image: String
   chatRoomList: ChatRoomCreateManyWithoutStoreInput
+  storeOrderList: StoreOrderCreateManyWithoutStoreInput
 }
 
 input StoreCreateWithoutStoreCategoryInput {
@@ -2211,11 +2246,33 @@ input StoreCreateWithoutStoreCategoryInput {
   deliveryFee: Int!
   image: String
   chatRoomList: ChatRoomCreateManyWithoutStoreInput
+  storeOrderList: StoreOrderCreateManyWithoutStoreInput
+}
+
+input StoreCreateWithoutStoreOrderListInput {
+  id: ID
+  storeId: String!
+  pwd: String!
+  name: String!
+  storeCategory: StoreCategoryCreateOneWithoutStoreListInput!
+  menuCategoryList: MenuCategoryCreateManyWithoutStoreInput
+  minimumPrice: Int!
+  deliveryFee: Int!
+  image: String
+  chatRoomList: ChatRoomCreateManyWithoutStoreInput
 }
 
 type StoreEdge {
   node: Store!
   cursor: String!
+}
+
+type StoreOrder {
+  id: ID!
+  store: Store!
+  address: String!
+  menuList(where: TotalDetailIndividualWhereInput, orderBy: TotalDetailIndividualOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TotalDetailIndividual!]
+  totalPrice: Int!
 }
 
 enum StoreOrderByInput {
@@ -2233,6 +2290,243 @@ enum StoreOrderByInput {
   deliveryFee_DESC
   image_ASC
   image_DESC
+}
+
+type StoreOrderConnection {
+  pageInfo: PageInfo!
+  edges: [StoreOrderEdge]!
+  aggregate: AggregateStoreOrder!
+}
+
+input StoreOrderCreateInput {
+  id: ID
+  store: StoreCreateOneWithoutStoreOrderListInput!
+  address: String!
+  menuList: TotalDetailIndividualCreateManyWithoutStoreOrderInput
+  totalPrice: Int!
+}
+
+input StoreOrderCreateManyWithoutStoreInput {
+  create: [StoreOrderCreateWithoutStoreInput!]
+  connect: [StoreOrderWhereUniqueInput!]
+}
+
+input StoreOrderCreateOneWithoutMenuListInput {
+  create: StoreOrderCreateWithoutMenuListInput
+  connect: StoreOrderWhereUniqueInput
+}
+
+input StoreOrderCreateWithoutMenuListInput {
+  id: ID
+  store: StoreCreateOneWithoutStoreOrderListInput!
+  address: String!
+  totalPrice: Int!
+}
+
+input StoreOrderCreateWithoutStoreInput {
+  id: ID
+  address: String!
+  menuList: TotalDetailIndividualCreateManyWithoutStoreOrderInput
+  totalPrice: Int!
+}
+
+type StoreOrderEdge {
+  node: StoreOrder!
+  cursor: String!
+}
+
+enum StoreOrderOrderByInput {
+  id_ASC
+  id_DESC
+  address_ASC
+  address_DESC
+  totalPrice_ASC
+  totalPrice_DESC
+}
+
+type StoreOrderPreviousValues {
+  id: ID!
+  address: String!
+  totalPrice: Int!
+}
+
+input StoreOrderScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  address: String
+  address_not: String
+  address_in: [String!]
+  address_not_in: [String!]
+  address_lt: String
+  address_lte: String
+  address_gt: String
+  address_gte: String
+  address_contains: String
+  address_not_contains: String
+  address_starts_with: String
+  address_not_starts_with: String
+  address_ends_with: String
+  address_not_ends_with: String
+  totalPrice: Int
+  totalPrice_not: Int
+  totalPrice_in: [Int!]
+  totalPrice_not_in: [Int!]
+  totalPrice_lt: Int
+  totalPrice_lte: Int
+  totalPrice_gt: Int
+  totalPrice_gte: Int
+  AND: [StoreOrderScalarWhereInput!]
+  OR: [StoreOrderScalarWhereInput!]
+  NOT: [StoreOrderScalarWhereInput!]
+}
+
+type StoreOrderSubscriptionPayload {
+  mutation: MutationType!
+  node: StoreOrder
+  updatedFields: [String!]
+  previousValues: StoreOrderPreviousValues
+}
+
+input StoreOrderSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: StoreOrderWhereInput
+  AND: [StoreOrderSubscriptionWhereInput!]
+  OR: [StoreOrderSubscriptionWhereInput!]
+  NOT: [StoreOrderSubscriptionWhereInput!]
+}
+
+input StoreOrderUpdateInput {
+  store: StoreUpdateOneRequiredWithoutStoreOrderListInput
+  address: String
+  menuList: TotalDetailIndividualUpdateManyWithoutStoreOrderInput
+  totalPrice: Int
+}
+
+input StoreOrderUpdateManyDataInput {
+  address: String
+  totalPrice: Int
+}
+
+input StoreOrderUpdateManyMutationInput {
+  address: String
+  totalPrice: Int
+}
+
+input StoreOrderUpdateManyWithoutStoreInput {
+  create: [StoreOrderCreateWithoutStoreInput!]
+  delete: [StoreOrderWhereUniqueInput!]
+  connect: [StoreOrderWhereUniqueInput!]
+  set: [StoreOrderWhereUniqueInput!]
+  disconnect: [StoreOrderWhereUniqueInput!]
+  update: [StoreOrderUpdateWithWhereUniqueWithoutStoreInput!]
+  upsert: [StoreOrderUpsertWithWhereUniqueWithoutStoreInput!]
+  deleteMany: [StoreOrderScalarWhereInput!]
+  updateMany: [StoreOrderUpdateManyWithWhereNestedInput!]
+}
+
+input StoreOrderUpdateManyWithWhereNestedInput {
+  where: StoreOrderScalarWhereInput!
+  data: StoreOrderUpdateManyDataInput!
+}
+
+input StoreOrderUpdateOneRequiredWithoutMenuListInput {
+  create: StoreOrderCreateWithoutMenuListInput
+  update: StoreOrderUpdateWithoutMenuListDataInput
+  upsert: StoreOrderUpsertWithoutMenuListInput
+  connect: StoreOrderWhereUniqueInput
+}
+
+input StoreOrderUpdateWithoutMenuListDataInput {
+  store: StoreUpdateOneRequiredWithoutStoreOrderListInput
+  address: String
+  totalPrice: Int
+}
+
+input StoreOrderUpdateWithoutStoreDataInput {
+  address: String
+  menuList: TotalDetailIndividualUpdateManyWithoutStoreOrderInput
+  totalPrice: Int
+}
+
+input StoreOrderUpdateWithWhereUniqueWithoutStoreInput {
+  where: StoreOrderWhereUniqueInput!
+  data: StoreOrderUpdateWithoutStoreDataInput!
+}
+
+input StoreOrderUpsertWithoutMenuListInput {
+  update: StoreOrderUpdateWithoutMenuListDataInput!
+  create: StoreOrderCreateWithoutMenuListInput!
+}
+
+input StoreOrderUpsertWithWhereUniqueWithoutStoreInput {
+  where: StoreOrderWhereUniqueInput!
+  update: StoreOrderUpdateWithoutStoreDataInput!
+  create: StoreOrderCreateWithoutStoreInput!
+}
+
+input StoreOrderWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  store: StoreWhereInput
+  address: String
+  address_not: String
+  address_in: [String!]
+  address_not_in: [String!]
+  address_lt: String
+  address_lte: String
+  address_gt: String
+  address_gte: String
+  address_contains: String
+  address_not_contains: String
+  address_starts_with: String
+  address_not_starts_with: String
+  address_ends_with: String
+  address_not_ends_with: String
+  menuList_every: TotalDetailIndividualWhereInput
+  menuList_some: TotalDetailIndividualWhereInput
+  menuList_none: TotalDetailIndividualWhereInput
+  totalPrice: Int
+  totalPrice_not: Int
+  totalPrice_in: [Int!]
+  totalPrice_not_in: [Int!]
+  totalPrice_lt: Int
+  totalPrice_lte: Int
+  totalPrice_gt: Int
+  totalPrice_gte: Int
+  AND: [StoreOrderWhereInput!]
+  OR: [StoreOrderWhereInput!]
+  NOT: [StoreOrderWhereInput!]
+}
+
+input StoreOrderWhereUniqueInput {
+  id: ID
 }
 
 type StorePreviousValues {
@@ -2365,6 +2659,7 @@ input StoreUpdateInput {
   deliveryFee: Int
   image: String
   chatRoomList: ChatRoomUpdateManyWithoutStoreInput
+  storeOrderList: StoreOrderUpdateManyWithoutStoreInput
 }
 
 input StoreUpdateManyDataInput {
@@ -2416,6 +2711,13 @@ input StoreUpdateOneRequiredWithoutMenuCategoryListInput {
   connect: StoreWhereUniqueInput
 }
 
+input StoreUpdateOneRequiredWithoutStoreOrderListInput {
+  create: StoreCreateWithoutStoreOrderListInput
+  update: StoreUpdateWithoutStoreOrderListDataInput
+  upsert: StoreUpsertWithoutStoreOrderListInput
+  connect: StoreWhereUniqueInput
+}
+
 input StoreUpdateWithoutChatRoomListDataInput {
   storeId: String
   pwd: String
@@ -2425,6 +2727,7 @@ input StoreUpdateWithoutChatRoomListDataInput {
   minimumPrice: Int
   deliveryFee: Int
   image: String
+  storeOrderList: StoreOrderUpdateManyWithoutStoreInput
 }
 
 input StoreUpdateWithoutMenuCategoryListDataInput {
@@ -2436,12 +2739,26 @@ input StoreUpdateWithoutMenuCategoryListDataInput {
   deliveryFee: Int
   image: String
   chatRoomList: ChatRoomUpdateManyWithoutStoreInput
+  storeOrderList: StoreOrderUpdateManyWithoutStoreInput
 }
 
 input StoreUpdateWithoutStoreCategoryDataInput {
   storeId: String
   pwd: String
   name: String
+  menuCategoryList: MenuCategoryUpdateManyWithoutStoreInput
+  minimumPrice: Int
+  deliveryFee: Int
+  image: String
+  chatRoomList: ChatRoomUpdateManyWithoutStoreInput
+  storeOrderList: StoreOrderUpdateManyWithoutStoreInput
+}
+
+input StoreUpdateWithoutStoreOrderListDataInput {
+  storeId: String
+  pwd: String
+  name: String
+  storeCategory: StoreCategoryUpdateOneRequiredWithoutStoreListInput
   menuCategoryList: MenuCategoryUpdateManyWithoutStoreInput
   minimumPrice: Int
   deliveryFee: Int
@@ -2462,6 +2779,11 @@ input StoreUpsertWithoutChatRoomListInput {
 input StoreUpsertWithoutMenuCategoryListInput {
   update: StoreUpdateWithoutMenuCategoryListDataInput!
   create: StoreCreateWithoutMenuCategoryListInput!
+}
+
+input StoreUpsertWithoutStoreOrderListInput {
+  update: StoreUpdateWithoutStoreOrderListDataInput!
+  create: StoreCreateWithoutStoreOrderListInput!
 }
 
 input StoreUpsertWithWhereUniqueWithoutStoreCategoryInput {
@@ -2564,6 +2886,9 @@ input StoreWhereInput {
   chatRoomList_every: ChatRoomWhereInput
   chatRoomList_some: ChatRoomWhereInput
   chatRoomList_none: ChatRoomWhereInput
+  storeOrderList_every: StoreOrderWhereInput
+  storeOrderList_some: StoreOrderWhereInput
+  storeOrderList_none: StoreOrderWhereInput
   AND: [StoreWhereInput!]
   OR: [StoreWhereInput!]
   NOT: [StoreWhereInput!]
@@ -2585,9 +2910,212 @@ type Subscription {
   roomOrder(where: RoomOrderSubscriptionWhereInput): RoomOrderSubscriptionPayload
   store(where: StoreSubscriptionWhereInput): StoreSubscriptionPayload
   storeCategory(where: StoreCategorySubscriptionWhereInput): StoreCategorySubscriptionPayload
+  storeOrder(where: StoreOrderSubscriptionWhereInput): StoreOrderSubscriptionPayload
+  totalDetailIndividual(where: TotalDetailIndividualSubscriptionWhereInput): TotalDetailIndividualSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   userVote(where: UserVoteSubscriptionWhereInput): UserVoteSubscriptionPayload
   vote(where: VoteSubscriptionWhereInput): VoteSubscriptionPayload
+}
+
+type TotalDetailIndividual {
+  id: ID!
+  menu: Menu!
+  quantity: Int!
+  totalPrice: Int!
+  storeOrder: StoreOrder!
+}
+
+type TotalDetailIndividualConnection {
+  pageInfo: PageInfo!
+  edges: [TotalDetailIndividualEdge]!
+  aggregate: AggregateTotalDetailIndividual!
+}
+
+input TotalDetailIndividualCreateInput {
+  id: ID
+  menu: MenuCreateOneInput!
+  quantity: Int!
+  totalPrice: Int!
+  storeOrder: StoreOrderCreateOneWithoutMenuListInput!
+}
+
+input TotalDetailIndividualCreateManyWithoutStoreOrderInput {
+  create: [TotalDetailIndividualCreateWithoutStoreOrderInput!]
+  connect: [TotalDetailIndividualWhereUniqueInput!]
+}
+
+input TotalDetailIndividualCreateWithoutStoreOrderInput {
+  id: ID
+  menu: MenuCreateOneInput!
+  quantity: Int!
+  totalPrice: Int!
+}
+
+type TotalDetailIndividualEdge {
+  node: TotalDetailIndividual!
+  cursor: String!
+}
+
+enum TotalDetailIndividualOrderByInput {
+  id_ASC
+  id_DESC
+  quantity_ASC
+  quantity_DESC
+  totalPrice_ASC
+  totalPrice_DESC
+}
+
+type TotalDetailIndividualPreviousValues {
+  id: ID!
+  quantity: Int!
+  totalPrice: Int!
+}
+
+input TotalDetailIndividualScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  quantity: Int
+  quantity_not: Int
+  quantity_in: [Int!]
+  quantity_not_in: [Int!]
+  quantity_lt: Int
+  quantity_lte: Int
+  quantity_gt: Int
+  quantity_gte: Int
+  totalPrice: Int
+  totalPrice_not: Int
+  totalPrice_in: [Int!]
+  totalPrice_not_in: [Int!]
+  totalPrice_lt: Int
+  totalPrice_lte: Int
+  totalPrice_gt: Int
+  totalPrice_gte: Int
+  AND: [TotalDetailIndividualScalarWhereInput!]
+  OR: [TotalDetailIndividualScalarWhereInput!]
+  NOT: [TotalDetailIndividualScalarWhereInput!]
+}
+
+type TotalDetailIndividualSubscriptionPayload {
+  mutation: MutationType!
+  node: TotalDetailIndividual
+  updatedFields: [String!]
+  previousValues: TotalDetailIndividualPreviousValues
+}
+
+input TotalDetailIndividualSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TotalDetailIndividualWhereInput
+  AND: [TotalDetailIndividualSubscriptionWhereInput!]
+  OR: [TotalDetailIndividualSubscriptionWhereInput!]
+  NOT: [TotalDetailIndividualSubscriptionWhereInput!]
+}
+
+input TotalDetailIndividualUpdateInput {
+  menu: MenuUpdateOneRequiredInput
+  quantity: Int
+  totalPrice: Int
+  storeOrder: StoreOrderUpdateOneRequiredWithoutMenuListInput
+}
+
+input TotalDetailIndividualUpdateManyDataInput {
+  quantity: Int
+  totalPrice: Int
+}
+
+input TotalDetailIndividualUpdateManyMutationInput {
+  quantity: Int
+  totalPrice: Int
+}
+
+input TotalDetailIndividualUpdateManyWithoutStoreOrderInput {
+  create: [TotalDetailIndividualCreateWithoutStoreOrderInput!]
+  delete: [TotalDetailIndividualWhereUniqueInput!]
+  connect: [TotalDetailIndividualWhereUniqueInput!]
+  set: [TotalDetailIndividualWhereUniqueInput!]
+  disconnect: [TotalDetailIndividualWhereUniqueInput!]
+  update: [TotalDetailIndividualUpdateWithWhereUniqueWithoutStoreOrderInput!]
+  upsert: [TotalDetailIndividualUpsertWithWhereUniqueWithoutStoreOrderInput!]
+  deleteMany: [TotalDetailIndividualScalarWhereInput!]
+  updateMany: [TotalDetailIndividualUpdateManyWithWhereNestedInput!]
+}
+
+input TotalDetailIndividualUpdateManyWithWhereNestedInput {
+  where: TotalDetailIndividualScalarWhereInput!
+  data: TotalDetailIndividualUpdateManyDataInput!
+}
+
+input TotalDetailIndividualUpdateWithoutStoreOrderDataInput {
+  menu: MenuUpdateOneRequiredInput
+  quantity: Int
+  totalPrice: Int
+}
+
+input TotalDetailIndividualUpdateWithWhereUniqueWithoutStoreOrderInput {
+  where: TotalDetailIndividualWhereUniqueInput!
+  data: TotalDetailIndividualUpdateWithoutStoreOrderDataInput!
+}
+
+input TotalDetailIndividualUpsertWithWhereUniqueWithoutStoreOrderInput {
+  where: TotalDetailIndividualWhereUniqueInput!
+  update: TotalDetailIndividualUpdateWithoutStoreOrderDataInput!
+  create: TotalDetailIndividualCreateWithoutStoreOrderInput!
+}
+
+input TotalDetailIndividualWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  menu: MenuWhereInput
+  quantity: Int
+  quantity_not: Int
+  quantity_in: [Int!]
+  quantity_not_in: [Int!]
+  quantity_lt: Int
+  quantity_lte: Int
+  quantity_gt: Int
+  quantity_gte: Int
+  totalPrice: Int
+  totalPrice_not: Int
+  totalPrice_in: [Int!]
+  totalPrice_not_in: [Int!]
+  totalPrice_lt: Int
+  totalPrice_lte: Int
+  totalPrice_gt: Int
+  totalPrice_gte: Int
+  storeOrder: StoreOrderWhereInput
+  AND: [TotalDetailIndividualWhereInput!]
+  OR: [TotalDetailIndividualWhereInput!]
+  NOT: [TotalDetailIndividualWhereInput!]
+}
+
+input TotalDetailIndividualWhereUniqueInput {
+  id: ID
 }
 
 type User {
