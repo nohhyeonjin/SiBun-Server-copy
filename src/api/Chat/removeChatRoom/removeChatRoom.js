@@ -45,6 +45,15 @@ export default{
                 id : roomId
             }).store().name();
 
+            const storeOrder =  await prisma.StoreOrder({chatRoom : {id : roomId}});
+            if(storeOrder.length = 0){
+                console.log("삭제할 StoreOrder가 없습니다.")
+            }else{
+                await prisma.deleteStoreOrder({where:{id: storeOrder.id}}); 
+            }
+           
+
+
             const message = [{
               notification: {
                 title: `${storeName}`,
