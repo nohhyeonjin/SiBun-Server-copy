@@ -1872,7 +1872,6 @@ type RoomOrder {
   id: ID!
   chatRoom: ChatRoom!
   individualOrderList(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IndividualOrder!]
-  phoneNumber: String
   deliveryTime: Int!
 }
 
@@ -1886,7 +1885,6 @@ input RoomOrderCreateInput {
   id: ID
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput!
   individualOrderList: IndividualOrderCreateManyWithoutRoomOrderInput
-  phoneNumber: String
   deliveryTime: Int
 }
 
@@ -1903,14 +1901,12 @@ input RoomOrderCreateOneWithoutIndividualOrderListInput {
 input RoomOrderCreateWithoutChatRoomInput {
   id: ID
   individualOrderList: IndividualOrderCreateManyWithoutRoomOrderInput
-  phoneNumber: String
   deliveryTime: Int
 }
 
 input RoomOrderCreateWithoutIndividualOrderListInput {
   id: ID
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput!
-  phoneNumber: String
   deliveryTime: Int
 }
 
@@ -1922,15 +1918,12 @@ type RoomOrderEdge {
 enum RoomOrderOrderByInput {
   id_ASC
   id_DESC
-  phoneNumber_ASC
-  phoneNumber_DESC
   deliveryTime_ASC
   deliveryTime_DESC
 }
 
 type RoomOrderPreviousValues {
   id: ID!
-  phoneNumber: String
   deliveryTime: Int!
 }
 
@@ -1955,12 +1948,10 @@ input RoomOrderSubscriptionWhereInput {
 input RoomOrderUpdateInput {
   chatRoom: ChatRoomUpdateOneRequiredWithoutRoomOrderInput
   individualOrderList: IndividualOrderUpdateManyWithoutRoomOrderInput
-  phoneNumber: String
   deliveryTime: Int
 }
 
 input RoomOrderUpdateManyMutationInput {
-  phoneNumber: String
   deliveryTime: Int
 }
 
@@ -1984,13 +1975,11 @@ input RoomOrderUpdateOneWithoutIndividualOrderListInput {
 
 input RoomOrderUpdateWithoutChatRoomDataInput {
   individualOrderList: IndividualOrderUpdateManyWithoutRoomOrderInput
-  phoneNumber: String
   deliveryTime: Int
 }
 
 input RoomOrderUpdateWithoutIndividualOrderListDataInput {
   chatRoom: ChatRoomUpdateOneRequiredWithoutRoomOrderInput
-  phoneNumber: String
   deliveryTime: Int
 }
 
@@ -2023,20 +2012,6 @@ input RoomOrderWhereInput {
   individualOrderList_every: IndividualOrderWhereInput
   individualOrderList_some: IndividualOrderWhereInput
   individualOrderList_none: IndividualOrderWhereInput
-  phoneNumber: String
-  phoneNumber_not: String
-  phoneNumber_in: [String!]
-  phoneNumber_not_in: [String!]
-  phoneNumber_lt: String
-  phoneNumber_lte: String
-  phoneNumber_gt: String
-  phoneNumber_gte: String
-  phoneNumber_contains: String
-  phoneNumber_not_contains: String
-  phoneNumber_starts_with: String
-  phoneNumber_not_starts_with: String
-  phoneNumber_ends_with: String
-  phoneNumber_not_ends_with: String
   deliveryTime: Int
   deliveryTime_not: Int
   deliveryTime_in: [Int!]
@@ -2301,6 +2276,7 @@ type StoreOrder {
   menuList(where: TotalDetailIndividualWhereInput, orderBy: TotalDetailIndividualOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TotalDetailIndividual!]
   totalPrice: Int!
   chatRoom: ChatRoom
+  phoneNum: String
 }
 
 enum StoreOrderByInput {
@@ -2333,6 +2309,7 @@ input StoreOrderCreateInput {
   menuList: TotalDetailIndividualCreateManyWithoutStoreOrderInput
   totalPrice: Int!
   chatRoom: ChatRoomCreateOneInput
+  phoneNum: String
 }
 
 input StoreOrderCreateManyWithoutStoreInput {
@@ -2351,6 +2328,7 @@ input StoreOrderCreateWithoutMenuListInput {
   address: String!
   totalPrice: Int!
   chatRoom: ChatRoomCreateOneInput
+  phoneNum: String
 }
 
 input StoreOrderCreateWithoutStoreInput {
@@ -2359,6 +2337,7 @@ input StoreOrderCreateWithoutStoreInput {
   menuList: TotalDetailIndividualCreateManyWithoutStoreOrderInput
   totalPrice: Int!
   chatRoom: ChatRoomCreateOneInput
+  phoneNum: String
 }
 
 type StoreOrderEdge {
@@ -2373,12 +2352,15 @@ enum StoreOrderOrderByInput {
   address_DESC
   totalPrice_ASC
   totalPrice_DESC
+  phoneNum_ASC
+  phoneNum_DESC
 }
 
 type StoreOrderPreviousValues {
   id: ID!
   address: String!
   totalPrice: Int!
+  phoneNum: String
 }
 
 input StoreOrderScalarWhereInput {
@@ -2418,6 +2400,20 @@ input StoreOrderScalarWhereInput {
   totalPrice_lte: Int
   totalPrice_gt: Int
   totalPrice_gte: Int
+  phoneNum: String
+  phoneNum_not: String
+  phoneNum_in: [String!]
+  phoneNum_not_in: [String!]
+  phoneNum_lt: String
+  phoneNum_lte: String
+  phoneNum_gt: String
+  phoneNum_gte: String
+  phoneNum_contains: String
+  phoneNum_not_contains: String
+  phoneNum_starts_with: String
+  phoneNum_not_starts_with: String
+  phoneNum_ends_with: String
+  phoneNum_not_ends_with: String
   AND: [StoreOrderScalarWhereInput!]
   OR: [StoreOrderScalarWhereInput!]
   NOT: [StoreOrderScalarWhereInput!]
@@ -2447,16 +2443,19 @@ input StoreOrderUpdateInput {
   menuList: TotalDetailIndividualUpdateManyWithoutStoreOrderInput
   totalPrice: Int
   chatRoom: ChatRoomUpdateOneInput
+  phoneNum: String
 }
 
 input StoreOrderUpdateManyDataInput {
   address: String
   totalPrice: Int
+  phoneNum: String
 }
 
 input StoreOrderUpdateManyMutationInput {
   address: String
   totalPrice: Int
+  phoneNum: String
 }
 
 input StoreOrderUpdateManyWithoutStoreInput {
@@ -2490,6 +2489,7 @@ input StoreOrderUpdateWithoutMenuListDataInput {
   address: String
   totalPrice: Int
   chatRoom: ChatRoomUpdateOneInput
+  phoneNum: String
 }
 
 input StoreOrderUpdateWithoutStoreDataInput {
@@ -2497,6 +2497,7 @@ input StoreOrderUpdateWithoutStoreDataInput {
   menuList: TotalDetailIndividualUpdateManyWithoutStoreOrderInput
   totalPrice: Int
   chatRoom: ChatRoomUpdateOneInput
+  phoneNum: String
 }
 
 input StoreOrderUpdateWithWhereUniqueWithoutStoreInput {
@@ -2557,6 +2558,20 @@ input StoreOrderWhereInput {
   totalPrice_gt: Int
   totalPrice_gte: Int
   chatRoom: ChatRoomWhereInput
+  phoneNum: String
+  phoneNum_not: String
+  phoneNum_in: [String!]
+  phoneNum_not_in: [String!]
+  phoneNum_lt: String
+  phoneNum_lte: String
+  phoneNum_gt: String
+  phoneNum_gte: String
+  phoneNum_contains: String
+  phoneNum_not_contains: String
+  phoneNum_starts_with: String
+  phoneNum_not_starts_with: String
+  phoneNum_ends_with: String
+  phoneNum_not_ends_with: String
   AND: [StoreOrderWhereInput!]
   OR: [StoreOrderWhereInput!]
   NOT: [StoreOrderWhereInput!]

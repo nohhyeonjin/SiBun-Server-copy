@@ -85,7 +85,6 @@ type RoomOrder {
   id : ID! @id
   chatRoom : ChatRoom! @unique @relation(name : "ChatRoomOrderRelation", link: INLINE)
   individualOrderList : [IndividualOrder!] @relation(name : "RoomOrderIndividualOrderRelation")
-  phoneNumber : String
   deliveryTime: Int! @default(value: 0)
 }
 
@@ -96,6 +95,7 @@ type StoreOrder {
   menuList : [TotalDetailIndividual!]! @relation(name : "TotalDetailIndividual")
   totalPrice : Int!
   chatRoom : ChatRoom
+  phoneNum : String
 }
 
 type TotalDetailIndividual {
