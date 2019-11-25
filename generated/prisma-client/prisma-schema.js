@@ -262,7 +262,7 @@ type ChatRoom {
   orderExpectedTime: DateTime!
   roomOrder: RoomOrder
   chatContentList(where: ChatContentWhereInput, orderBy: ChatContentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ChatContent!]
-  state: Boolean!
+  state: Int!
   vote: Vote
 }
 
@@ -284,7 +284,7 @@ input ChatRoomCreateInput {
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
-  state: Boolean!
+  state: Int!
   vote: VoteCreateOneWithoutChatRoomInput
 }
 
@@ -334,7 +334,7 @@ input ChatRoomCreateWithoutBossInput {
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
-  state: Boolean!
+  state: Int!
   vote: VoteCreateOneWithoutChatRoomInput
 }
 
@@ -349,7 +349,7 @@ input ChatRoomCreateWithoutChatContentListInput {
   additionalLocation: String
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
-  state: Boolean!
+  state: Int!
   vote: VoteCreateOneWithoutChatRoomInput
 }
 
@@ -364,7 +364,7 @@ input ChatRoomCreateWithoutMemberListInput {
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
-  state: Boolean!
+  state: Int!
   vote: VoteCreateOneWithoutChatRoomInput
 }
 
@@ -379,7 +379,7 @@ input ChatRoomCreateWithoutRoomOrderInput {
   additionalLocation: String
   orderExpectedTime: DateTime!
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
-  state: Boolean!
+  state: Int!
   vote: VoteCreateOneWithoutChatRoomInput
 }
 
@@ -394,7 +394,7 @@ input ChatRoomCreateWithoutStoreInput {
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
-  state: Boolean!
+  state: Int!
   vote: VoteCreateOneWithoutChatRoomInput
 }
 
@@ -410,7 +410,7 @@ input ChatRoomCreateWithoutVoteInput {
   orderExpectedTime: DateTime!
   roomOrder: RoomOrderCreateOneWithoutChatRoomInput
   chatContentList: ChatContentCreateManyWithoutChatRoomInput
-  state: Boolean!
+  state: Int!
 }
 
 type ChatRoomEdge {
@@ -442,7 +442,7 @@ type ChatRoomPreviousValues {
   longitude: Float
   additionalLocation: String
   orderExpectedTime: DateTime!
-  state: Boolean!
+  state: Int!
 }
 
 input ChatRoomScalarWhereInput {
@@ -512,8 +512,14 @@ input ChatRoomScalarWhereInput {
   orderExpectedTime_lte: DateTime
   orderExpectedTime_gt: DateTime
   orderExpectedTime_gte: DateTime
-  state: Boolean
-  state_not: Boolean
+  state: Int
+  state_not: Int
+  state_in: [Int!]
+  state_not_in: [Int!]
+  state_lt: Int
+  state_lte: Int
+  state_gt: Int
+  state_gte: Int
   AND: [ChatRoomScalarWhereInput!]
   OR: [ChatRoomScalarWhereInput!]
   NOT: [ChatRoomScalarWhereInput!]
@@ -548,7 +554,7 @@ input ChatRoomUpdateDataInput {
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
-  state: Boolean
+  state: Int
   vote: VoteUpdateOneWithoutChatRoomInput
 }
 
@@ -563,7 +569,7 @@ input ChatRoomUpdateInput {
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
-  state: Boolean
+  state: Int
   vote: VoteUpdateOneWithoutChatRoomInput
 }
 
@@ -573,7 +579,7 @@ input ChatRoomUpdateManyDataInput {
   longitude: Float
   additionalLocation: String
   orderExpectedTime: DateTime
-  state: Boolean
+  state: Int
 }
 
 input ChatRoomUpdateManyMutationInput {
@@ -582,7 +588,7 @@ input ChatRoomUpdateManyMutationInput {
   longitude: Float
   additionalLocation: String
   orderExpectedTime: DateTime
-  state: Boolean
+  state: Int
 }
 
 input ChatRoomUpdateManyWithoutBossInput {
@@ -666,7 +672,7 @@ input ChatRoomUpdateWithoutBossDataInput {
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
-  state: Boolean
+  state: Int
   vote: VoteUpdateOneWithoutChatRoomInput
 }
 
@@ -680,7 +686,7 @@ input ChatRoomUpdateWithoutChatContentListDataInput {
   additionalLocation: String
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
-  state: Boolean
+  state: Int
   vote: VoteUpdateOneWithoutChatRoomInput
 }
 
@@ -694,7 +700,7 @@ input ChatRoomUpdateWithoutMemberListDataInput {
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
-  state: Boolean
+  state: Int
   vote: VoteUpdateOneWithoutChatRoomInput
 }
 
@@ -708,7 +714,7 @@ input ChatRoomUpdateWithoutRoomOrderDataInput {
   additionalLocation: String
   orderExpectedTime: DateTime
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
-  state: Boolean
+  state: Int
   vote: VoteUpdateOneWithoutChatRoomInput
 }
 
@@ -722,7 +728,7 @@ input ChatRoomUpdateWithoutStoreDataInput {
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
-  state: Boolean
+  state: Int
   vote: VoteUpdateOneWithoutChatRoomInput
 }
 
@@ -737,7 +743,7 @@ input ChatRoomUpdateWithoutVoteDataInput {
   orderExpectedTime: DateTime
   roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
   chatContentList: ChatContentUpdateManyWithoutChatRoomInput
-  state: Boolean
+  state: Int
 }
 
 input ChatRoomUpdateWithWhereUniqueWithoutBossInput {
@@ -869,8 +875,14 @@ input ChatRoomWhereInput {
   chatContentList_every: ChatContentWhereInput
   chatContentList_some: ChatContentWhereInput
   chatContentList_none: ChatContentWhereInput
-  state: Boolean
-  state_not: Boolean
+  state: Int
+  state_not: Int
+  state_in: [Int!]
+  state_not_in: [Int!]
+  state_lt: Int
+  state_lte: Int
+  state_gt: Int
+  state_gte: Int
   vote: VoteWhereInput
   AND: [ChatRoomWhereInput!]
   OR: [ChatRoomWhereInput!]
@@ -1861,7 +1873,6 @@ type RoomOrder {
   chatRoom: ChatRoom!
   individualOrderList(where: IndividualOrderWhereInput, orderBy: IndividualOrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [IndividualOrder!]
   phoneNumber: String
-  state: Int!
   deliveryTime: Int!
 }
 
@@ -1876,7 +1887,6 @@ input RoomOrderCreateInput {
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput!
   individualOrderList: IndividualOrderCreateManyWithoutRoomOrderInput
   phoneNumber: String
-  state: Int
   deliveryTime: Int
 }
 
@@ -1894,7 +1904,6 @@ input RoomOrderCreateWithoutChatRoomInput {
   id: ID
   individualOrderList: IndividualOrderCreateManyWithoutRoomOrderInput
   phoneNumber: String
-  state: Int
   deliveryTime: Int
 }
 
@@ -1902,7 +1911,6 @@ input RoomOrderCreateWithoutIndividualOrderListInput {
   id: ID
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput!
   phoneNumber: String
-  state: Int
   deliveryTime: Int
 }
 
@@ -1916,8 +1924,6 @@ enum RoomOrderOrderByInput {
   id_DESC
   phoneNumber_ASC
   phoneNumber_DESC
-  state_ASC
-  state_DESC
   deliveryTime_ASC
   deliveryTime_DESC
 }
@@ -1925,7 +1931,6 @@ enum RoomOrderOrderByInput {
 type RoomOrderPreviousValues {
   id: ID!
   phoneNumber: String
-  state: Int!
   deliveryTime: Int!
 }
 
@@ -1951,13 +1956,11 @@ input RoomOrderUpdateInput {
   chatRoom: ChatRoomUpdateOneRequiredWithoutRoomOrderInput
   individualOrderList: IndividualOrderUpdateManyWithoutRoomOrderInput
   phoneNumber: String
-  state: Int
   deliveryTime: Int
 }
 
 input RoomOrderUpdateManyMutationInput {
   phoneNumber: String
-  state: Int
   deliveryTime: Int
 }
 
@@ -1982,14 +1985,12 @@ input RoomOrderUpdateOneWithoutIndividualOrderListInput {
 input RoomOrderUpdateWithoutChatRoomDataInput {
   individualOrderList: IndividualOrderUpdateManyWithoutRoomOrderInput
   phoneNumber: String
-  state: Int
   deliveryTime: Int
 }
 
 input RoomOrderUpdateWithoutIndividualOrderListDataInput {
   chatRoom: ChatRoomUpdateOneRequiredWithoutRoomOrderInput
   phoneNumber: String
-  state: Int
   deliveryTime: Int
 }
 
@@ -2036,14 +2037,6 @@ input RoomOrderWhereInput {
   phoneNumber_not_starts_with: String
   phoneNumber_ends_with: String
   phoneNumber_not_ends_with: String
-  state: Int
-  state_not: Int
-  state_in: [Int!]
-  state_not_in: [Int!]
-  state_lt: Int
-  state_lte: Int
-  state_gt: Int
-  state_gte: Int
   deliveryTime: Int
   deliveryTime_not: Int
   deliveryTime_in: [Int!]

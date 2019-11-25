@@ -685,8 +685,6 @@ export type RoomOrderOrderByInput =
   | "id_DESC"
   | "phoneNumber_ASC"
   | "phoneNumber_DESC"
-  | "state_ASC"
-  | "state_DESC"
   | "deliveryTime_ASC"
   | "deliveryTime_DESC";
 
@@ -867,11 +865,11 @@ export interface ChatRoomUpdateWithoutMemberListDataInput {
   orderExpectedTime?: Maybe<DateTimeInput>;
   roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   vote?: Maybe<VoteUpdateOneWithoutChatRoomInput>;
 }
 
-export interface VoteWhereInput {
+export interface UserVoteWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -886,13 +884,13 @@ export interface VoteWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  chatRoom?: Maybe<ChatRoomWhereInput>;
-  voteList_every?: Maybe<UserVoteWhereInput>;
-  voteList_some?: Maybe<UserVoteWhereInput>;
-  voteList_none?: Maybe<UserVoteWhereInput>;
-  AND?: Maybe<VoteWhereInput[] | VoteWhereInput>;
-  OR?: Maybe<VoteWhereInput[] | VoteWhereInput>;
-  NOT?: Maybe<VoteWhereInput[] | VoteWhereInput>;
+  user?: Maybe<UserWhereInput>;
+  choice?: Maybe<Boolean>;
+  choice_not?: Maybe<Boolean>;
+  vote?: Maybe<VoteWhereInput>;
+  AND?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
+  OR?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
+  NOT?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
 }
 
 export interface RoomOrderUpdateOneWithoutChatRoomInput {
@@ -937,14 +935,6 @@ export interface RoomOrderWhereInput {
   phoneNumber_not_starts_with?: Maybe<String>;
   phoneNumber_ends_with?: Maybe<String>;
   phoneNumber_not_ends_with?: Maybe<String>;
-  state?: Maybe<Int>;
-  state_not?: Maybe<Int>;
-  state_in?: Maybe<Int[] | Int>;
-  state_not_in?: Maybe<Int[] | Int>;
-  state_lt?: Maybe<Int>;
-  state_lte?: Maybe<Int>;
-  state_gt?: Maybe<Int>;
-  state_gte?: Maybe<Int>;
   deliveryTime?: Maybe<Int>;
   deliveryTime_not?: Maybe<Int>;
   deliveryTime_in?: Maybe<Int[] | Int>;
@@ -967,7 +957,6 @@ export interface RoomOrderUpdateInput {
   chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutRoomOrderInput>;
   individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutRoomOrderInput>;
   phoneNumber?: Maybe<String>;
-  state?: Maybe<Int>;
   deliveryTime?: Maybe<Int>;
 }
 
@@ -980,7 +969,6 @@ export interface UserUpdateWithoutChatListDataInput {
 export interface RoomOrderUpdateWithoutChatRoomDataInput {
   individualOrderList?: Maybe<IndividualOrderUpdateManyWithoutRoomOrderInput>;
   phoneNumber?: Maybe<String>;
-  state?: Maybe<Int>;
   deliveryTime?: Maybe<Int>;
 }
 
@@ -1854,7 +1842,7 @@ export interface ChatRoomUpdateWithoutStoreDataInput {
   orderExpectedTime?: Maybe<DateTimeInput>;
   roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   vote?: Maybe<VoteUpdateOneWithoutChatRoomInput>;
 }
 
@@ -1966,28 +1954,7 @@ export interface UserCreateInput {
   chatList?: Maybe<ChatRoomCreateManyWithoutMemberListInput>;
 }
 
-export interface StoreCategoryCreateInput {
-  id?: Maybe<ID_Input>;
-  name: String;
-  storeList?: Maybe<StoreCreateManyWithoutStoreCategoryInput>;
-}
-
-export interface ChatRoomCreateWithoutBossInput {
-  id?: Maybe<ID_Input>;
-  memberList?: Maybe<UserCreateManyWithoutChatListInput>;
-  store: StoreCreateOneWithoutChatRoomListInput;
-  location: String;
-  latitude?: Maybe<Float>;
-  longitude?: Maybe<Float>;
-  additionalLocation?: Maybe<String>;
-  orderExpectedTime: DateTimeInput;
-  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
-  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
-  vote?: Maybe<VoteCreateOneWithoutChatRoomInput>;
-}
-
-export interface UserVoteWhereInput {
+export interface VoteWhereInput {
   id?: Maybe<ID_Input>;
   id_not?: Maybe<ID_Input>;
   id_in?: Maybe<ID_Input[] | ID_Input>;
@@ -2002,13 +1969,34 @@ export interface UserVoteWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  user?: Maybe<UserWhereInput>;
-  choice?: Maybe<Boolean>;
-  choice_not?: Maybe<Boolean>;
-  vote?: Maybe<VoteWhereInput>;
-  AND?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
-  OR?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
-  NOT?: Maybe<UserVoteWhereInput[] | UserVoteWhereInput>;
+  chatRoom?: Maybe<ChatRoomWhereInput>;
+  voteList_every?: Maybe<UserVoteWhereInput>;
+  voteList_some?: Maybe<UserVoteWhereInput>;
+  voteList_none?: Maybe<UserVoteWhereInput>;
+  AND?: Maybe<VoteWhereInput[] | VoteWhereInput>;
+  OR?: Maybe<VoteWhereInput[] | VoteWhereInput>;
+  NOT?: Maybe<VoteWhereInput[] | VoteWhereInput>;
+}
+
+export interface ChatRoomCreateWithoutBossInput {
+  id?: Maybe<ID_Input>;
+  memberList?: Maybe<UserCreateManyWithoutChatListInput>;
+  store: StoreCreateOneWithoutChatRoomListInput;
+  location: String;
+  latitude?: Maybe<Float>;
+  longitude?: Maybe<Float>;
+  additionalLocation?: Maybe<String>;
+  orderExpectedTime: DateTimeInput;
+  roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
+  chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
+  state: Int;
+  vote?: Maybe<VoteCreateOneWithoutChatRoomInput>;
+}
+
+export interface StoreCategoryCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  storeList?: Maybe<StoreCreateManyWithoutStoreCategoryInput>;
 }
 
 export interface UserCreateWithoutChatListInput {
@@ -2263,7 +2251,7 @@ export interface ChatRoomCreateWithoutStoreInput {
   orderExpectedTime: DateTimeInput;
   roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
+  state: Int;
   vote?: Maybe<VoteCreateOneWithoutChatRoomInput>;
 }
 
@@ -2295,7 +2283,7 @@ export interface ChatRoomCreateWithoutMemberListInput {
   orderExpectedTime: DateTimeInput;
   roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
+  state: Int;
   vote?: Maybe<VoteCreateOneWithoutChatRoomInput>;
 }
 
@@ -2309,7 +2297,6 @@ export interface RoomOrderCreateWithoutChatRoomInput {
   id?: Maybe<ID_Input>;
   individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
   phoneNumber?: Maybe<String>;
-  state?: Maybe<Int>;
   deliveryTime?: Maybe<Int>;
 }
 
@@ -2430,7 +2417,7 @@ export interface ChatRoomCreateInput {
   orderExpectedTime: DateTimeInput;
   roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
+  state: Int;
   vote?: Maybe<VoteCreateOneWithoutChatRoomInput>;
 }
 
@@ -2479,7 +2466,7 @@ export interface ChatRoomCreateWithoutChatContentListInput {
   additionalLocation?: Maybe<String>;
   orderExpectedTime: DateTimeInput;
   roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
-  state: Boolean;
+  state: Int;
   vote?: Maybe<VoteCreateOneWithoutChatRoomInput>;
 }
 
@@ -2541,7 +2528,7 @@ export interface ChatRoomUpdateWithoutBossDataInput {
   orderExpectedTime?: Maybe<DateTimeInput>;
   roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   vote?: Maybe<VoteUpdateOneWithoutChatRoomInput>;
 }
 
@@ -2784,7 +2771,7 @@ export interface ChatRoomUpdateWithoutVoteDataInput {
   orderExpectedTime?: Maybe<DateTimeInput>;
   roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
 }
 
 export interface VoteUpsertWithoutChatRoomInput {
@@ -2877,8 +2864,14 @@ export interface ChatRoomScalarWhereInput {
   orderExpectedTime_lte?: Maybe<DateTimeInput>;
   orderExpectedTime_gt?: Maybe<DateTimeInput>;
   orderExpectedTime_gte?: Maybe<DateTimeInput>;
-  state?: Maybe<Boolean>;
-  state_not?: Maybe<Boolean>;
+  state?: Maybe<Int>;
+  state_not?: Maybe<Int>;
+  state_in?: Maybe<Int[] | Int>;
+  state_not_in?: Maybe<Int[] | Int>;
+  state_lt?: Maybe<Int>;
+  state_lte?: Maybe<Int>;
+  state_gt?: Maybe<Int>;
+  state_gte?: Maybe<Int>;
   AND?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
   OR?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
   NOT?: Maybe<ChatRoomScalarWhereInput[] | ChatRoomScalarWhereInput>;
@@ -2972,8 +2965,14 @@ export interface ChatRoomWhereInput {
   chatContentList_every?: Maybe<ChatContentWhereInput>;
   chatContentList_some?: Maybe<ChatContentWhereInput>;
   chatContentList_none?: Maybe<ChatContentWhereInput>;
-  state?: Maybe<Boolean>;
-  state_not?: Maybe<Boolean>;
+  state?: Maybe<Int>;
+  state_not?: Maybe<Int>;
+  state_in?: Maybe<Int[] | Int>;
+  state_not_in?: Maybe<Int[] | Int>;
+  state_lt?: Maybe<Int>;
+  state_lte?: Maybe<Int>;
+  state_gt?: Maybe<Int>;
+  state_gte?: Maybe<Int>;
   vote?: Maybe<VoteWhereInput>;
   AND?: Maybe<ChatRoomWhereInput[] | ChatRoomWhereInput>;
   OR?: Maybe<ChatRoomWhereInput[] | ChatRoomWhereInput>;
@@ -2986,7 +2985,7 @@ export interface ChatRoomUpdateManyDataInput {
   longitude?: Maybe<Float>;
   additionalLocation?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
 }
 
 export type StoreWhereUniqueInput = AtLeastOne<{
@@ -3167,7 +3166,7 @@ export interface ChatRoomUpdateDataInput {
   orderExpectedTime?: Maybe<DateTimeInput>;
   roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   vote?: Maybe<VoteUpdateOneWithoutChatRoomInput>;
 }
 
@@ -3342,7 +3341,7 @@ export interface ChatRoomUpdateWithoutChatContentListDataInput {
   additionalLocation?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
   roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   vote?: Maybe<VoteUpdateOneWithoutChatRoomInput>;
 }
 
@@ -3453,7 +3452,6 @@ export interface VoteCreateInput {
 
 export interface RoomOrderUpdateManyMutationInput {
   phoneNumber?: Maybe<String>;
-  state?: Maybe<Int>;
   deliveryTime?: Maybe<Int>;
 }
 
@@ -3472,7 +3470,7 @@ export interface ChatRoomUpdateInput {
   orderExpectedTime?: Maybe<DateTimeInput>;
   roomOrder?: Maybe<RoomOrderUpdateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   vote?: Maybe<VoteUpdateOneWithoutChatRoomInput>;
 }
 
@@ -3487,7 +3485,7 @@ export interface ChatRoomUpdateManyMutationInput {
   longitude?: Maybe<Float>;
   additionalLocation?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
 }
 
 export interface StoreOrderUpsertWithoutMenuListInput {
@@ -3641,7 +3639,6 @@ export interface RoomOrderCreateWithoutIndividualOrderListInput {
   id?: Maybe<ID_Input>;
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
   phoneNumber?: Maybe<String>;
-  state?: Maybe<Int>;
   deliveryTime?: Maybe<Int>;
 }
 
@@ -3673,7 +3670,7 @@ export interface ChatRoomCreateWithoutRoomOrderInput {
   additionalLocation?: Maybe<String>;
   orderExpectedTime: DateTimeInput;
   chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
+  state: Int;
   vote?: Maybe<VoteCreateOneWithoutChatRoomInput>;
 }
 
@@ -3790,7 +3787,6 @@ export interface DetailIndividualOrderSubscriptionWhereInput {
 export interface RoomOrderUpdateWithoutIndividualOrderListDataInput {
   chatRoom?: Maybe<ChatRoomUpdateOneRequiredWithoutRoomOrderInput>;
   phoneNumber?: Maybe<String>;
-  state?: Maybe<Int>;
   deliveryTime?: Maybe<Int>;
 }
 
@@ -3806,7 +3802,7 @@ export interface ChatRoomCreateWithoutVoteInput {
   orderExpectedTime: DateTimeInput;
   roomOrder?: Maybe<RoomOrderCreateOneWithoutChatRoomInput>;
   chatContentList?: Maybe<ChatContentCreateManyWithoutChatRoomInput>;
-  state: Boolean;
+  state: Int;
 }
 
 export interface ChatRoomUpdateOneRequiredWithoutRoomOrderInput {
@@ -3833,7 +3829,7 @@ export interface ChatRoomUpdateWithoutRoomOrderDataInput {
   additionalLocation?: Maybe<String>;
   orderExpectedTime?: Maybe<DateTimeInput>;
   chatContentList?: Maybe<ChatContentUpdateManyWithoutChatRoomInput>;
-  state?: Maybe<Boolean>;
+  state?: Maybe<Int>;
   vote?: Maybe<VoteUpdateOneWithoutChatRoomInput>;
 }
 
@@ -3949,7 +3945,6 @@ export interface RoomOrderCreateInput {
   chatRoom: ChatRoomCreateOneWithoutRoomOrderInput;
   individualOrderList?: Maybe<IndividualOrderCreateManyWithoutRoomOrderInput>;
   phoneNumber?: Maybe<String>;
-  state?: Maybe<Int>;
   deliveryTime?: Maybe<Int>;
 }
 
@@ -4126,7 +4121,7 @@ export interface ChatRoom {
   longitude?: Float;
   additionalLocation?: String;
   orderExpectedTime: DateTimeOutput;
-  state: Boolean;
+  state: Int;
 }
 
 export interface ChatRoomPromise extends Promise<ChatRoom>, Fragmentable {
@@ -4157,7 +4152,7 @@ export interface ChatRoomPromise extends Promise<ChatRoom>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
-  state: () => Promise<Boolean>;
+  state: () => Promise<Int>;
   vote: <T = VotePromise>() => T;
 }
 
@@ -4193,7 +4188,7 @@ export interface ChatRoomSubscription
     first?: Int;
     last?: Int;
   }) => T;
-  state: () => Promise<AsyncIterator<Boolean>>;
+  state: () => Promise<AsyncIterator<Int>>;
   vote: <T = VoteSubscription>() => T;
 }
 
@@ -4227,7 +4222,7 @@ export interface ChatRoomNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
-  state: () => Promise<Boolean>;
+  state: () => Promise<Int>;
   vote: <T = VotePromise>() => T;
 }
 
@@ -4696,7 +4691,7 @@ export interface ChatRoomPreviousValues {
   longitude?: Float;
   additionalLocation?: String;
   orderExpectedTime: DateTimeOutput;
-  state: Boolean;
+  state: Int;
 }
 
 export interface ChatRoomPreviousValuesPromise
@@ -4708,7 +4703,7 @@ export interface ChatRoomPreviousValuesPromise
   longitude: () => Promise<Float>;
   additionalLocation: () => Promise<String>;
   orderExpectedTime: () => Promise<DateTimeOutput>;
-  state: () => Promise<Boolean>;
+  state: () => Promise<Int>;
 }
 
 export interface ChatRoomPreviousValuesSubscription
@@ -4720,7 +4715,7 @@ export interface ChatRoomPreviousValuesSubscription
   longitude: () => Promise<AsyncIterator<Float>>;
   additionalLocation: () => Promise<AsyncIterator<String>>;
   orderExpectedTime: () => Promise<AsyncIterator<DateTimeOutput>>;
-  state: () => Promise<AsyncIterator<Boolean>>;
+  state: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface StoreCategoryEdge {
@@ -5513,7 +5508,6 @@ export interface TotalDetailIndividualConnectionSubscription
 export interface RoomOrderPreviousValues {
   id: ID_Output;
   phoneNumber?: String;
-  state: Int;
   deliveryTime: Int;
 }
 
@@ -5522,7 +5516,6 @@ export interface RoomOrderPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   phoneNumber: () => Promise<String>;
-  state: () => Promise<Int>;
   deliveryTime: () => Promise<Int>;
 }
 
@@ -5531,7 +5524,6 @@ export interface RoomOrderPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   phoneNumber: () => Promise<AsyncIterator<String>>;
-  state: () => Promise<AsyncIterator<Int>>;
   deliveryTime: () => Promise<AsyncIterator<Int>>;
 }
 
@@ -5554,7 +5546,6 @@ export interface AggregateStoreCategorySubscription
 export interface RoomOrder {
   id: ID_Output;
   phoneNumber?: String;
-  state: Int;
   deliveryTime: Int;
 }
 
@@ -5571,7 +5562,6 @@ export interface RoomOrderPromise extends Promise<RoomOrder>, Fragmentable {
     last?: Int;
   }) => T;
   phoneNumber: () => Promise<String>;
-  state: () => Promise<Int>;
   deliveryTime: () => Promise<Int>;
 }
 
@@ -5592,7 +5582,6 @@ export interface RoomOrderSubscription
     last?: Int;
   }) => T;
   phoneNumber: () => Promise<AsyncIterator<String>>;
-  state: () => Promise<AsyncIterator<Int>>;
   deliveryTime: () => Promise<AsyncIterator<Int>>;
 }
 
@@ -5611,7 +5600,6 @@ export interface RoomOrderNullablePromise
     last?: Int;
   }) => T;
   phoneNumber: () => Promise<String>;
-  state: () => Promise<Int>;
   deliveryTime: () => Promise<Int>;
 }
 
