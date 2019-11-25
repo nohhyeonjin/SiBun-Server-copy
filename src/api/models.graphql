@@ -78,7 +78,7 @@ type RoomOrder {
   id : ID!
   chatRoom : ChatRoom!
   individualOrderList : [IndividualOrder!]!
-  phoneNumber : String!
+  phoneNumber : String
   state: Int!
   deliveryTime: Int!
 }
