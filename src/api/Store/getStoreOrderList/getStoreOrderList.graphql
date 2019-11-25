@@ -1,0 +1,5 @@
+type Query {
+  getStoreOrderList(
+    storeId: String!
+  ): [StoreOrder!]
+}
