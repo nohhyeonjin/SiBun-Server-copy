@@ -1,6 +1,0 @@
-type Mutation{
-    updateRoomOrderState(
-        roomOrderId : String!,
-        state : Int!
-    ):RoomOrder!
-}
