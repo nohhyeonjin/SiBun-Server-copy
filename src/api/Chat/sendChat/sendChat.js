@@ -22,6 +22,10 @@ export default{
       const storeName = await prisma.chatRoom({ id: roomId }).store().name();
 
       const message = [{
+        data: {
+          type: "chat",
+          roomId
+        },
         notification: {
           title: `${storeName}`,
           body: `${content}`
