@@ -6,9 +6,11 @@ export default{
     Mutation:{
         updateIndividualOrder:async(_,args,{request})=>{
             isAuthenticated(request);
-            const { roomId, orderId, menuList } = args;
+            const { roomId, menuList } = args;
             const { user } = request;
            
+            const order = await prisma.chatRoom({ id: roomId }).roomOrder()
+            .individualOrderList({ where: { user: { id: user.id } } });
             /*const existMenuList = await prisma.individualOrders({where : { id : orderId}}).menuList();
             
             console.log(existMenuList);
@@ -20,15 +22,25 @@ export default{
                 where:  {id : orderId}
             });
             */
+            var totalDetailIndividualOrder = new Array();
+            for(var i=0;i<menuList.length;i++){
+                const DetailIndividualOrder = await prisma.createDetailIndividualOrder({
+                    menu: { connect : {id : menuList[i].id} },
+                    quantity : menuList[i].quantity
+                });
+                totalDetailIndividualOrder[i]=DetailIndividualOrder;
+            }
+            var totalDetailIndividualOrderId = new Array();
+            for(var i=0;i<totalDetailIndividualOrder.length;i++){
+                totalDetailIndividualOrderId[i]={ id : totalDetailIndividualOrder[i].id};
+            }
             const roomOrder = await prisma.roomOrders({where : {chatRoom:{id:roomId}}});
-            console.log(roomOrder[0]);
-            console.log(menuList);
             const individualOrder = await prisma.createIndividualOrder({
                 user : {connect : {id: user.id}},
-                menuList : {connect : menuList},
+                menuList : {connect : totalDetailIndividualOrderId},
                 roomOrder : { connect : {id : roomOrder[0].id}}
             });
-            await prisma.deleteIndividualOrder({id : orderId});
+            await prisma.deleteIndividualOrder({id : order[0].id});
 
             return individualOrder;
         }
