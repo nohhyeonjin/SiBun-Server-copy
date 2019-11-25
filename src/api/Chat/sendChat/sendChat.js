@@ -7,27 +7,29 @@ const admin = require('firebase-admin');
 // const pubSub = new PubSub();
 
 export default{
-  Mutation:{
-    sendChat:async(_,args ,{ request }) =>{
+  Mutation: {
+    sendChat: async (_, args, { request }) => {
       isAuthenticated(request);
       const { roomId , content } = args;
       const { user } = request;
 
-      const chatContent = await prisma.createChatContent({
-        user: {connect : { id : user.id}},
-        chatRoom: {connect : { id : roomId}},
+      await prisma.createChatContent({
+        user: { connect: { id: user.id } },
+        chatRoom: { connect: { id: roomId } },
         content: content
       });
 
       const storeName = await prisma.chatRoom({ id: roomId }).store().name();
+      const bossId = await prisma.chatRoom({ id: roomId }).boss().id();
 
       const message = [{
         data: {
-          type: "chat",
-          roomId
+          roomId,
+          storeName,
+          bossId
         },
         notification: {
-          title: `${storeName}`,
+          title: `${storeName} - 새로운 채팅`,
           body: `${content}`
         },
         topic: roomId
