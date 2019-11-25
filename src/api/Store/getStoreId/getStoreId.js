@@ -5,7 +5,7 @@ export default{
         getStoreId:async(_,args,{request})=>{
             const { id } = args;
             
-            const store = await prisma.store({where: {storeId : id}});
+            const store = await prisma.store({storeId : id});
             
             return store;
         }
