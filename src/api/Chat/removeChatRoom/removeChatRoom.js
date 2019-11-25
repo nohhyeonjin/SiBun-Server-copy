@@ -1,5 +1,7 @@
 import { prisma } from "../../../../generated/prisma-client";
 
+const admin = require('firebase-admin');
+
 export default{
     Mutation:{
         removeChatRoom:async(_,args,{request})=>{
@@ -39,9 +41,26 @@ export default{
                 id: roomOrder[0].id
             });
 
-            const chatRoom = await prisma.deleteChatRoom({
+            const storeName = await prisma.deleteChatRoom({
                 id : roomId
+            }).store().name();
+
+            const message = [{
+              notification: {
+                title: `${storeName}`,
+                body: `방이 삭제되었습니다`
+              },
+              topic: roomId
+            }];
+      
+            admin.messaging().sendAll(message)
+            .then((response) => {
+              console.log('Successfully sent message:', response);
+            })
+            .catch((error) => {
+              console.log('Error sending message:', error);
             });
+
             return findChatRoom;
         }
     }
