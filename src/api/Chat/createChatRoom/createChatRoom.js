@@ -4,11 +4,11 @@ import Axios from "axios";
 
 export default{
     Mutation:{
-        createChatRoom:async(_,args,{request})=>{
+        createChatRoom: async (_, args, { request }) => {
             isAuthenticated(request);
             const { storeName, location, additionalLocation, time } = args;
             const { user } = request;
-            const store = await prisma.store({name:storeName});
+            const store = await prisma.store({ name:storeName });
 
             var latitude = "latitude test";
             var longitude = "longitude test";
@@ -16,7 +16,7 @@ export default{
             //const address = '22 Main st Boston MA';
             await Axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
                 params:{
-                    address : location,
+                    address: location,
                     key: process.env.GEOCODING_API_KEY
                 }
             })
@@ -37,13 +37,9 @@ export default{
                 latitude : latitude,
                 longitude : longitude,               
                 orderExpectedTime : time,   //time���� ex) "2019-10-27T16:34:10"
-                state : false
+                state : 1
             });
-
-            const RoomOrder = await prisma.createRoomOrder({
-                chatRoom: {connect : {id : chatRoom.id}},
-                state: 1
-            });
+            await prisma.createRoomOrder({ chatRoom: { connect : { id : chatRoom.id }} });
 
             return chatRoom;
         }
