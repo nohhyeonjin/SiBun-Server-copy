@@ -13,5 +13,9 @@ export default {
   DetailIndividualOrder: {
     menu: ({ id }) => prisma.detailIndividualOrder({ id }).menu(),
     IndividualOrder: ({ id }) => prisma.detailIndividualOrder({ id }).IndividualOrder()
+  },
+  TotalDetailIndividual: {
+    menu: ({ id }) => prisma.totalDetailIndividual({ id }).menu(),
+    storeOrder: ({ id }) => prisma.totalDetailIndividual({ id }).storeOrder()
   }
 }
