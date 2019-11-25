@@ -19,9 +19,11 @@ export default{
         content: content
       });
 
+      const storeName = await prisma.chatRoom({ id: roomId }).store().name();
+
       const message = [{
         notification: {
-          title: '새로운 채팅 알림',
+          title: `${storeName}`,
           body: `${content}`
         },
         topic: roomId
