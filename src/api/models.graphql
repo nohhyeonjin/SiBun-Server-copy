@@ -89,6 +89,7 @@ type StoreOrder {
   address : String!
   menuList : [TotalDetailIndividual!]!
   totalPrice : Int!
+  chatRoom : ChatRoom
 }
 
 type TotalDetailIndividual {

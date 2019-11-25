@@ -303,6 +303,11 @@ input ChatRoomCreateManyWithoutStoreInput {
   connect: [ChatRoomWhereUniqueInput!]
 }
 
+input ChatRoomCreateOneInput {
+  create: ChatRoomCreateInput
+  connect: ChatRoomWhereUniqueInput
+}
+
 input ChatRoomCreateOneWithoutChatContentListInput {
   create: ChatRoomCreateWithoutChatContentListInput
   connect: ChatRoomWhereUniqueInput
@@ -532,6 +537,21 @@ input ChatRoomSubscriptionWhereInput {
   NOT: [ChatRoomSubscriptionWhereInput!]
 }
 
+input ChatRoomUpdateDataInput {
+  boss: UserUpdateOneRequiredWithoutBossChatListInput
+  memberList: UserUpdateManyWithoutChatListInput
+  store: StoreUpdateOneRequiredWithoutChatRoomListInput
+  location: String
+  latitude: Float
+  longitude: Float
+  additionalLocation: String
+  orderExpectedTime: DateTime
+  roomOrder: RoomOrderUpdateOneWithoutChatRoomInput
+  chatContentList: ChatContentUpdateManyWithoutChatRoomInput
+  state: Boolean
+  vote: VoteUpdateOneWithoutChatRoomInput
+}
+
 input ChatRoomUpdateInput {
   boss: UserUpdateOneRequiredWithoutBossChatListInput
   memberList: UserUpdateManyWithoutChatListInput
@@ -604,6 +624,15 @@ input ChatRoomUpdateManyWithoutStoreInput {
 input ChatRoomUpdateManyWithWhereNestedInput {
   where: ChatRoomScalarWhereInput!
   data: ChatRoomUpdateManyDataInput!
+}
+
+input ChatRoomUpdateOneInput {
+  create: ChatRoomCreateInput
+  update: ChatRoomUpdateDataInput
+  upsert: ChatRoomUpsertNestedInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: ChatRoomWhereUniqueInput
 }
 
 input ChatRoomUpdateOneRequiredWithoutChatContentListInput {
@@ -724,6 +753,11 @@ input ChatRoomUpdateWithWhereUniqueWithoutMemberListInput {
 input ChatRoomUpdateWithWhereUniqueWithoutStoreInput {
   where: ChatRoomWhereUniqueInput!
   data: ChatRoomUpdateWithoutStoreDataInput!
+}
+
+input ChatRoomUpsertNestedInput {
+  update: ChatRoomUpdateDataInput!
+  create: ChatRoomCreateInput!
 }
 
 input ChatRoomUpsertWithoutChatContentListInput {
@@ -2273,6 +2307,7 @@ type StoreOrder {
   address: String!
   menuList(where: TotalDetailIndividualWhereInput, orderBy: TotalDetailIndividualOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [TotalDetailIndividual!]
   totalPrice: Int!
+  chatRoom: ChatRoom
 }
 
 enum StoreOrderByInput {
@@ -2304,6 +2339,7 @@ input StoreOrderCreateInput {
   address: String!
   menuList: TotalDetailIndividualCreateManyWithoutStoreOrderInput
   totalPrice: Int!
+  chatRoom: ChatRoomCreateOneInput
 }
 
 input StoreOrderCreateManyWithoutStoreInput {
@@ -2321,6 +2357,7 @@ input StoreOrderCreateWithoutMenuListInput {
   store: StoreCreateOneWithoutStoreOrderListInput!
   address: String!
   totalPrice: Int!
+  chatRoom: ChatRoomCreateOneInput
 }
 
 input StoreOrderCreateWithoutStoreInput {
@@ -2328,6 +2365,7 @@ input StoreOrderCreateWithoutStoreInput {
   address: String!
   menuList: TotalDetailIndividualCreateManyWithoutStoreOrderInput
   totalPrice: Int!
+  chatRoom: ChatRoomCreateOneInput
 }
 
 type StoreOrderEdge {
@@ -2415,6 +2453,7 @@ input StoreOrderUpdateInput {
   address: String
   menuList: TotalDetailIndividualUpdateManyWithoutStoreOrderInput
   totalPrice: Int
+  chatRoom: ChatRoomUpdateOneInput
 }
 
 input StoreOrderUpdateManyDataInput {
@@ -2457,12 +2496,14 @@ input StoreOrderUpdateWithoutMenuListDataInput {
   store: StoreUpdateOneRequiredWithoutStoreOrderListInput
   address: String
   totalPrice: Int
+  chatRoom: ChatRoomUpdateOneInput
 }
 
 input StoreOrderUpdateWithoutStoreDataInput {
   address: String
   menuList: TotalDetailIndividualUpdateManyWithoutStoreOrderInput
   totalPrice: Int
+  chatRoom: ChatRoomUpdateOneInput
 }
 
 input StoreOrderUpdateWithWhereUniqueWithoutStoreInput {
@@ -2522,6 +2563,7 @@ input StoreOrderWhereInput {
   totalPrice_lte: Int
   totalPrice_gt: Int
   totalPrice_gte: Int
+  chatRoom: ChatRoomWhereInput
   AND: [StoreOrderWhereInput!]
   OR: [StoreOrderWhereInput!]
   NOT: [StoreOrderWhereInput!]
