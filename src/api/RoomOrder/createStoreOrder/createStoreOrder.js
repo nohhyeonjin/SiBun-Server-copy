@@ -81,7 +81,8 @@ export default{
                 store:{connect:{id:storeId}},
                 address:address,
                 menuList: {connect : totalDIArray},
-                totalPrice:totalPrice
+                totalPrice:totalPrice,
+                chatRoom : {connect : {id : roomId}}
             });
             return storeOrder;
             
