@@ -680,7 +680,9 @@ export type StoreOrderOrderByInput =
   | "totalPrice_ASC"
   | "totalPrice_DESC"
   | "phoneNum_ASC"
-  | "phoneNum_DESC";
+  | "phoneNum_DESC"
+  | "payType_ASC"
+  | "payType_DESC";
 
 export type RoomOrderOrderByInput =
   | "id_ASC"
@@ -1605,6 +1607,7 @@ export interface StoreOrderUpdateWithoutMenuListDataInput {
   totalPrice?: Maybe<Int>;
   chatRoom?: Maybe<ChatRoomUpdateOneInput>;
   phoneNum?: Maybe<String>;
+  payType?: Maybe<Int>;
 }
 
 export interface StoreOrderUpdateWithWhereUniqueWithoutStoreInput {
@@ -1627,6 +1630,7 @@ export interface StoreOrderUpdateWithoutStoreDataInput {
   totalPrice?: Maybe<Int>;
   chatRoom?: Maybe<ChatRoomUpdateOneInput>;
   phoneNum?: Maybe<String>;
+  payType?: Maybe<Int>;
 }
 
 export interface StoreOrderCreateWithoutMenuListInput {
@@ -1636,6 +1640,7 @@ export interface StoreOrderCreateWithoutMenuListInput {
   totalPrice: Int;
   chatRoom?: Maybe<ChatRoomCreateOneInput>;
   phoneNum?: Maybe<String>;
+  payType?: Maybe<Int>;
 }
 
 export interface TotalDetailIndividualUpdateManyWithoutStoreOrderInput {
@@ -1691,6 +1696,7 @@ export interface StoreOrderUpdateManyMutationInput {
   address?: Maybe<String>;
   totalPrice?: Maybe<Int>;
   phoneNum?: Maybe<String>;
+  payType?: Maybe<Int>;
 }
 
 export interface TotalDetailIndividualUpdateWithoutStoreOrderDataInput {
@@ -2093,6 +2099,7 @@ export interface StoreOrderCreateWithoutStoreInput {
   totalPrice: Int;
   chatRoom?: Maybe<ChatRoomCreateOneInput>;
   phoneNum?: Maybe<String>;
+  payType?: Maybe<Int>;
 }
 
 export interface DetailIndividualOrderUpdateManyWithoutIndividualOrderInput {
@@ -2614,6 +2621,14 @@ export interface StoreOrderWhereInput {
   phoneNum_not_starts_with?: Maybe<String>;
   phoneNum_ends_with?: Maybe<String>;
   phoneNum_not_ends_with?: Maybe<String>;
+  payType?: Maybe<Int>;
+  payType_not?: Maybe<Int>;
+  payType_in?: Maybe<Int[] | Int>;
+  payType_not_in?: Maybe<Int[] | Int>;
+  payType_lt?: Maybe<Int>;
+  payType_lte?: Maybe<Int>;
+  payType_gt?: Maybe<Int>;
+  payType_gte?: Maybe<Int>;
   AND?: Maybe<StoreOrderWhereInput[] | StoreOrderWhereInput>;
   OR?: Maybe<StoreOrderWhereInput[] | StoreOrderWhereInput>;
   NOT?: Maybe<StoreOrderWhereInput[] | StoreOrderWhereInput>;
@@ -3028,6 +3043,7 @@ export interface StoreOrderUpdateInput {
   totalPrice?: Maybe<Int>;
   chatRoom?: Maybe<ChatRoomUpdateOneInput>;
   phoneNum?: Maybe<String>;
+  payType?: Maybe<Int>;
 }
 
 export interface MenuCategoryUpsertWithoutMenuListInput {
@@ -3043,6 +3059,7 @@ export interface StoreOrderCreateInput {
   totalPrice: Int;
   chatRoom?: Maybe<ChatRoomCreateOneInput>;
   phoneNum?: Maybe<String>;
+  payType?: Maybe<Int>;
 }
 
 export interface MenuUpsertNestedInput {
@@ -3259,6 +3276,14 @@ export interface StoreOrderScalarWhereInput {
   phoneNum_not_starts_with?: Maybe<String>;
   phoneNum_ends_with?: Maybe<String>;
   phoneNum_not_ends_with?: Maybe<String>;
+  payType?: Maybe<Int>;
+  payType_not?: Maybe<Int>;
+  payType_in?: Maybe<Int[] | Int>;
+  payType_not_in?: Maybe<Int[] | Int>;
+  payType_lt?: Maybe<Int>;
+  payType_lte?: Maybe<Int>;
+  payType_gt?: Maybe<Int>;
+  payType_gte?: Maybe<Int>;
   AND?: Maybe<StoreOrderScalarWhereInput[] | StoreOrderScalarWhereInput>;
   OR?: Maybe<StoreOrderScalarWhereInput[] | StoreOrderScalarWhereInput>;
   NOT?: Maybe<StoreOrderScalarWhereInput[] | StoreOrderScalarWhereInput>;
@@ -3288,6 +3313,7 @@ export interface StoreOrderUpdateManyDataInput {
   address?: Maybe<String>;
   totalPrice?: Maybe<Int>;
   phoneNum?: Maybe<String>;
+  payType?: Maybe<Int>;
 }
 
 export interface IndividualOrderCreateManyWithoutRoomOrderInput {
@@ -5867,6 +5893,7 @@ export interface StoreOrder {
   address: String;
   totalPrice: Int;
   phoneNum?: String;
+  payType?: Int;
 }
 
 export interface StoreOrderPromise extends Promise<StoreOrder>, Fragmentable {
@@ -5885,6 +5912,7 @@ export interface StoreOrderPromise extends Promise<StoreOrder>, Fragmentable {
   totalPrice: () => Promise<Int>;
   chatRoom: <T = ChatRoomPromise>() => T;
   phoneNum: () => Promise<String>;
+  payType: () => Promise<Int>;
 }
 
 export interface StoreOrderSubscription
@@ -5907,6 +5935,7 @@ export interface StoreOrderSubscription
   totalPrice: () => Promise<AsyncIterator<Int>>;
   chatRoom: <T = ChatRoomSubscription>() => T;
   phoneNum: () => Promise<AsyncIterator<String>>;
+  payType: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface StoreOrderNullablePromise
@@ -5927,6 +5956,7 @@ export interface StoreOrderNullablePromise
   totalPrice: () => Promise<Int>;
   chatRoom: <T = ChatRoomPromise>() => T;
   phoneNum: () => Promise<String>;
+  payType: () => Promise<Int>;
 }
 
 export interface AggregateTotalDetailIndividual {
@@ -5996,6 +6026,7 @@ export interface StoreOrderPreviousValues {
   address: String;
   totalPrice: Int;
   phoneNum?: String;
+  payType?: Int;
 }
 
 export interface StoreOrderPreviousValuesPromise
@@ -6005,6 +6036,7 @@ export interface StoreOrderPreviousValuesPromise
   address: () => Promise<String>;
   totalPrice: () => Promise<Int>;
   phoneNum: () => Promise<String>;
+  payType: () => Promise<Int>;
 }
 
 export interface StoreOrderPreviousValuesSubscription
@@ -6014,6 +6046,7 @@ export interface StoreOrderPreviousValuesSubscription
   address: () => Promise<AsyncIterator<String>>;
   totalPrice: () => Promise<AsyncIterator<Int>>;
   phoneNum: () => Promise<AsyncIterator<String>>;
+  payType: () => Promise<AsyncIterator<Int>>;
 }
 
 export interface AggregateMenuCategory {

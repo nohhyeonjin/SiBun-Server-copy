@@ -3,7 +3,7 @@ import { prisma } from "../../../../generated/prisma-client";
 export default{
     Mutation:{
         createStoreOrder:async(_,args,{request})=>{
-            const { roomId, storeId } = args;
+            const { roomId, phoneNum, payType } = args;
 
             //get Type-StoreOrder address input value
             const chatRoom = await prisma.chatRoom({id:roomId});
@@ -76,13 +76,16 @@ export default{
             console.log("-------TotalDetailIndividual Array-------");
             console.log(totalDIArray);
 
+            const storeId = await prisma.chatRoom({ id: roomId }).store().id();
             //create Type-StoreOrder
             const storeOrder = await prisma.createStoreOrder({
                 store:{connect:{id:storeId}},
                 address:address,
                 menuList: {connect : totalDIArray},
                 totalPrice:totalPrice,
-                chatRoom : {connect : {id : roomId}}
+                chatRoom : {connect : {id : roomId}},
+                phoneNum: phoneNum,
+                payType : payType
             });
             return storeOrder;
             

@@ -1,6 +1,7 @@
 type Mutation{
     createStoreOrder(
         roomId: String!
-        storeId: String!
+        phoneNum : String!
+        payType : Int!
     ):StoreOrder
 }

@@ -2277,6 +2277,7 @@ type StoreOrder {
   totalPrice: Int!
   chatRoom: ChatRoom
   phoneNum: String
+  payType: Int
 }
 
 enum StoreOrderByInput {
@@ -2310,6 +2311,7 @@ input StoreOrderCreateInput {
   totalPrice: Int!
   chatRoom: ChatRoomCreateOneInput
   phoneNum: String
+  payType: Int
 }
 
 input StoreOrderCreateManyWithoutStoreInput {
@@ -2329,6 +2331,7 @@ input StoreOrderCreateWithoutMenuListInput {
   totalPrice: Int!
   chatRoom: ChatRoomCreateOneInput
   phoneNum: String
+  payType: Int
 }
 
 input StoreOrderCreateWithoutStoreInput {
@@ -2338,6 +2341,7 @@ input StoreOrderCreateWithoutStoreInput {
   totalPrice: Int!
   chatRoom: ChatRoomCreateOneInput
   phoneNum: String
+  payType: Int
 }
 
 type StoreOrderEdge {
@@ -2354,6 +2358,8 @@ enum StoreOrderOrderByInput {
   totalPrice_DESC
   phoneNum_ASC
   phoneNum_DESC
+  payType_ASC
+  payType_DESC
 }
 
 type StoreOrderPreviousValues {
@@ -2361,6 +2367,7 @@ type StoreOrderPreviousValues {
   address: String!
   totalPrice: Int!
   phoneNum: String
+  payType: Int
 }
 
 input StoreOrderScalarWhereInput {
@@ -2414,6 +2421,14 @@ input StoreOrderScalarWhereInput {
   phoneNum_not_starts_with: String
   phoneNum_ends_with: String
   phoneNum_not_ends_with: String
+  payType: Int
+  payType_not: Int
+  payType_in: [Int!]
+  payType_not_in: [Int!]
+  payType_lt: Int
+  payType_lte: Int
+  payType_gt: Int
+  payType_gte: Int
   AND: [StoreOrderScalarWhereInput!]
   OR: [StoreOrderScalarWhereInput!]
   NOT: [StoreOrderScalarWhereInput!]
@@ -2444,18 +2459,21 @@ input StoreOrderUpdateInput {
   totalPrice: Int
   chatRoom: ChatRoomUpdateOneInput
   phoneNum: String
+  payType: Int
 }
 
 input StoreOrderUpdateManyDataInput {
   address: String
   totalPrice: Int
   phoneNum: String
+  payType: Int
 }
 
 input StoreOrderUpdateManyMutationInput {
   address: String
   totalPrice: Int
   phoneNum: String
+  payType: Int
 }
 
 input StoreOrderUpdateManyWithoutStoreInput {
@@ -2490,6 +2508,7 @@ input StoreOrderUpdateWithoutMenuListDataInput {
   totalPrice: Int
   chatRoom: ChatRoomUpdateOneInput
   phoneNum: String
+  payType: Int
 }
 
 input StoreOrderUpdateWithoutStoreDataInput {
@@ -2498,6 +2517,7 @@ input StoreOrderUpdateWithoutStoreDataInput {
   totalPrice: Int
   chatRoom: ChatRoomUpdateOneInput
   phoneNum: String
+  payType: Int
 }
 
 input StoreOrderUpdateWithWhereUniqueWithoutStoreInput {
@@ -2572,6 +2592,14 @@ input StoreOrderWhereInput {
   phoneNum_not_starts_with: String
   phoneNum_ends_with: String
   phoneNum_not_ends_with: String
+  payType: Int
+  payType_not: Int
+  payType_in: [Int!]
+  payType_not_in: [Int!]
+  payType_lt: Int
+  payType_lte: Int
+  payType_gt: Int
+  payType_gte: Int
   AND: [StoreOrderWhereInput!]
   OR: [StoreOrderWhereInput!]
   NOT: [StoreOrderWhereInput!]
