@@ -89,6 +89,7 @@ type StoreOrder {
   totalPrice : Int!
   chatRoom : ChatRoom
   phoneNum : String
+  payType : Int
 }
 
 type TotalDetailIndividual {
