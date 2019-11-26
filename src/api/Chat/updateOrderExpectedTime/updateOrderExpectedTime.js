@@ -22,7 +22,7 @@ export default{
                 roomId,
                 storeName,
                 bossId,
-                state: chatRoom.state
+                state: chatRoom.state+""
               },
               notification: {
                 title: `${storeName}`,

@@ -28,7 +28,7 @@ export default{
           roomId,
           storeName,
           bossId,
-          state
+          state: state+""
         },
         notification: {
           title: `${storeName} - 새로운 채팅`,
