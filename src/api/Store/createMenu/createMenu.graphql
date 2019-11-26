@@ -1,0 +1,8 @@
+type Mutation{
+    createMenu(
+        storeId: String!
+        menuCategoryName: String!
+        menuName: String!
+        menuPrice: Int!
+    ):Menu
+}
