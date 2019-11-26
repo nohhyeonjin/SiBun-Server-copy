@@ -21,7 +21,8 @@ export default{
               data: {
                 roomId,
                 storeName,
-                bossId
+                bossId,
+                state: chatRoom.state
               },
               notification: {
                 title: `${storeName}`,

@@ -21,12 +21,14 @@ export default{
 
       const storeName = await prisma.chatRoom({ id: roomId }).store().name();
       const bossId = await prisma.chatRoom({ id: roomId }).boss().id();
+      const state = await prisma.chatRoom({ id: roomId }).state();
 
       const message = [{
         data: {
           roomId,
           storeName,
-          bossId
+          bossId,
+          state
         },
         notification: {
           title: `${storeName} - 새로운 채팅`,
