@@ -1,0 +1,6 @@
+type Mutation{
+    createMenuCategory(
+        storeId : String!
+        name : String!
+    ):MenuCategory!
+}
