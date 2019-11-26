@@ -14,22 +14,25 @@ export default{
 
             const getMenuCategory = await prisma.menuCategories({
                     where : categoryFilterOptions
+            });
+            
+            const existingMenu = await prisma.$exists.menu({
+                where : {menuCategory:{id:getMenuCategory[0].id}}
+            });
+
+            if(existingMenu){
+                const getMenuList = await prisma.menus({
+                    where : {menuCategory:{id:getMenuCategory[0].id}}
                 });
 
-            const getMenuList = await prisma.menus({
-                where : {menuCategory:{id:getMenuCategory[0].id}}
-            }) 
-            
-            if(getMenuList.length > 0)
-            {
                 for(var i = 0; i < getMenuList.length; i++){
                     await prisma.deleteMenu({
                         id: getMenuList[i].id
-                });
-              }
+                })
+                };
             }
 
-            await prisma.deleteMenu({
+            await prisma.deleteMenuCategory({
                 id: getMenuCategory[0].id
             })
 
