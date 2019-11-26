@@ -1,0 +1,7 @@
+type Mutation{
+    updateMenuCategory(
+        storeId: String!
+        name: String!
+        newName: String!
+    ): MenuCategory!
+}
