@@ -45,7 +45,7 @@ export default{
                 id : roomId
             }).store().name();
 
-            const storeOrder =  await prisma.StoreOrder({chatRoom : {id : roomId}});
+            const storeOrder =  await prisma.storeOrder({chatRoom : {id : roomId}});
             if(storeOrder.length = 0){
                 console.log("삭제할 StoreOrder가 없습니다.")
             }else{
