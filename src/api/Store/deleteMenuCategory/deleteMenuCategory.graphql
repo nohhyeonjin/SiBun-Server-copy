@@ -1,0 +1,6 @@
+type Mutation{
+    deleteMenuCategory(
+        storeId: String!
+        name: String!
+    ): String!
+}
